@@ -4,7 +4,22 @@
   "scripts": {
     "dev": "next -p 4000",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "type-check": "tsc --pretty --noEmit",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext ts --ext tsx --ext js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn run type-check"
+    }
+  },
+  "lint-staged": {
+    "*.@(ts|tsx)": [
+      "yarn lint",
+      "yarn format"
+    ]
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.5",
@@ -21,7 +36,15 @@
     "@types/node": "^14.6.0",
     "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.8",
-    "typescript": "4.0.5"
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-react": "^7.23.1",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.3"
   },
   "license": "MIT"
 }
