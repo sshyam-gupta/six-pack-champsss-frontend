@@ -6,26 +6,38 @@ import { Button } from '@chakra-ui/button';
 
 export default function SignIn({ providers }: any) {
   return (
-    <Flex justify="space-between" h="100vh">
+    <Flex minH="100vh" bg="rgb(216 41 58)" p="2rem" justify="center">
       <Flex
-        flex="0 1 75%"
-        borderRight="1px solid"
-        borderColor="gray"
-        direction="column"
-        justify="center"
-        alignItems="center"
+        justify="space-between"
+        flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
+        boxShadow="lg"
+        bg="white"
+        borderRadius="md"
       >
-        <Image src="/images/login.svg" maxH="24rem" />
-      </Flex>
-      <Flex direction="column" p="1rem" alignItems="center" justify="center" flex={1}>
-        <Box w="50%" mb="2rem">
-          <Image src="/images/logo.png" borderRadius="100%" />
-        </Box>
-        {Object.values(providers).map((provider: any) => (
-          <Button key={provider.name} onClick={() => signIn(provider.id)}>
-            Sign In Using Google
-          </Button>
-        ))}
+        <Flex
+          background="rgb(224 137 145)"
+          mt={['2rem', '2rem', '2rem', 0]}
+          flex="0 1 75%"
+          borderRight={{ lg: '1px solid gray' }}
+          borderColor="gray"
+          direction="column"
+          justify="center"
+          alignItems="center"
+          borderTopLeftRadius="md"
+          borderBottomLeftRadius="md"
+        >
+          <Image src="/images/login.svg" maxH="24rem" />
+        </Flex>
+        <Flex direction="column" p="1rem" alignItems="center" justify="center" flex={1}>
+          <Box w="50%" mb="2rem">
+            <Image src="/images/logo.png" borderRadius="100%" />
+          </Box>
+          {Object.values(providers).map((provider: any) => (
+            <Button key={provider.name} onClick={() => signIn(provider.id)}>
+              Sign In Using Google
+            </Button>
+          ))}
+        </Flex>
       </Flex>
     </Flex>
   );
