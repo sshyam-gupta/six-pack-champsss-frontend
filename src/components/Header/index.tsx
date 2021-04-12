@@ -4,6 +4,9 @@ import { signOut, useSession } from 'next-auth/client';
 
 const Header = () => {
   const [session] = useSession();
+  if (!session) {
+    return null;
+  }
   return (
     <Flex justify="space-between" p="0.5rem 1rem" bg="gray.100">
       {session?.user.image && <Avatar src={session.user.image} />}
