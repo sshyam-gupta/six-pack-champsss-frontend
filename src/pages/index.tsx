@@ -19,7 +19,7 @@ const Index = () => {
     /* TODO: Add Chakra Skeleton */
     return (
       <Flex justify="center" alignItems="center" h="100vh">
-        <Spinner size="xl" />;
+        <Spinner size="xl" />
       </Flex>
     );
   }
