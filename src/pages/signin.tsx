@@ -40,11 +40,13 @@ export default function SignIn({ providers }: any) {
           </Text>
         </Stack>
 
-        {Object.values(providers).map((provider: any) => (
-          <Button mt="2rem" key={provider.name} onClick={() => signIn(provider.id)} leftIcon={<AiOutlineGoogle />}>
-            Login with Google
-          </Button>
-        ))}
+        {providers
+          ? Object.values(providers).map((provider: any) => (
+              <Button mt="2rem" key={provider.name} onClick={() => signIn(provider.id)} leftIcon={<AiOutlineGoogle />}>
+                Login with Google
+              </Button>
+            ))
+          : null}
       </Flex>
       <Flex flex={3} justify="center" alignItems="center" p={['1rem', null, '2rem']}>
         <UncontrolledLottie options={{ animationData: animationData }} />
