@@ -1,43 +1,29 @@
-import { Link as ChakraLink, Text, Code, List, ListIcon, ListItem } from '@chakra-ui/react';
-import { CheckCircleIcon, LinkIcon } from '@chakra-ui/icons';
+import { Box, Flex } from '@chakra-ui/layout';
+import { Spinner } from '@chakra-ui/spinner';
+import { useSession } from 'next-auth/client';
+import { useRouter } from 'next/dist/client/router';
+import { useEffect } from 'react';
 
-import { Hero } from '../components/Hero';
-import { Container } from '../components/Container';
-import { Main } from '../components/Main';
-import { DarkModeSwitch } from '../components/DarkModeSwitch';
-import { CTA } from '../components/CTA';
-import { Footer } from '../components/Footer';
 
-const Index = () => (
-  <Container height="100vh">
-    <Hero />
-    <Main>
-      <Text>
-        Example repository of <Code>Next.js</Code> + <Code>chakra-ui</Code> + <Code>typescript</Code>.
-      </Text>
+const Index = () => {
+  const [session, loading] = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (!loading && !session) {
+      router.push('/signin');
+      return;
+    }
+  }, [loading, session, router]);
 
-      <List spacing={3} my={0}>
-        <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          <ChakraLink isExternal href="https://chakra-ui.com" flexGrow={1} mr={2}>
-            Chakra UI <LinkIcon />
-          </ChakraLink>
-        </ListItem>
-        <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          <ChakraLink isExternal href="https://nextjs.org" flexGrow={1} mr={2}>
-            Next.js <LinkIcon />
-          </ChakraLink>
-        </ListItem>
-      </List>
-    </Main>
-
-    <DarkModeSwitch />
-    <Footer>
-      <Text>Next ❤️ Chakra</Text>
-    </Footer>
-    <CTA />
-  </Container>
-);
+  if (loading) {
+    /* TODO: Add Chakra Skeleton */
+    return (
+      <Flex justify="center" alignItems="center" h="100vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
+  return <Box></Box>;
+};
 
 export default Index;
