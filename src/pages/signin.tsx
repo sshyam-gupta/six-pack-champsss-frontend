@@ -1,43 +1,67 @@
 import React from 'react';
 import { providers, signIn } from 'next-auth/client';
-import { Box, Flex } from '@chakra-ui/layout';
-import { Image } from '@chakra-ui/image';
+import { Flex, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
+import { useColorMode } from '@chakra-ui/color-mode';
+import { AiOutlineGoogle } from 'react-icons/ai';
+import { DarkModeSwitch } from '../components/DarkModeSwitch';
+import UncontrolledLottie from '../components/lottie/UncontrolledLottie';
+import animationData from '../public/lotties/24393-online-work.json';
 
 export default function SignIn({ providers }: any) {
+  const { colorMode } = useColorMode();
+
   return (
-    <Flex minH="100vh" bg="rgb(216 41 58)" p="2rem" justify="center">
+    <Flex
+      height="100vh"
+      justify="space-between"
+      flexDirection={['column', 'column', 'column', 'row-reverse']}
+      position="relative"
+      overflowY="auto"
+    >
+      <DarkModeSwitch />
       <Flex
-        justify="space-between"
-        flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
-        boxShadow="lg"
-        bg="white"
-        borderRadius="md"
+        flexDirection="column"
+        p="1rem"
+        flex={2}
+        h="100%"
+        bg={`mode.${colorMode}.secondaryBg`}
+        textAlign="center"
+        alignItems="center"
+        pt={['5rem', null, '8rem']}
       >
-        <Flex
-          background="rgb(224 137 145)"
-          mt={['2rem', '2rem', '2rem', 0]}
-          flex="0 1 75%"
-          borderRight={{ lg: '1px solid gray' }}
-          borderColor="gray"
-          direction="column"
-          justify="center"
-          alignItems="center"
-          borderTopLeftRadius="md"
-          borderBottomLeftRadius="md"
-        >
-          <Image src="/images/login.svg" maxH="24rem" />
-        </Flex>
-        <Flex direction="column" p="1rem" alignItems="center" justify="center" flex={1}>
-          <Box w="50%" mb="2rem">
-            <Image src="/images/logo.png" borderRadius="100%" />
-          </Box>
-          {Object.values(providers).map((provider: any) => (
-            <Button key={provider.name} onClick={() => signIn(provider.id)}>
-              Sign In Using Google
-            </Button>
-          ))}
-        </Flex>
+        <Stack>
+          <Text fontSize="lg">Six Pack Champsss</Text>
+          <Text fontSize="xs" as="i">
+            Presents
+          </Text>
+          <Text fontSize="4xl" fontFamily="Comfortaa">
+            Kiprosh Laureate Awards Portal
+          </Text>
+        </Stack>
+
+        {Object.values(providers).map((provider: any) => (
+          <Button mt="2rem" key={provider.name} onClick={() => signIn(provider.id)} leftIcon={<AiOutlineGoogle />}>
+            Login with Google
+          </Button>
+        ))}
+      </Flex>
+      <Flex flex={3} justify="center" alignItems="center" p={['1rem', null, '2rem']}>
+        <UncontrolledLottie options={{ animationData: animationData }} />
+      </Flex>
+      <Flex position="absolute" bottom="0" left="0" right="0" transform="rotate(180deg)" zIndex="-1">
+        <svg viewBox="0 0 1440 200">
+          <path
+            fill="rgba(55, 59, 66, 1)"
+            d="M 0 25 C 292.40000000000003 25 438.59999999999997 110 731 110 L 731 110 L 731 0 L 0 0 Z"
+            strokeWidth="0"
+          />
+          <path
+            fill="rgba(55, 59, 66, 1)"
+            d="M 730 110 C 1014 110 1156 58 1440 58 L 1440 58 L 1440 0 L 730 0 Z"
+            strokeWidth="0"
+          />
+        </svg>
       </Flex>
     </Flex>
   );

@@ -13,12 +13,10 @@ function LottiePage() {
     <Flex
       height="100vh"
       justify="space-between"
-      flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
+      flexDirection={['column', 'column', 'column', 'row-reverse']}
       position="relative"
+      overflowY="auto"
     >
-      <Flex flex={3} justify="center" alignItems="center" p={['1rem', null, '2rem']}>
-        <UncontrolledLottie options={{ animationData: animationData }} />
-      </Flex>
       <Flex
         flexDirection="column"
         p="1rem"
@@ -42,6 +40,9 @@ function LottiePage() {
         <Button mt="2rem" leftIcon={<AiOutlineGoogle />}>
           Login with Google
         </Button>
+      </Flex>
+      <Flex flex={3} justify="center" alignItems="center" p={['1rem', null, '2rem']}>
+        <UncontrolledLottie options={{ animationData: animationData }} />
       </Flex>
       <Flex position="absolute" bottom="0" left="0" right="0" transform="rotate(180deg)" zIndex="-1">
         <svg viewBox="0 0 1440 200">
