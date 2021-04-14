@@ -4,14 +4,13 @@ import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
 
-import Header from '../components/Header';
 
 const Index = () => {
   const [session, loading] = useSession();
   const router = useRouter();
   useEffect(() => {
     if (!loading && !session) {
-      router.push('/auth/signin');
+      router.push('/signin');
       return;
     }
   }, [loading, session, router]);
@@ -24,11 +23,7 @@ const Index = () => {
       </Flex>
     );
   }
-  return (
-    <Box>
-      <Header />
-    </Box>
-  );
+  return <Box></Box>;
 };
 
 export default Index;

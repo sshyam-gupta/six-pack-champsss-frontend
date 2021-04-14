@@ -9,7 +9,7 @@ const options = {
     }),
   ],
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/signin',
   },
   callbacks: {
     async redirect(url, baseUrl) {
