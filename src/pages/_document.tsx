@@ -6,6 +6,9 @@ export default class Document extends NextDocument {
     return (
       <Html>
         <Head />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500&display=swap" rel="stylesheet" />
+
         <body>
           {/* Make Color mode to persists when you refresh the page. */}
           <ColorModeScript />
