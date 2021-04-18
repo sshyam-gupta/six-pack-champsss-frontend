@@ -7,7 +7,7 @@ import { AiOutlineGoogle } from 'react-icons/ai';
 import { DarkModeSwitch } from '../components/DarkModeSwitch';
 import UncontrolledLottie from '../components/lottie/UncontrolledLottie';
 import animationData from '../public/lotties/24393-online-work.json';
-
+import * as AppData from '../constants/app.json';
 export default function SignIn({ providers }: any) {
   const { colorMode } = useColorMode();
 
@@ -31,12 +31,12 @@ export default function SignIn({ providers }: any) {
         pt={['5rem', null, '8rem']}
       >
         <Stack>
-          <Text fontSize="lg">Six Pack Champsss</Text>
+          <Text fontSize="lg">{AppData['presented-by']}</Text>
           <Text fontSize="xs" as="i">
             Presents
           </Text>
           <Text fontSize="4xl" fontFamily="Comfortaa">
-            Kiprosh Laureate Awards Portal
+            {AppData['app-name']}
           </Text>
         </Stack>
 
