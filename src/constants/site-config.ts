@@ -3,7 +3,7 @@ import * as AppData from './app.json';
 const siteConfig = {
   seo: {
     title: AppData['app-name'],
-    // titleTemplate: `%s | ${AppData['app-name']}`,
+    titleTemplate: `%s | ${AppData['app-name']}`,
     description: AppData.description,
     siteUrl: 'https://six-pack-champsss-frontend.vercel.app/',
     openGraph: {

@@ -4,10 +4,10 @@ import { Flex, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { useColorMode } from '@chakra-ui/color-mode';
 import { AiOutlineGoogle } from 'react-icons/ai';
-import { DarkModeSwitch } from '../components/DarkModeSwitch';
 import UncontrolledLottie from '../components/lottie/UncontrolledLottie';
 import animationData from '../public/lotties/24393-online-work.json';
 import * as AppData from '../constants/app.json';
+import SEO from '../components/Seo';
 export default function SignIn({ providers }: any) {
   const { colorMode } = useColorMode();
 
@@ -19,7 +19,7 @@ export default function SignIn({ providers }: any) {
       position="relative"
       overflowY="auto"
     >
-      <DarkModeSwitch />
+      <SEO title="Sign in" />
       <Flex
         flexDirection="column"
         p="1rem"
