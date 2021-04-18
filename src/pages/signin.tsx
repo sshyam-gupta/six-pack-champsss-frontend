@@ -1,6 +1,6 @@
 import React from 'react';
 import { providers, signIn } from 'next-auth/client';
-import { Flex, Stack, Text } from '@chakra-ui/layout';
+import { Container, Flex, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { useColorMode } from '@chakra-ui/color-mode';
 import { AiOutlineGoogle } from 'react-icons/ai';
@@ -13,48 +13,58 @@ export default function SignIn({ providers }: any) {
   const { colorMode } = useColorMode();
 
   return (
-    <Flex
-      height="100vh"
-      justify="space-between"
-      flexDirection={['column', 'column', 'column', 'row-reverse']}
-      position="relative"
-      overflowY="auto"
-    >
-      <Flex position="fixed" top="1rem" right="1rem">
-        <DarkModeSwitch />
-      </Flex>
+    <Flex height="100vh">
       <SEO title="Sign in" />
-      <Flex
-        flexDirection="column"
-        p="1rem"
-        flex={2}
-        h="100%"
-        bg={`mode.${colorMode}.secondaryBg`}
-        textAlign="center"
-        alignItems="center"
-        pt={['5rem', null, '8rem']}
+      <Container
+        maxW="container.xl"
+        justify="space-between"
+        flexDirection={['column', 'column', 'column', 'row-reverse']}
+        position="relative"
+        overflowY="auto"
+        display="flex"
       >
-        <Stack>
-          <Text fontSize="lg">{AppData['presented-by']}</Text>
-          <Text fontSize="xs" as="i">
-            Presents
-          </Text>
-          <Text fontSize="4xl" fontFamily="Comfortaa">
-            {AppData['app-name']}
-          </Text>
-        </Stack>
+        <Flex position="absolute" top="2rem" right="1rem">
+          <DarkModeSwitch />
+        </Flex>
 
-        {providers
-          ? Object.values(providers).map((provider: any) => (
-              <Button mt="2rem" key={provider.name} onClick={() => signIn(provider.id)} leftIcon={<AiOutlineGoogle />}>
-                Login with Google
-              </Button>
-            ))
-          : null}
-      </Flex>
-      <Flex flex={3} justify="center" alignItems="center" p={['1rem', null, '2rem']}>
-        <UncontrolledLottie options={{ animationData: animationData }} />
-      </Flex>
+        <Flex
+          flexDirection="column"
+          p="1rem"
+          flex={2}
+          h="100%"
+          bg={`mode.${colorMode}.secondaryBg`}
+          textAlign="center"
+          alignItems="center"
+          pt={['5rem', null, '8rem']}
+        >
+          <Stack>
+            <Text fontSize="lg">{AppData['presented-by']}</Text>
+            <Text fontSize="xs" as="i">
+              Presents
+            </Text>
+            <Text fontSize="4xl" fontFamily="Comfortaa">
+              {AppData['app-name']}
+            </Text>
+          </Stack>
+
+          {providers
+            ? Object.values(providers).map((provider: any) => (
+                <Button
+                  mt="2rem"
+                  key={provider.name}
+                  onClick={() => signIn(provider.id)}
+                  leftIcon={<AiOutlineGoogle />}
+                  fontWeight="500"
+                >
+                  Login with Google
+                </Button>
+              ))
+            : null}
+        </Flex>
+        <Flex flex={3} justify="center" alignItems="center" p={['1rem', null, '2rem']}>
+          <UncontrolledLottie options={{ animationData: animationData }} />
+        </Flex>
+      </Container>
       <Flex position="absolute" bottom="0" left="0" right="0" transform="rotate(180deg)" zIndex="-1">
         <svg viewBox="0 0 1440 200">
           <path
