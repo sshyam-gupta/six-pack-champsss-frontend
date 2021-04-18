@@ -5,7 +5,7 @@ import { Button } from '@chakra-ui/button';
 import { useColorMode } from '@chakra-ui/color-mode';
 import { AiOutlineGoogle } from 'react-icons/ai';
 import UncontrolledLottie from '../components/lottie/UncontrolledLottie';
-import animationData from '../public/lotties/online-work.json';
+import animationData from '../../public/lotties/online-work.json';
 import * as AppData from '../constants/app.json';
 import SEO from '../components/Seo';
 import { DarkModeSwitch } from '../components/Header';

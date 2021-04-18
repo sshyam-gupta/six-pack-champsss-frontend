@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/layout';
 import PageContainer from '../components/layout/PageContainer';
 import UncontrolledLottie from '../components/lottie/UncontrolledLottie';
-import animationData from '../public/lotties/not-found.json';
+import animationData from '../../public/lotties/not-found.json';
 
 function NotFound() {
   return (

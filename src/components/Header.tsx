@@ -1,4 +1,6 @@
 import NextLink from 'next/link';
+import { signOut } from 'next-auth/client';
+import { DarkModeSwitch as ThemeSwitcher } from 'react-toggle-dark-mode';
 
 import {
   useColorMode,
@@ -16,7 +18,6 @@ import { useEffect, useRef, useState } from 'react';
 import { MobileNavButton, MobileNavContent } from './MobileNav';
 
 const Header = props => {
-  // return <DarkModeSwitch />;
   const bg = useColorModeValue('white', 'gray.800');
   const ref = useRef<HTMLHeadingElement>();
   const [y, setY] = useState(0);
@@ -50,6 +51,7 @@ const Header = props => {
 
 function HeaderContent() {
   const mobileNav = useDisclosure();
+  const isDarkMode = useDisclosure();
 
   const mobileNavBtnRef = useRef<HTMLButtonElement>();
 
@@ -70,9 +72,18 @@ function HeaderContent() {
           </NextLink>
         </Flex>
 
-        <Stack isInline justify="flex-end" w="100%" maxW="824px" align="center" color="gray.400">
-          <DarkModeSwitch />
+        <Stack isInline justify="flex-end" w="100%" maxW="824px" spacing={4} align="center" color="gray.400">
+          <a
+            href={`/api/auth/signout`}
+            onClick={e => {
+              e.preventDefault();
+              signOut();
+            }}
+          >
+            Sign out
+          </a>
           <MobileNavButton ref={mobileNavBtnRef} aria-label="Open Menu" onClick={mobileNav.onOpen} />
+          <DarkModeSwitch />
         </Stack>
       </Flex>
       <MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} />
@@ -83,7 +94,7 @@ function HeaderContent() {
 export const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === 'dark';
-  return <Switch color="green" isChecked={isDark} onChange={toggleColorMode} />;
+  return <ThemeSwitcher size={40} checked={isDark} onChange={toggleColorMode} />;
 };
 
 export default Header;
