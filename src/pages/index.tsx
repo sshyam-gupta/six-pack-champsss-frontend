@@ -3,7 +3,7 @@ import { Spinner } from '@chakra-ui/spinner';
 import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
-
+import PageContainer from '../components/layout/PageContainer';
 
 const Index = () => {
   const [session, loading] = useSession();
@@ -23,7 +23,7 @@ const Index = () => {
       </Flex>
     );
   }
-  return <Box></Box>;
+  return <PageContainer />;
 };
 
 export default Index;

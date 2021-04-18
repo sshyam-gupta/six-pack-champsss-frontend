@@ -4,7 +4,6 @@ import theme from '../theme';
 import { DefaultSeo } from 'next-seo';
 
 import { AppProps } from 'next/app';
-import Page from '../components/layout/Page';
 import siteConfig from '../constants/site-config';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -12,9 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider session={pageProps.session}>
       <ChakraProvider resetCSS theme={theme}>
         <DefaultSeo {...siteConfig.seo} />
-        <Page>
-          <Component {...pageProps} />
-        </Page>
+        <Component {...pageProps} />
       </ChakraProvider>
     </Provider>
   );

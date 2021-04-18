@@ -1,16 +1,16 @@
-import { Box } from '@chakra-ui/layout';
-import { Container } from 'next/app';
+import { Box, Container } from '@chakra-ui/layout';
 import { Footer } from '../Footer';
 import Header from '../Header';
+import Sidebar from '../Sidebar';
 import PageTransition from './PageTransition';
 
-const Page = ({ ...props }) => {
+const PageContainer = ({ ...props }) => {
   return (
     <>
       <Header />
-      <Container as="main" className="main-content">
-        <Box display={{ base: 'block', md: 'flex' }}>
-          {/* {sidebar || null} */}
+      <Container maxW="container.xl" as="main" className="main-content">
+        <Box display={['block', 'block', 'flex']}>
+          <Sidebar />
           <div style={{ flex: 1 }}>
             <Box
               id="content"
@@ -19,7 +19,7 @@ const Page = ({ ...props }) => {
               mt="4.5rem"
               mx="auto"
               maxW="48rem"
-              minH="76vh"
+              minH="66vh"
             >
               <PageTransition>{props.children}</PageTransition>
             </Box>
@@ -31,4 +31,4 @@ const Page = ({ ...props }) => {
   );
 };
 
-export default Page;
+export default PageContainer;
