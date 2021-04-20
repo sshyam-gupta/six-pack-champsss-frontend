@@ -31,11 +31,14 @@
     "framer-motion": "^3.5.2",
     "next": "latest",
     "next-auth": "^3.14.0",
+    "next-seo": "^4.24.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
     "react-lottie": "^1.2.3",
-    "react-select": "^4.3.0"
+    "react-select": "^4.3.0",
+    "react-remove-scroll": "^2.4.1",
+    "react-toggle-dark-mode": "^1.0.4"
   },
   "devDependencies": {
     "@types/node": "^14.6.0",

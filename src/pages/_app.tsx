@@ -1,16 +1,17 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { Provider } from 'next-auth/client';
 import theme from '../theme';
+import { DefaultSeo } from 'next-seo';
+
 import { AppProps } from 'next/app';
-import Page from '../components/layout/Page';
+import siteConfig from '../constants/site-config';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider session={pageProps.session}>
       <ChakraProvider resetCSS theme={theme}>
-        <Page>
-          <Component {...pageProps} />
-        </Page>
+        <DefaultSeo {...siteConfig.seo} />
+        <Component {...pageProps} />
       </ChakraProvider>
     </Provider>
   );
