@@ -22,7 +22,7 @@ const options = {
       if (email.includes(KIPROSH_MAIL)) {
         return true;
       } else {
-        return '/not-authorized';
+        return '/unauthorized';
       }
     },
   },
