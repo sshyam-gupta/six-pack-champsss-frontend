@@ -11,7 +11,7 @@ const OutsideOrganization = () => {
       </Box>
       <Stack textAlign="center" alignItems="center">
         <Text fontSize="2xl" fontFamily="Comfortaa">
-          You are not authorize to access this application
+          You are not authorized to access this application
         </Text>
         <Link href="/signin">
           <Button colorScheme="red" variant="outline">
