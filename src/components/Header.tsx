@@ -72,7 +72,7 @@ function HeaderContent() {
             variant="ghost"
             color={useColorModeValue('gray.800', 'inherit')}
             aria-label="Logout"
-            onClick={signOut}
+            onClick={() => void signOut()}
             icon={<IoMdLogOut fontSize="2rem" />}
           />
           <DarkModeSwitch />
