@@ -6,14 +6,14 @@ const LoginRequired: FunctionComponent = ({ children }) => {
   const router = useRouter();
   const [session, loading] = useSession();
 
-  if (typeof window !== 'undefined' && loading) return null;
-
   React.useEffect(() => {
-    if (!session) {
+    if (!session && !loading) {
       router.push('/signin');
       return;
     }
   }, [loading, session, router]);
+
+  if (typeof window !== 'undefined' && loading) return null;
 
   const canAccess = session && !loading;
 
