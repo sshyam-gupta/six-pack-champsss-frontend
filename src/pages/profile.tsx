@@ -4,7 +4,7 @@ import { Input } from '@chakra-ui/input';
 import { Stack } from '@chakra-ui/layout';
 import { useSession } from 'next-auth/client';
 import PageContainer from '../components/layout/PageContainer';
-import LoginRequired from '../components/PrivateRoute/LoginRequired';
+import LoginRequired from '../components/layout/LoginRequired';
 
 function MyProfile() {
   const [session] = useSession();

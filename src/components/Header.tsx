@@ -4,7 +4,6 @@ import { DarkModeSwitch as ThemeSwitcher } from 'react-toggle-dark-mode';
 
 import {
   useColorMode,
-  Switch,
   chakra,
   useColorModeValue,
   useDisclosure,
@@ -12,6 +11,7 @@ import {
   Flex,
   Box,
   Stack,
+  Spacer,
 } from '@chakra-ui/react';
 import { useViewportScroll } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
@@ -51,7 +51,6 @@ const Header = props => {
 
 function HeaderContent() {
   const mobileNav = useDisclosure();
-  const isDarkMode = useDisclosure();
 
   const mobileNavBtnRef = useRef<HTMLButtonElement>();
 
@@ -61,7 +60,7 @@ function HeaderContent() {
 
   return (
     <>
-      <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
+      <Flex w="100%" h="100%" px="6" align="center">
         <Flex align="center">
           <NextLink href="/" passHref>
             <chakra.a display="block" aria-label="Chakra UI, Back to homepage">
@@ -71,7 +70,7 @@ function HeaderContent() {
             </chakra.a>
           </NextLink>
         </Flex>
-
+        <Spacer />
         <Stack isInline justify="flex-end" w="100%" maxW="824px" spacing={4} align="center" color="gray.400">
           <a
             href={`/api/auth/signout`}
