@@ -16,7 +16,7 @@ const PageContainer = props => {
               <PageTransition>{props.children}</PageTransition>
             </Box>
             <Footer />
-          </div>
+          </Box>
         </Box>
       </Container>
     </>

@@ -12,7 +12,7 @@ export default class Document extends NextDocument {
         <link href="https://fonts.googleapis.com/css2?family=Varela&display=swap" rel="stylesheet" />
         <meta content="IE=edge" httpEquiv="X-UA-Compatible" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 
         <body>
           {/* Make Color mode to persists when you refresh the page. */}
