@@ -1,10 +1,10 @@
 import React from 'react';
-import { Stack, useTheme, useColorMode, Icon } from '@chakra-ui/react';
-import { components, PlaceholderProps, IndicatorProps } from 'react-select';
+import { Stack, Icon } from '@chakra-ui/react';
+import { components } from 'react-select';
 import BaseSelect from './BaseSelect';
 import { ChevronDownIcon, ChevronUpIcon, SearchIcon } from '@chakra-ui/icons';
 
-const PlaceholderWithSearch = (props: PlaceholderProps<any>) => {
+const PlaceholderWithSearch = props => {
   return (
     <Stack isInline>
       <Icon as={SearchIcon} />
@@ -13,7 +13,7 @@ const PlaceholderWithSearch = (props: PlaceholderProps<any>) => {
   );
 };
 
-const DropdownIndicator = (props: IndicatorProps<any>) => {
+const DropdownIndicator = props => {
   return (
     components.DropdownIndicator && (
       <components.DropdownIndicator {...props}>
@@ -24,14 +24,10 @@ const DropdownIndicator = (props: IndicatorProps<any>) => {
 };
 
 function SelectComponent(restProps: any) {
-  const {
-    //@ts-ignore
-    colors: { mode, gray },
-  } = useTheme();
-  const { colorMode } = useColorMode();
   return (
     <BaseSelect
       {...restProps}
+      isClearable
       components={{
         Placeholder: restProps.isSearchable ? PlaceholderWithSearch : components.Placeholder,
         DropdownIndicator,
@@ -42,7 +38,6 @@ function SelectComponent(restProps: any) {
         placeholder: (base, state) => ({
           ...base,
           marginLeft: restProps.isSearchable ? '26px !important' : '5px',
-          color: gray[400],
           ...(restProps.styles?.placeholder?.(base, state) ?? {}),
         }),
         menu: (base, state) => ({
@@ -52,20 +47,11 @@ function SelectComponent(restProps: any) {
         }),
         menuPortal: (base: any) => ({
           ...base,
-          top: base.top,
           zIndex: 9999,
-        }),
-        menuList: (base, state) => ({
-          ...base,
-          backgroundColor: mode[colorMode].cardBg,
-          ...(restProps.styles?.menuList?.(base, state) ?? {}),
         }),
         control: (base, state) => ({
           ...base,
-          cursor: 'pointer',
-          backgroundColor: mode[colorMode].cardBg,
           minHeight: 40,
-          borderColor: mode[colorMode].borderColor,
           ...(restProps.styles?.control?.(base, state) ?? {}),
         }),
         container: (base, state) => ({
@@ -76,31 +62,8 @@ function SelectComponent(restProps: any) {
         }),
         option: (base, state) => ({
           ...base,
-          cursor: 'pointer',
           fontSize: '0.9rem',
           ...(restProps.styles?.option?.(base, state) ?? {}),
-        }),
-        multiValue: (base, state) => ({
-          ...base,
-          backgroundColor: mode[colorMode].dimBrand,
-          border: `2px solid ${mode[colorMode].dimBrand}`,
-          ...(restProps.styles?.multiValue?.(base, state) ?? {}),
-        }),
-        indicatorSeparator: (base, state) => ({
-          ...base,
-          ...(restProps.styles?.indicatorSeparator?.(base, state) ?? {}),
-        }),
-        valueContainer: (base, state) => ({
-          ...base,
-          ...(restProps.styles?.valueContainer?.(base, state) ?? {}),
-        }),
-        indicatorsContainer: (base, state) => ({
-          ...base,
-          ...(restProps.styles?.indicatorsContainer?.(base, state) ?? {}),
-        }),
-        singleValue: (base, state) => ({
-          ...base,
-          ...(restProps.styles?.singleValue?.(base, state) ?? {}),
         }),
       }}
     />

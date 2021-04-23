@@ -1937,6 +1937,13 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
   integrity sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
 
+"@types/react-dom@*":
+  version "17.0.3"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.3.tgz#7fdf37b8af9d6d40127137865bb3fff8871d7ee1"
+  integrity sha512-4NnJbCeWE+8YBzupn/YrJxZ8VnjcJq5iR1laqQ1vkpQgBiA7bwk0Rp24fxsdNinzJY2U+HHS4dJJDPdoMjdJ7w==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^16.9.8":
   version "16.9.12"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.12.tgz#55cd6b17e73922edb9545e5355a0016c1734e6f4"
@@ -1955,6 +1962,23 @@
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/@types/react-lottie/-/react-lottie-1.2.5.tgz#659322961de534227ba354109342cad967d98841"
   integrity sha512-g5c7r0VN8g0hLsFEtR71ZFDWDp6niY4D/7llcAcLjV3LpaoyANmaQ9jispskWpkAUP+NYQcFllMtoGIWUM6VRw==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-select@^4.0.15":
+  version "4.0.15"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-4.0.15.tgz#2e6a1cff22c4bbae6c95b8dbee5b5097c12eae54"
+  integrity sha512-GPyBFYGMVFCtF4eg9riodEco+s2mflR10Nd5csx69+bcdvX6Uo9H/jgrIqovBU9yxBppB9DS66OwD6xxgVqOYQ==
+  dependencies:
+    "@emotion/serialize" "^1.0.0"
+    "@types/react" "*"
+    "@types/react-dom" "*"
+    "@types/react-transition-group" "*"
+
+"@types/react-transition-group@*":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.1.tgz#e1a3cb278df7f47f17b5082b1b3da17170bd44b1"
+  integrity sha512-vIo69qKKcYoJ8wKCJjwSgCTM+z3chw3g18dkrDfVX665tMH7tmbDxEAnPdey4gTlwZz5QuHGzd+hul0OVZDqqQ==
   dependencies:
     "@types/react" "*"
 
@@ -5072,6 +5096,7 @@ react-select@^4.3.0:
     prop-types "^15.6.0"
     react-input-autosize "^3.0.0"
     react-transition-group "^4.3.0"
+
 react-spring@^9.0.0-rc.3:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-9.1.1.tgz#0771de37421501be2121631cff2b36d0331770e2"
@@ -5093,6 +5118,13 @@ react-style-singleton@^2.1.0:
     invariant "^2.2.4"
     tslib "^1.0.0"
 
+react-toggle-dark-mode@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-toggle-dark-mode/-/react-toggle-dark-mode-1.0.4.tgz#196defb8ed5fa7623241048d46104fa24d98e214"
+  integrity sha512-MREeRur1XGzwyDZZAvPFg01wL9ljR1Dugubc3s/i2bMlLIKaWPfQgx5JbomZfLAxa6OXYDbozJa0e+v39GawmA==
+  dependencies:
+    react-spring "^9.0.0-rc.3"
+
 react-transition-group@^4.3.0:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.1.tgz#63868f9325a38ea5ee9535d828327f85773345c9"
@@ -5102,12 +5134,6 @@ react-transition-group@^4.3.0:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
-react-toggle-dark-mode@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-toggle-dark-mode/-/react-toggle-dark-mode-1.0.4.tgz#196defb8ed5fa7623241048d46104fa24d98e214"
-  integrity sha512-MREeRur1XGzwyDZZAvPFg01wL9ljR1Dugubc3s/i2bMlLIKaWPfQgx5JbomZfLAxa6OXYDbozJa0e+v39GawmA==
-  dependencies:
-    react-spring "^9.0.0-rc.3"
 
 react@^17.0.1:
   version "17.0.2"
