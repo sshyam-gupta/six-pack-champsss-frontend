@@ -9,6 +9,7 @@ import animationData from '../../public/lotties/online-work.json';
 import * as AppData from '../constants/app.json';
 import SEO from '../components/Seo';
 import { DarkModeSwitch } from '../components/Header';
+
 export default function SignIn({ providers }: any) {
   const { colorMode } = useColorMode();
 
@@ -83,8 +84,8 @@ export default function SignIn({ providers }: any) {
   );
 }
 
-SignIn.getInitialProps = async context => {
+SignIn.getInitialProps = async () => {
   return {
-    providers: await providers(context),
+    providers: await providers(),
   };
 };
