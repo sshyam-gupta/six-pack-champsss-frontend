@@ -2,7 +2,17 @@ import NextLink from 'next/link';
 import { signOut } from 'next-auth/client';
 import { DarkModeSwitch as ThemeSwitcher } from 'react-toggle-dark-mode';
 
-import { useColorMode, chakra, useColorModeValue, useDisclosure, Flex, Box, Stack, IconButton } from '@chakra-ui/react';
+import {
+  useColorMode,
+  chakra,
+  useColorModeValue,
+  useDisclosure,
+  Flex,
+  Box,
+  Stack,
+  IconButton,
+  Spacer,
+} from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import { MobileNavButton, MobileNavContent } from './MobileNav';
 import Logo from './Logo';
@@ -46,7 +56,7 @@ function HeaderContent() {
 
   return (
     <>
-      <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
+      <Flex w="100%" h="100%" px="6" align="center">
         <Flex align="center">
           <NextLink href="/" passHref>
             <chakra.a display="block" aria-label="Chakra UI, Back to homepage">
@@ -56,13 +66,13 @@ function HeaderContent() {
             </chakra.a>
           </NextLink>
         </Flex>
-
+        <Spacer />
         <Stack isInline justify="flex-end" w="100%" maxW="824px" spacing={4} align="center" color="gray.400">
           <IconButton
             variant="ghost"
             color={useColorModeValue('gray.800', 'inherit')}
             aria-label="Logout"
-            onClick={signOut}
+            onClick={() => void signOut()}
             icon={<IoMdLogOut fontSize="2rem" />}
           />
           <DarkModeSwitch />
