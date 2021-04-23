@@ -8,9 +8,6 @@ import LoginRequired from '../components/layout/LoginRequired';
 
 function MyProfile() {
   const [session] = useSession();
-  if (!session) {
-    return null;
-  }
 
   return (
     <LoginRequired>

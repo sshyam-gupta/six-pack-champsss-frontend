@@ -12,7 +12,7 @@ const PageContainer = props => {
         <Box display={['block', 'block', 'flex']}>
           <Sidebar />
           <div style={{ flex: 1 }}>
-            <Box id="content" px={5} mt="4.5rem" mx="auto" maxW="48rem" minH="66vh" {...props}>
+            <Box id="content" px={5} mt="1rem" mx="auto" maxW="48rem" minH="66vh" {...props}>
               <PageTransition>{props.children}</PageTransition>
             </Box>
             <Footer />

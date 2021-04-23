@@ -1,17 +1,23 @@
 import LoginRequired from '../components/layout/LoginRequired';
-import SelectComponent from '../components/Select';
 import PageContainer from '../components/layout/PageContainer';
 import { Stat, StatLabel, StatNumber } from '@chakra-ui/stat';
 import * as AppData from '../constants/app.json';
-import { Box, Grid, GridItem, SimpleGrid, Stack } from '@chakra-ui/layout';
+import { Box, Grid, GridItem, Heading, SimpleGrid, Stack } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import NumberFormatter from '../components/NumberFormatter';
+import getGreetings from '../util/greetings';
+import { useSession } from 'next-auth/client';
 
 const Index = () => {
+  const [session] = useSession();
+
   return (
     <LoginRequired>
       <PageContainer maxW="auto">
-        <Stack>
+        <Heading fontFamily="Comfortaa">{`${getGreetings()}, ${
+          session?.user?.name.split(' ')?.[0] ?? 'User'
+        }`}</Heading>
+        <Stack mt="2rem">
           <Grid templateColumns="repeat(6, 1fr)" gap={4}>
             <GridItem colSpan={[3, 4]}>
               <SimpleGrid columns={{ sm: 1, md: 2 }} gridGap="1rem">
