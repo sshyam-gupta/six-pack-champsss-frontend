@@ -1,6 +1,8 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 
+const KIPROSH_MAIL = `@kiprosh.com`;
+
 const options = {
   providers: [
     Providers.Google({
@@ -14,6 +16,14 @@ const options = {
   callbacks: {
     async redirect(url, baseUrl) {
       return baseUrl;
+    },
+    async signIn(user) {
+      const { email } = user;
+      if (email.includes(KIPROSH_MAIL)) {
+        return true;
+      } else {
+        return '/not-authorized';
+      }
     },
   },
 };
