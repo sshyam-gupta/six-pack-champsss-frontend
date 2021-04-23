@@ -6,7 +6,6 @@ import { AnimatePresence, motion, useElementScroll } from 'framer-motion';
 import React from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import useRouteChanged from '../hooks/use-route-changed';
-import { RemoveScroll } from 'react-remove-scroll';
 import { Box, BoxProps, Flex } from '@chakra-ui/layout';
 import { SidebarContent } from './Sidebar';
 
@@ -59,30 +58,28 @@ export function MobileNavContent(props: MobileNavContentProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <RemoveScroll forwardProps>
-          <motion.div
-            transition={{ duration: 0.08 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+        <motion.div
+          transition={{ duration: 0.08 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <Flex
+            direction="column"
+            w="100%"
+            bg={useColorModeValue('white', 'gray.800')}
+            h="100vh"
+            overflow="auto"
+            top="0"
+            left="0"
+            zIndex={20}
+            pb="8"
           >
-            <Flex
-              direction="column"
-              w="100%"
-              bg={useColorModeValue('white', 'gray.800')}
-              h="100vh"
-              overflow="auto"
-              top="0"
-              left="0"
-              zIndex={20}
-              pb="8"
-            >
-              <ScrollView>
-                <SidebarContent />
-              </ScrollView>
-            </Flex>
-          </motion.div>
-        </RemoveScroll>
+            <ScrollView>
+              <SidebarContent />
+            </ScrollView>
+          </Flex>
+        </motion.div>
       )}
     </AnimatePresence>
   );
@@ -98,7 +95,7 @@ const ScrollView = (props: BoxProps & { onScroll?: any }) => {
   }, [scrollY]);
 
   useUpdateEffect(() => {
-    onScroll?.(y > 5 ? true : false);
+    onScroll?.(y > 5);
   }, [y]);
 
   return <Box ref={elRef} flex="1" id="routes" overflow="auto" px="6" pb="6" {...rest} />;

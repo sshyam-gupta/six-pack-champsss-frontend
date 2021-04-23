@@ -8,23 +8,15 @@ const PageContainer = ({ ...props }) => {
   return (
     <>
       <Header />
-      <Container maxW="container.xl" as="main" className="main-content">
-        <Box display={['block', 'block', 'flex']}>
+      <Container maxW="container.xl" as="main" className="main-content" h="calc(100vh - 6rem)">
+        <Box display={['block', 'block', 'flex']} h="100%">
           <Sidebar />
-          <div style={{ flex: 1 }}>
-            <Box
-              id="content"
-              // pt={3}
-              px={5}
-              mt="4.5rem"
-              mx="auto"
-              maxW="48rem"
-              minH="66vh"
-            >
+          <Box flex={1} overflow="auto" h="100%">
+            <Box id="content" px={5} mt="4.5rem" mx="auto" maxW="48rem" minH="60vh">
               <PageTransition>{props.children}</PageTransition>
             </Box>
             <Footer />
-          </div>
+          </Box>
         </Box>
       </Container>
     </>
