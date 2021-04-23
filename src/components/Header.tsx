@@ -4,18 +4,20 @@ import { DarkModeSwitch as ThemeSwitcher } from 'react-toggle-dark-mode';
 
 import {
   useColorMode,
-  Switch,
   chakra,
   useColorModeValue,
   useDisclosure,
-  useUpdateEffect,
   Flex,
   Box,
   Stack,
+  IconButton,
+  Spacer,
 } from '@chakra-ui/react';
-import { useViewportScroll } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { MobileNavButton, MobileNavContent } from './MobileNav';
+import Logo from './Logo';
+import { IoMdLogOut } from 'react-icons/io';
+import { useViewportScroll } from 'framer-motion';
 
 const Header = props => {
   const bg = useColorModeValue('white', 'gray.800');
@@ -42,7 +44,7 @@ const Header = props => {
       width="full"
       {...props}
     >
-      <chakra.div height="4.5rem" mx="auto" maxW="1200px">
+      <chakra.div height="6rem" mx="auto" maxW="1200px">
         <HeaderContent />
       </chakra.div>
     </chakra.header>
@@ -51,39 +53,30 @@ const Header = props => {
 
 function HeaderContent() {
   const mobileNav = useDisclosure();
-  const isDarkMode = useDisclosure();
-
-  const mobileNavBtnRef = useRef<HTMLButtonElement>();
-
-  useUpdateEffect(() => {
-    mobileNavBtnRef.current?.focus();
-  }, [mobileNav.isOpen]);
 
   return (
     <>
-      <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
+      <Flex w="100%" h="100%" px="6" align="center">
         <Flex align="center">
           <NextLink href="/" passHref>
             <chakra.a display="block" aria-label="Chakra UI, Back to homepage">
-              <Box minW="4rem" fontSize="xl">
-                Logo
+              <Box minW="8rem">
+                <Logo />
               </Box>
             </chakra.a>
           </NextLink>
         </Flex>
-
+        <Spacer />
         <Stack isInline justify="flex-end" w="100%" maxW="824px" spacing={4} align="center" color="gray.400">
-          <a
-            href={`/api/auth/signout`}
-            onClick={e => {
-              e.preventDefault();
-              signOut();
-            }}
-          >
-            Sign out
-          </a>
-          <MobileNavButton ref={mobileNavBtnRef} aria-label="Open Menu" onClick={mobileNav.onOpen} />
+          <IconButton
+            variant="ghost"
+            color={useColorModeValue('gray.800', 'inherit')}
+            aria-label="Logout"
+            onClick={() => void signOut()}
+            icon={<IoMdLogOut fontSize="2rem" />}
+          />
           <DarkModeSwitch />
+          <MobileNavButton aria-label="Open Menu" onClick={mobileNav.onOpen} />
         </Stack>
       </Flex>
       <MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} />
@@ -94,7 +87,7 @@ function HeaderContent() {
 export const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === 'dark';
-  return <ThemeSwitcher size={40} checked={isDark} onChange={toggleColorMode} />;
+  return <ThemeSwitcher size={30} checked={isDark} onChange={toggleColorMode} />;
 };
 
 export default Header;

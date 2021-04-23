@@ -1,25 +1,77 @@
-import { Box } from '@chakra-ui/layout';
-import LoginRequired from '../components/PrivateRoute/LoginRequired';
-import SelectComponent from '../components/shared/Select';
+import LoginRequired from '../components/layout/LoginRequired';
 import PageContainer from '../components/layout/PageContainer';
-const Index = () => {
+import { Stat, StatLabel, StatNumber } from '@chakra-ui/stat';
+import * as AppData from '../constants/app.json';
+import { Box, Grid, GridItem, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
+import { useColorModeValue } from '@chakra-ui/color-mode';
+import NumberFormatter from '../components/NumberFormatter';
+import getGreetings from '../util/greetings';
+import { useSession } from 'next-auth/client';
+import DashboardBox from '../components/dashboard/DashboardBox';
+import DashboardChart from '../components/dashboard/DashboardChart';
+
+type HomeProps = {
+  quotes?: {
+    content: string;
+    authorSlug: string;
+    length: number;
+    author: string;
+    tags: string[];
+  };
+};
+
+const Index = (props: HomeProps) => {
+  const [session] = useSession();
+
   return (
     <LoginRequired>
-      <PageContainer>
-        <Box w="24rem" mt="1rem">
-          <SelectComponent
-            options={[
-              { label: 'Shyam', value: '11' },
-              { label: 'Shubham', value: '12' },
-              { label: 'Prayesh', value: '13' },
-              { label: 'Supriya', value: '14' },
-              { label: 'Athira', value: '15' },
-            ]}
-          />
-        </Box>
+      <PageContainer maxW="auto">
+        <Heading fontFamily="Comfortaa">{`${getGreetings()}, ${
+          session?.user?.name.split(' ')?.[0] ?? 'User'
+        }`}</Heading>
+        {props.quotes ? (
+          <Stack isInline mt="0.5rem">
+            <Text>
+              <em>{`"${props.quotes.content}"`}</em>
+              <b> -{props.quotes.author}</b>
+            </Text>
+          </Stack>
+        ) : null}
+        <Stack mt="2rem">
+          <Grid templateColumns="repeat(6, 1fr)" gap={4}>
+            <GridItem colSpan={[3, 4]}>
+              <SimpleGrid columns={{ sm: 1, md: 2 }} gridGap="1rem">
+                <DashboardBox
+                  bg={useColorModeValue('cyan.50', 'cyan.900')}
+                  color={useColorModeValue('cyan.500', 'cyan.400')}
+                  value={2000}
+                  title={`Available ${AppData.points}`}
+                />
+                <DashboardBox
+                  bg={useColorModeValue('green.50', 'green.900')}
+                  color={useColorModeValue('green.500', 'green.400')}
+                  value={5000}
+                  title={`Claimed ${AppData.points}`}
+                />
+              </SimpleGrid>
+            </GridItem>
+            <GridItem colSpan={[3, 2]}>
+              <DashboardChart bg={useColorModeValue('orange.50', 'orange.800')} title="Chart" />
+            </GridItem>
+          </Grid>
+        </Stack>
       </PageContainer>
     </LoginRequired>
   );
 };
+
+export async function getStaticProps() {
+  const res = await fetch(`https://api.quotable.io/random?maxLength=100&tags=technology|famous-quotes|inspirational`);
+  const data = await res.json();
+
+  return {
+    props: { quotes: data ?? {} },
+  };
+}
 
 export default Index;
