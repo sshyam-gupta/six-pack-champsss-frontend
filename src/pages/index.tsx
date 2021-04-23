@@ -6,17 +6,15 @@ const Index = () => {
   return (
     <LoginRequired>
       <PageContainer>
-        <Box w="24rem" mt="1rem">
-          <SelectComponent
-            options={[
-              { label: 'Shyam', value: '11' },
-              { label: 'Shubham', value: '12' },
-              { label: 'Prayesh', value: '13' },
-              { label: 'Supriya', value: '14' },
-              { label: 'Athira', value: '15' },
-            ]}
-          />
-        </Box>
+        {/* <SelectComponent
+          options={[
+            { label: 'Shyam', value: '11' },
+            { label: 'Shubham', value: '12' },
+            { label: 'Prayesh', value: '13' },
+            { label: 'Supriya', value: '14' },
+            { label: 'Athira', value: '15' },
+          ]}
+        /> */}
       </PageContainer>
     </LoginRequired>
   );

@@ -1,7 +1,12 @@
 import PageContainer from '../components/layout/PageContainer';
+import LoginRequired from '../components/PrivateRoute/LoginRequired';
 
 function Projects() {
-  return <PageContainer>Projects</PageContainer>;
+  return (
+    <LoginRequired>
+      <PageContainer>Projects</PageContainer>
+    </LoginRequired>
+  );
 }
 
 export default Projects;

@@ -56,13 +56,13 @@ function SelectComponent(restProps: any) {
         }),
         container: (base, state) => ({
           ...base,
-          fontSize: '0.9rem',
+          fontSize: '0.875rem',
           width: '100%',
           ...(restProps.styles?.container?.(base, state) ?? {}),
         }),
         option: (base, state) => ({
           ...base,
-          fontSize: '0.9rem',
+          fontSize: '0.875rem',
           ...(restProps.styles?.option?.(base, state) ?? {}),
         }),
       }}
