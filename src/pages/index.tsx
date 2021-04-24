@@ -9,6 +9,7 @@ import DashboardBox from '../components/dashboard/DashboardBox';
 import DashboardChart from '../components/dashboard/DashboardChart';
 import { AvailableIcon, RedeemedIcon } from '../components/lottie/PlaceholderIcons';
 import Activities from '../components/Activities';
+import { useToast } from '@chakra-ui/toast';
 
 type HomeProps = {
   quotes?: {
@@ -22,6 +23,7 @@ type HomeProps = {
 
 const Index = (props: HomeProps) => {
   const [session] = useSession();
+  const toast = useToast();
 
   return (
     <LoginRequired>
@@ -47,6 +49,14 @@ const Index = (props: HomeProps) => {
                   value={2000}
                   title={`Available ${AppData.points}`}
                   icon={<AvailableIcon px="3rem" py="2rem" />}
+                  onRedeem={() => {
+                    toast({
+                      description: 'Redeeming in process',
+                      variant: 'top-accent',
+                      isClosable: true,
+                      position: 'top',
+                    });
+                  }}
                 />
                 <DashboardBox
                   bg={useColorModeValue('green.50', 'green.900')}

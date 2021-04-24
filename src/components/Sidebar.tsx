@@ -46,8 +46,8 @@ export function SidebarContent() {
       <SidebarLink ml="-3" mt="2" href="/projects">
         Projects
       </SidebarLink>
-      <SidebarLink ml="-3" mt="2" href="/approval-requests">
-        Approvals Requests
+      <SidebarLink ml="-3" mt="2" href="/requests">
+        Requests
       </SidebarLink>
       <SidebarLink ml="-3" mt="2" href="/users">
         Users
