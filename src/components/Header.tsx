@@ -42,9 +42,10 @@ const Header = props => {
       left="0"
       right="0"
       width="full"
+      boxShadow="md"
       {...props}
     >
-      <chakra.div height="6rem" mx="auto" maxW="container.xl">
+      <chakra.div height="5rem" mx="auto" maxW="container.xl">
         <HeaderContent />
       </chakra.div>
     </chakra.header>
