@@ -1,14 +1,13 @@
 import LoginRequired from '../components/layout/LoginRequired';
 import PageContainer from '../components/layout/PageContainer';
-import { Stat, StatLabel, StatNumber } from '@chakra-ui/stat';
 import * as AppData from '../constants/app.json';
-import { Box, Grid, GridItem, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
+import { Grid, GridItem, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import NumberFormatter from '../components/NumberFormatter';
 import getGreetings from '../util/greetings';
 import { useSession } from 'next-auth/client';
 import DashboardBox from '../components/dashboard/DashboardBox';
 import DashboardChart from '../components/dashboard/DashboardChart';
+import { AvailableIcon, RedeemedIcon } from '../components/lottie/PlaceholderIcons';
 
 type HomeProps = {
   quotes?: {
@@ -40,18 +39,20 @@ const Index = (props: HomeProps) => {
         <Stack mt="2rem">
           <Grid templateColumns="repeat(6, 1fr)" gap={4}>
             <GridItem colSpan={[3, 4]}>
-              <SimpleGrid columns={{ sm: 1, md: 2 }} gridGap="1rem">
+              <SimpleGrid columns={{ sm: 1, md: 2 }} gridGap="1rem" h="100%">
                 <DashboardBox
                   bg={useColorModeValue('cyan.50', 'cyan.900')}
                   color={useColorModeValue('cyan.500', 'cyan.400')}
                   value={2000}
                   title={`Available ${AppData.points}`}
+                  icon={<AvailableIcon px="3rem" py="2rem" />}
                 />
                 <DashboardBox
                   bg={useColorModeValue('green.50', 'green.900')}
                   color={useColorModeValue('green.500', 'green.400')}
                   value={5000}
-                  title={`Claimed ${AppData.points}`}
+                  title={`Redeemed ${AppData.points}`}
+                  icon={<RedeemedIcon px="3rem" py="2rem" />}
                 />
               </SimpleGrid>
             </GridItem>
