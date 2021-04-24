@@ -44,7 +44,7 @@ const Header = props => {
       width="full"
       {...props}
     >
-      <chakra.div height="6rem" mx="auto" maxW="1200px">
+      <chakra.div height="6rem" mx="auto" maxW="container.xl">
         <HeaderContent />
       </chakra.div>
     </chakra.header>
@@ -56,7 +56,7 @@ function HeaderContent() {
 
   return (
     <>
-      <Flex w="100%" h="100%" px="6" align="center">
+      <Flex w="100%" h="100%" align="center" px={['1rem', '1rem', 0]}>
         <Flex align="center">
           <NextLink href="/" passHref>
             <chakra.a display="block" aria-label="Chakra UI, Back to homepage">
