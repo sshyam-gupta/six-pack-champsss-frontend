@@ -11,6 +11,15 @@ const breakpoints = createBreakpoints({
 });
 
 const theme = extendTheme({
+  styles: {
+    global: () => ({
+      '#__next': {
+        overflow: 'hidden',
+        height: '100vh',
+      },
+    }),
+  },
+
   colors: {
     black: '#16161D',
     mode: {

@@ -35,6 +35,7 @@ const Sidebar = () => {
       }}
       top="4rem"
       w="280px"
+      alignSelf="self-start"
       pr="8"
       pb="6"
       pl="3"
