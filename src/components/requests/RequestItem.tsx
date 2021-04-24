@@ -52,30 +52,34 @@ function RequestItem(props: RequestItemProps) {
         <Spacer />
         <HStack>
           <Text>{`${props.points} ${AppData.points}`}</Text>
-          <Tooltip placement="top" label="Approve">
-            <IconButton
-              isLoading={isLoadingDisclosure.isOpen}
-              fontSize="1.2rem"
-              variant="outline"
-              aria-label="Approve"
-              onClick={() => {
-                updateStatus('APPROVED' as ActivityStatus);
-              }}
-              icon={<BsCheckCircle />}
-            />
-          </Tooltip>
-          <Tooltip placement="top" label="Reject">
-            <IconButton
-              isLoading={isLoadingDisclosure.isOpen}
-              fontSize="1.2rem"
-              variant="outline"
-              aria-label="Approve"
-              onClick={() => {
-                updateStatus('REJECTED' as ActivityStatus);
-              }}
-              icon={<IoCloseCircleOutline />}
-            />
-          </Tooltip>
+          {!props.disableCrud ? (
+            <Tooltip placement="top" label="Approve">
+              <IconButton
+                isLoading={isLoadingDisclosure.isOpen}
+                fontSize="1.2rem"
+                variant="outline"
+                aria-label="Approve"
+                onClick={() => {
+                  updateStatus('APPROVED' as ActivityStatus);
+                }}
+                icon={<BsCheckCircle />}
+              />
+            </Tooltip>
+          ) : null}
+          {!props.disableCrud ? (
+            <Tooltip placement="top" label="Reject">
+              <IconButton
+                isLoading={isLoadingDisclosure.isOpen}
+                fontSize="1.2rem"
+                variant="outline"
+                aria-label="Approve"
+                onClick={() => {
+                  updateStatus('REJECTED' as ActivityStatus);
+                }}
+                icon={<IoCloseCircleOutline />}
+              />
+            </Tooltip>
+          ) : null}
         </HStack>
       </HStack>
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">

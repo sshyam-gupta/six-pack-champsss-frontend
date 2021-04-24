@@ -75,7 +75,6 @@ function PendingRequest() {
               onUpdate={() => {
                 updateActivity(activity);
               }}
-              disableCrud
               key={activity.id}
               {...activity}
             />
