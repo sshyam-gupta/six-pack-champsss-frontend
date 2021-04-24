@@ -11,8 +11,8 @@ const PageContainer = props => {
       <Container maxW="container.xl" as="main" className="main-content" p="0">
         <Box display={['block', 'block', 'flex']}>
           <Sidebar />
-          <Box flex={1} overflow="auto" h="100%">
-            <Box id="content" px={5} mt="1rem" mx="auto" maxW="48rem" minH="66vh" {...props}>
+          <Box flex={1} h="calc(100vh - 5rem)" overflow="auto">
+            <Box id="content" px={5} mt="1rem" mx="auto" maxW="48rem" minH="70vh" {...props}>
               <PageTransition>{props.children}</PageTransition>
             </Box>
             <Footer />

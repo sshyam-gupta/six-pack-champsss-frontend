@@ -16,7 +16,7 @@
     }
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
+    "*.(ts|tsx)": [
       "yarn lint",
       "yarn format"
     ]
@@ -27,14 +27,18 @@
     "@chakra-ui/theme-tools": "1.0.4",
     "@emotion/react": "11.1.5",
     "@emotion/styled": "11.1.5",
+    "@nivo/core": "^0.68.0",
+    "@nivo/pie": "^0.68.0",
     "@svgr/webpack": "^5.5.0",
     "framer-motion": "^3.5.2",
+    "lodash": "^4.17.21",
     "next": "latest",
     "next-auth": "^3.14.0",
     "next-seo": "^4.24.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
+    "react-linkify": "^1.0.0-alpha",
     "react-lottie": "^1.2.3",
     "react-number-format": "^4.5.5",
     "react-remove-scroll": "^2.4.1",
