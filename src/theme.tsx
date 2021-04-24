@@ -11,16 +11,28 @@ const breakpoints = createBreakpoints({
 });
 
 const theme = extendTheme({
+  styles: {
+    global: props => ({
+      '#__next': {
+        overflow: 'hidden',
+        height: '100vh',
+      },
+      a: {
+        color: props.colorMode === 'dark' ? 'primary.300' : 'primary.500',
+      },
+    }),
+  },
+
   colors: {
     black: '#16161D',
     mode: {
       light: {
-        primaryBg: 'grey.50',
-        secondaryBg: 'grey.100',
+        primaryBg: 'gray.50',
+        secondaryBg: '#fff',
       },
       dark: {
-        primaryBg: 'grey.900',
-        secondaryBg: 'grey.800',
+        primaryBg: 'gray.900',
+        secondaryBg: '#243B53',
       },
     },
     primary: {
@@ -63,6 +75,20 @@ const theme = extendTheme({
     active: '0.35s cubic-bezier(0.165, 0.84, 0.44, 1)',
   },
   breakpoints,
+  components: {
+    Button: {
+      baseStyle: {
+        fontWeight: '500',
+      },
+      variants: {
+        // @ts-ignore
+        solid: () => ({
+          bg: 'primary.500',
+          color: 'white',
+        }),
+      },
+    },
+  },
 });
 
 export default theme;
