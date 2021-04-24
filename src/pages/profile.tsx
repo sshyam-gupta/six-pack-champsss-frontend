@@ -1,7 +1,7 @@
 import { Avatar } from '@chakra-ui/avatar';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { Input } from '@chakra-ui/input';
-import { Stack } from '@chakra-ui/layout';
+import { Heading, Stack } from '@chakra-ui/layout';
 import { useSession } from 'next-auth/client';
 import PageContainer from '../components/layout/PageContainer';
 import LoginRequired from '../components/layout/LoginRequired';
@@ -11,8 +11,9 @@ function MyProfile() {
 
   return (
     <LoginRequired>
-      <PageContainer>
-        <Stack spacing={6} alignItems="center">
+      <PageContainer maxW="48rem">
+        <Heading fontFamily="Comfortaa">Profile</Heading>
+        <Stack spacing={6} alignItems="center" mt="1rem">
           <Avatar size="2xl" name={session?.user.name} src={session?.user.image} />
           <FormControl id="name">
             <FormLabel>Name</FormLabel>

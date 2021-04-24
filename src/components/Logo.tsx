@@ -8,8 +8,8 @@ function Logo() {
     <Flex alignItems="center" overflow="hidden">
       <Image
         src={colorMode === 'dark' ? '/images/logo-white.png' : '/images/logo-black.png'}
-        height={60}
-        width={200}
+        height={40}
+        width={150}
         layout="fixed"
         alt="Logo"
       />

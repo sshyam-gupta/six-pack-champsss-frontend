@@ -27,7 +27,7 @@ const Index = (props: HomeProps) => {
 
   return (
     <LoginRequired>
-      <PageContainer maxW="auto">
+      <PageContainer>
         <Heading fontFamily="Comfortaa">{`${getGreetings()}, ${
           session?.user?.name.split(' ')?.[0] ?? 'User'
         }`}</Heading>

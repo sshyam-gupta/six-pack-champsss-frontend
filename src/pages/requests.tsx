@@ -9,9 +9,9 @@ import RejectedRequest from '../components/requests/RejectedRequest';
 function Requests() {
   return (
     <LoginRequired>
-      <PageContainer maxW="auto">
+      <PageContainer>
         <Heading fontFamily="Comfortaa">Requests</Heading>
-        <Tabs mt="2rem">
+        <Tabs mt="2rem" isLazy>
           <TabList>
             <Tab>Pending</Tab>
             <Tab>Approved</Tab>

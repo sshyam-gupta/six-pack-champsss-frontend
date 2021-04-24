@@ -2,7 +2,6 @@ import React from 'react';
 import { providers, signIn } from 'next-auth/client';
 import { Container, Flex, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
-import { useColorMode } from '@chakra-ui/color-mode';
 import { AiOutlineGoogle } from 'react-icons/ai';
 import UncontrolledLottie from '../components/lottie/UncontrolledLottie';
 import animationData from '../../public/lotties/online-work.json';
@@ -11,8 +10,6 @@ import SEO from '../components/Seo';
 import { DarkModeSwitch } from '../components/Header';
 
 export default function SignIn({ providers }: any) {
-  const { colorMode } = useColorMode();
-
   return (
     <Flex height="100vh">
       <SEO title="Sign in" />
@@ -33,7 +30,6 @@ export default function SignIn({ providers }: any) {
           p="1rem"
           flex={2}
           h="100%"
-          bg={`mode.${colorMode}.secondaryBg`}
           textAlign="center"
           alignItems="center"
           pt={['5rem', null, '8rem']}

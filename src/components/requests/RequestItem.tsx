@@ -1,6 +1,6 @@
 import { IconButton } from '@chakra-ui/button';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import { Stack, HStack, Spacer, Text, Flex } from '@chakra-ui/layout';
+import { HStack, Spacer, Text, Flex } from '@chakra-ui/layout';
 import { Tooltip } from '@chakra-ui/tooltip';
 import Linkify from 'react-linkify';
 import { BsCheckCircle } from 'react-icons/bs';
@@ -12,6 +12,7 @@ import { useDisclosure } from '@chakra-ui/hooks';
 import { useCallback } from 'react';
 import sleep from '../../util/sleep';
 import { useToast } from '@chakra-ui/toast';
+import { StaggeredStackItem } from '../motion/StaggeredStack';
 
 interface RequestItemProps extends Activity {
   disableCrud?: boolean;
@@ -40,7 +41,7 @@ function RequestItem(props: RequestItemProps) {
   );
 
   return (
-    <Stack boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
+    <StaggeredStackItem boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
       <HStack fontSize="md">
         <Tooltip placement="top" label={props.status}>
           <Flex mr="0.5rem" height="10px" width="10px" borderRadius="50%" bg={getStatusColor(props.status)} />
@@ -95,7 +96,7 @@ function RequestItem(props: RequestItemProps) {
         </HStack>
         <Text textAlign="right">{props.timestamp}</Text>
       </Flex>
-    </Stack>
+    </StaggeredStackItem>
   );
 }
 

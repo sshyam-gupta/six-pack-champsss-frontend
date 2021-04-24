@@ -1,5 +1,6 @@
 import { Stack, Text, VStack } from '@chakra-ui/layout';
 import { ActivityStatus } from '../../util/activity-util';
+import StaggeredStack from '../motion/StaggeredStack';
 import { NoActivities } from '../lottie/PlaceholderIcons';
 import RequestItem from './RequestItem';
 
@@ -58,9 +59,9 @@ const REQUESTS = [
 
 function ApprovedRequest() {
   return (
-    <Stack maxHeight="30rem" overflow="scroll">
+    <StaggeredStack>
       {REQUESTS.length ? (
-        <Stack spacing={4} maxHeight="30rem" overflow="auto">
+        <Stack spacing={4}>
           {REQUESTS.map(activity => (
             <RequestItem disableCrud key={activity.id} {...activity} />
           ))}
@@ -71,7 +72,7 @@ function ApprovedRequest() {
           <Text fontSize="lg">No Request available</Text>
         </VStack>
       )}
-    </Stack>
+    </StaggeredStack>
   );
 }
 

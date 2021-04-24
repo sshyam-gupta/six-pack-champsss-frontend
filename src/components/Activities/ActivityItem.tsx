@@ -9,6 +9,7 @@ import * as AppData from '../../constants/app.json';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { Activity, getStatusColor } from '../../util/activity-util';
+import { StaggeredStackItem } from '../motion/StaggeredStack';
 
 interface ActivityItemProps extends Activity {
   disableCrud?: boolean;
@@ -18,7 +19,7 @@ function ActivityItem(props: ActivityItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
 
   return (
-    <Stack boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
+    <StaggeredStackItem boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
       <HStack fontSize="md">
         <Tooltip placement="top" label={props.status}>
           <Flex mr="0.5rem" height="10px" width="10px" borderRadius="50%" bg={getStatusColor(props.status)} />
@@ -65,7 +66,7 @@ function ActivityItem(props: ActivityItemProps) {
           </MenuList>
         </Menu>
       ) : null}
-    </Stack>
+    </StaggeredStackItem>
   );
 }
 

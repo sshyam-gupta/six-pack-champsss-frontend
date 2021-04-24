@@ -4,7 +4,7 @@ import LoginRequired from '../components/layout/LoginRequired';
 function Projects() {
   return (
     <LoginRequired>
-      <PageContainer>Projects</PageContainer>
+      <PageContainer maxW="48rem">Projects</PageContainer>
     </LoginRequired>
   );
 }

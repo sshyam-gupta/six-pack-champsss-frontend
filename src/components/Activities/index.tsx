@@ -6,6 +6,7 @@ import { NoActivities } from '../lottie/PlaceholderIcons';
 import SearchInput from '../SearchInput';
 import ActivityItem from './ActivityItem';
 import { ActivityStatus } from '../../util/activity-util';
+import StaggeredStack from '../motion/StaggeredStack';
 
 const ACTIVITIES = [
   {
@@ -85,7 +86,7 @@ function Activities() {
         <Spacer />
         <Button leftIcon={<AiOutlinePlus />}>Add</Button>
       </HStack>
-      <Stack>
+      <StaggeredStack>
         {activityData.length ? (
           <Stack spacing={4} maxHeight="30rem" overflow="auto">
             {activityData.map(activity => (
@@ -98,7 +99,7 @@ function Activities() {
             <Text fontSize="lg">No Activity found</Text>
           </VStack>
         )}
-      </Stack>
+      </StaggeredStack>
     </Stack>
   );
 }

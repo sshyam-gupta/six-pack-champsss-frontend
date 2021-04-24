@@ -1,6 +1,7 @@
 import { Stack, Text, VStack } from '@chakra-ui/layout';
 import { useCallback, useState } from 'react';
 import { ActivityStatus } from '../../util/activity-util';
+import StaggeredStack from '../motion/StaggeredStack';
 import { NoActivities } from '../lottie/PlaceholderIcons';
 import RequestItem from './RequestItem';
 
@@ -66,9 +67,9 @@ function PendingRequest() {
     [requests],
   );
   return (
-    <Stack maxHeight="30rem" overflow="scroll">
+    <Stack>
       {requests.length ? (
-        <Stack spacing={4} maxHeight="30rem" overflow="auto">
+        <StaggeredStack spacing={4}>
           {requests.map(activity => (
             <RequestItem
               onUpdate={() => {
@@ -79,7 +80,7 @@ function PendingRequest() {
               {...activity}
             />
           ))}
-        </Stack>
+        </StaggeredStack>
       ) : (
         <VStack spacing={4} py="2rem">
           <NoActivities width="20rem" />
