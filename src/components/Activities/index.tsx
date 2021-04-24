@@ -1,9 +1,11 @@
 import { Button } from '@chakra-ui/button';
 import { VStack, Heading, HStack, Spacer, Stack, Text } from '@chakra-ui/layout';
 import { useMemo, useState } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
 import { NoActivities } from '../lottie/PlaceholderIcons';
 import SearchInput from '../SearchInput';
 import ActivityItem from './ActivityItem';
+import { ActivityStatus } from '../../util/activity-util';
 
 const ACTIVITIES = [
   {
@@ -12,7 +14,7 @@ const ACTIVITIES = [
     projectName: 'CoE',
     duration: '30 mins',
     timestamp: '23rd April, 2021',
-    status: 'PENDING',
+    status: 'PENDING' as ActivityStatus,
     points: 5,
   },
   {
@@ -21,7 +23,7 @@ const ACTIVITIES = [
     projectName: 'KFC',
     duration: '1 hour',
     timestamp: '23rd April, 2021',
-    status: 'PENDING',
+    status: 'PENDING' as ActivityStatus,
     points: 10,
   },
   {
@@ -30,7 +32,7 @@ const ACTIVITIES = [
     projectName: 'Hiring',
     duration: '2 hours',
     timestamp: '23rd April, 2021',
-    status: 'APPROVED',
+    status: 'APPROVED' as ActivityStatus,
     points: 20,
   },
   {
@@ -39,7 +41,7 @@ const ACTIVITIES = [
     projectName: 'CoE',
     duration: '1 hours',
     timestamp: '24th April, 2021',
-    status: 'APPROVED',
+    status: 'APPROVED' as ActivityStatus,
     points: 5,
   },
   {
@@ -48,7 +50,7 @@ const ACTIVITIES = [
     projectName: 'KFC',
     duration: '30 mins',
     timestamp: '24rd April, 2021',
-    status: 'REJECTED',
+    status: 'REJECTED' as ActivityStatus,
     points: 5,
   },
 ];
@@ -76,11 +78,11 @@ function Activities() {
       <HStack>
         <SearchInput placeholder="Search for activity, project or status" onSearch={setSearchText} />
         <Spacer />
-        <Button>Add Activity</Button>
+        <Button leftIcon={<AiOutlinePlus />}>Add</Button>
       </HStack>
       <Stack>
         {activityData.length ? (
-          <Stack spacing={4}>
+          <Stack spacing={4} maxHeight="30rem" overflow="auto">
             {activityData.map(activity => (
               <ActivityItem key={activity.id} {...activity} />
             ))}

@@ -81,7 +81,8 @@ const theme = extendTheme({
         fontWeight: '500',
       },
       variants: {
-        solid: props => ({
+        // @ts-ignore
+        solid: () => ({
           bg: 'primary.500',
           color: 'white',
         }),

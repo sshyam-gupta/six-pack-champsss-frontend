@@ -58,7 +58,7 @@ const Index = (props: HomeProps) => {
               </SimpleGrid>
             </GridItem>
             <GridItem colSpan={[3, 2]}>
-              <DashboardChart bg={useColorModeValue('orange.50', 'orange.800')} title="Chart" />
+              <DashboardChart bg={useColorModeValue('purple.50', 'purple.800')} title="Chart" />
             </GridItem>
           </Grid>
         </Stack>
