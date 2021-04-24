@@ -8,7 +8,7 @@ import LoginRequired from '../components/layout/LoginRequired';
 
 function MyProfile() {
   const [session] = useSession();
-
+  console.log(session);
   return (
     <LoginRequired>
       <PageContainer>

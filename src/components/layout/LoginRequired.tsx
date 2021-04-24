@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/client';
 const LoginRequired: FunctionComponent = ({ children }) => {
   const router = useRouter();
   const [session, loading] = useSession();
-
   React.useEffect(() => {
     if (!session && !loading) {
       router.push('/signin');

@@ -1,16 +1,12 @@
 import LoginRequired from '../components/layout/LoginRequired';
 import PageContainer from '../components/layout/PageContainer';
-import { Stat, StatLabel, StatNumber } from '@chakra-ui/stat';
 import * as AppData from '../constants/app.json';
-import { Box, Grid, GridItem, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
+import { Grid, GridItem, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import NumberFormatter from '../components/NumberFormatter';
 import getGreetings from '../util/greetings';
 import { useSession } from 'next-auth/client';
 import DashboardBox from '../components/dashboard/DashboardBox';
 import DashboardChart from '../components/dashboard/DashboardChart';
-import { useEffect } from 'react';
-import LoginService from '../services/login/login';
 
 type HomeProps = {
   quotes?: {
@@ -24,14 +20,6 @@ type HomeProps = {
 
 const Index = (props: HomeProps) => {
   const [session] = useSession();
-
-  useEffect(() => {
-    async function g() {
-      const { data, error } = await LoginService.du();
-      console.log(data);
-    }
-    g();
-  }, []);
 
   return (
     <LoginRequired>

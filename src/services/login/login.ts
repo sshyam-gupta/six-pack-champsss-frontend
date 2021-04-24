@@ -1,10 +1,7 @@
 import ApiService from '../api';
 class LoginService {
-  static async loginUser() {
-    return await ApiService.post('/login', { username: 's', password: 's' });
-  }
-  static async du() {
-    return await ApiService.get('/posts');
+  static async loginUser(id_token: string) {
+    return await ApiService.post('/auth/login', { id_token });
   }
 }
 
