@@ -1,6 +1,7 @@
 export class ApiHeaders {
   static getAuthHeader() {
-    const token = ''; //get token
+    // TODO: Check for other api and based on that add token here. Currently for login we are passing Google's idToken as raw json body
+    const token = '';
 
     return token
       ? {
