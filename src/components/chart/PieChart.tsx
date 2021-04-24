@@ -1,13 +1,12 @@
+import { Text } from '@chakra-ui/layout';
 import { useMediaQuery } from '@chakra-ui/media-query';
-import { useTheme } from '@chakra-ui/system';
+import { useColorModeValue } from '@chakra-ui/system';
 import { ResponsivePie, PieSvgProps } from '@nivo/pie';
 import React from 'react';
 
 function PieChart<RawData>(props: Partial<PieSvgProps<RawData>>) {
   const [isLargerThan786] = useMediaQuery('(min-width: 786px)');
-  const {
-    colors: { black },
-  } = useTheme();
+  const fontColor = useColorModeValue('black', 'white');
 
   return (
     <ResponsivePie
@@ -21,6 +20,12 @@ function PieChart<RawData>(props: Partial<PieSvgProps<RawData>>) {
       borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
       enableArcLabels={false}
       enableArcLinkLabels={isLargerThan786}
+      arcLinkLabelsTextColor={fontColor}
+      tooltip={({ datum: { id, value } }: any) => (
+        <Text px="12px" py="6px" borderRadius="md" as="strong" color="black" bg="white">
+          {id}: {value}
+        </Text>
+      )}
       legends={
         !isLargerThan786
           ? [
@@ -35,12 +40,12 @@ function PieChart<RawData>(props: Partial<PieSvgProps<RawData>>) {
                 itemOpacity: 1,
                 symbolSize: 10,
                 symbolShape: 'circle',
-                itemTextColor: black,
+                itemTextColor: fontColor,
                 effects: [
                   {
                     on: 'hover',
                     style: {
-                      itemTextColor: black,
+                      itemTextColor: fontColor,
                     },
                   },
                 ],

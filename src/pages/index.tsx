@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/client';
 import DashboardBox from '../components/dashboard/DashboardBox';
 import DashboardChart from '../components/dashboard/DashboardChart';
 import { AvailableIcon, RedeemedIcon } from '../components/lottie/PlaceholderIcons';
+import Activities from '../components/Activities';
 
 type HomeProps = {
   quotes?: {
@@ -52,7 +53,7 @@ const Index = (props: HomeProps) => {
                   color={useColorModeValue('green.500', 'green.400')}
                   value={5000}
                   title={`Redeemed ${AppData.points}`}
-                  icon={<RedeemedIcon px="3rem" py="2rem" />}
+                  icon={<RedeemedIcon transform="scaleX(-1)" px="3rem" py="2rem" />}
                 />
               </SimpleGrid>
             </GridItem>
@@ -60,6 +61,9 @@ const Index = (props: HomeProps) => {
               <DashboardChart bg={useColorModeValue('orange.50', 'orange.800')} title="Chart" />
             </GridItem>
           </Grid>
+        </Stack>
+        <Stack mt="2rem">
+          <Activities />
         </Stack>
       </PageContainer>
     </LoginRequired>
