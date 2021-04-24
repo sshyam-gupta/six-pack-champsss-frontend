@@ -1,7 +1,7 @@
 import LoginRequired from '../components/layout/LoginRequired';
 import PageContainer from '../components/layout/PageContainer';
 import * as AppData from '../constants/app.json';
-import { Grid, GridItem, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
+import { Grid, GridItem, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import getGreetings from '../util/greetings';
 import { useSession } from 'next-auth/client';
@@ -27,10 +27,7 @@ const Index = (props: HomeProps) => {
 
   return (
     <LoginRequired>
-      <PageContainer>
-        <Heading fontFamily="Comfortaa">{`${getGreetings()}, ${
-          session?.user?.name.split(' ')?.[0] ?? 'User'
-        }`}</Heading>
+      <PageContainer pageTitle={`${getGreetings()}, ${session?.user?.name.split(' ')?.[0] ?? 'User'}`}>
         {props.quotes ? (
           <Stack isInline mt="0.5rem">
             <Text>

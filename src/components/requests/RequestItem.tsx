@@ -33,6 +33,7 @@ function RequestItem(props: RequestItemProps) {
       toast({
         description: `Activity ${status} successfully`,
         variant: 'top-accent',
+        status: 'success',
         isClosable: true,
         position: 'top',
       });

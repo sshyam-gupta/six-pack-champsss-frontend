@@ -1,7 +1,7 @@
 import { Stack, StackProps } from '@chakra-ui/layout';
 import { motion } from 'framer-motion';
 
-const MotionStack = motion.custom(Stack);
+const MotionStack = motion(Stack);
 
 function StaggeredStack(props: StackProps) {
   return (
