@@ -21,4 +21,5 @@ export type Activity = {
   timestamp: string;
   status: ActivityStatus;
   points: number;
+  userName: string;
 };

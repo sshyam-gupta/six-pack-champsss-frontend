@@ -16,6 +16,7 @@ const ACTIVITIES = [
     timestamp: '23rd April, 2021',
     status: 'PENDING' as ActivityStatus,
     points: 5,
+    userName: 'Shyam Gupta',
   },
   {
     description: 'KFC meeting',
@@ -25,6 +26,7 @@ const ACTIVITIES = [
     timestamp: '23rd April, 2021',
     status: 'PENDING' as ActivityStatus,
     points: 10,
+    userName: 'Mayank Shukla',
   },
   {
     description: 'Interview candidate https://google.com',
@@ -34,6 +36,7 @@ const ACTIVITIES = [
     timestamp: '23rd April, 2021',
     status: 'APPROVED' as ActivityStatus,
     points: 20,
+    userName: 'Athira',
   },
   {
     description: 'Hackathon Meeting',
@@ -43,6 +46,7 @@ const ACTIVITIES = [
     timestamp: '24th April, 2021',
     status: 'APPROVED' as ActivityStatus,
     points: 5,
+    userName: 'Rohan',
   },
   {
     description: 'KFC Meeting',
@@ -52,6 +56,7 @@ const ACTIVITIES = [
     timestamp: '24rd April, 2021',
     status: 'REJECTED' as ActivityStatus,
     points: 5,
+    userName: 'LargeNameOf anyUserForTEesting',
   },
 ];
 

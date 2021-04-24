@@ -9,7 +9,7 @@ import RejectedRequest from '../components/requests/RejectedRequest';
 function Requests() {
   return (
     <LoginRequired>
-      <PageContainer maxW="auto" mt="3rem">
+      <PageContainer maxW="auto">
         <Heading fontFamily="Comfortaa">Requests</Heading>
         <Tabs mt="2rem">
           <TabList>
@@ -18,13 +18,13 @@ function Requests() {
             <Tab>Rejected</Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>
+            <TabPanel px="0">
               <PendingRequest />
             </TabPanel>
-            <TabPanel>
+            <TabPanel px="0">
               <ApprovedRequest />
             </TabPanel>
-            <TabPanel>
+            <TabPanel px="0">
               <RejectedRequest />
             </TabPanel>
           </TabPanels>

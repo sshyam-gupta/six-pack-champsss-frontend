@@ -10,12 +10,19 @@ import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { Activity, getStatusColor } from '../../util/activity-util';
 
-function ActivityItem(props: Activity) {
+interface ActivityItemProps extends Activity {
+  disableCrud?: boolean;
+}
+
+function ActivityItem(props: ActivityItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
 
   return (
     <Stack boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
       <HStack fontSize="md">
+        <Tooltip placement="top" label={props.status}>
+          <Flex mr="0.5rem" height="10px" width="10px" borderRadius="50%" bg={getStatusColor(props.status)} />
+        </Tooltip>
         <Text>
           <Linkify>{props.description}</Linkify>
         </Text>
@@ -24,9 +31,6 @@ function ActivityItem(props: Activity) {
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
           <Flex alignItems="center" minW="80px">
-            <Tooltip placement="top" label={props.status}>
-              <Flex mr="0.5rem" height="10px" width="10px" borderRadius="50%" bg={getStatusColor(props.status)} />
-            </Tooltip>
             <Text>{`${props.points} ${AppData.points}`}</Text>
           </Flex>
           &nbsp;&nbsp;
@@ -44,21 +48,23 @@ function ActivityItem(props: Activity) {
         </HStack>
         <Text textAlign="right">{props.timestamp}</Text>
       </Flex>
-      <Menu>
-        <MenuButton
-          position="absolute"
-          top="0"
-          right="1rem"
-          as={IconButton}
-          aria-label="Options"
-          icon={<BiDotsVerticalRounded />}
-          variant="ghost"
-        />
-        <MenuList>
-          <MenuItem icon={<AiOutlineEdit />}>Edit</MenuItem>
-          <MenuItem icon={<AiOutlineDelete />}>Delete</MenuItem>
-        </MenuList>
-      </Menu>
+      {!props.disableCrud ? (
+        <Menu>
+          <MenuButton
+            position="absolute"
+            top="0"
+            right="1rem"
+            as={IconButton}
+            aria-label="Options"
+            icon={<BiDotsVerticalRounded />}
+            variant="ghost"
+          />
+          <MenuList>
+            <MenuItem icon={<AiOutlineEdit />}>Edit</MenuItem>
+            <MenuItem icon={<AiOutlineDelete />}>Delete</MenuItem>
+          </MenuList>
+        </Menu>
+      ) : null}
     </Stack>
   );
 }
