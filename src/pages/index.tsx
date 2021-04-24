@@ -9,6 +9,8 @@ import getGreetings from '../util/greetings';
 import { useSession } from 'next-auth/client';
 import DashboardBox from '../components/dashboard/DashboardBox';
 import DashboardChart from '../components/dashboard/DashboardChart';
+import { useEffect } from 'react';
+import LoginService from '../services/login/login';
 
 type HomeProps = {
   quotes?: {
@@ -22,6 +24,14 @@ type HomeProps = {
 
 const Index = (props: HomeProps) => {
   const [session] = useSession();
+
+  useEffect(() => {
+    async function g() {
+      const { data, error } = await LoginService.du();
+      console.log(data);
+    }
+    g();
+  }, []);
 
   return (
     <LoginRequired>
