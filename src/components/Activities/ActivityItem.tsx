@@ -1,6 +1,6 @@
 import { IconButton } from '@chakra-ui/button';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import { Stack, HStack, Spacer, Text, Flex } from '@chakra-ui/layout';
+import { HStack, Spacer, Text, Flex } from '@chakra-ui/layout';
 import { MenuButton, MenuItem, Menu, MenuList } from '@chakra-ui/menu';
 import { Tooltip } from '@chakra-ui/tooltip';
 import Linkify from 'react-linkify';
