@@ -45,7 +45,8 @@
     "react-number-format": "^4.5.5",
     "react-remove-scroll": "^2.4.1",
     "react-select": "^4.3.0",
-    "react-toggle-dark-mode": "^1.0.4"
+    "react-toggle-dark-mode": "^1.0.4",
+    "swr": "^0.5.5"
   },
   "devDependencies": {
     "@types/next-auth": "^3.13.0",

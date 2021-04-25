@@ -46,7 +46,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <RouteLoadingIndicator isRouteChanging={state.isRouteChanging} />
-      <Provider session={pageProps.session}>
+      <Provider
+        options={{
+          clientMaxAge: 0,
+          keepAlive: 0,
+        }}
+        session={pageProps.session}
+      >
         <ChakraProvider resetCSS theme={theme}>
           <DefaultSeo {...siteConfig.seo} />
           <Component {...pageProps} />

@@ -1,5 +1,4 @@
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import { Heading } from '@chakra-ui/layout';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/tabs';
 import LoginRequired from '../components/layout/LoginRequired';
 import PageContainer from '../components/layout/PageContainer';
