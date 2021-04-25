@@ -43,13 +43,19 @@ function RequestItem(props: RequestItemProps) {
 
   return (
     <StaggeredStackItem boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
-      <HStack fontSize="md">
-        <Tooltip placement="top" label={props.status}>
-          <Flex mr="0.5rem" height="10px" width="10px" borderRadius="50%" bg={getStatusColor(props.status)} />
-        </Tooltip>
-        <Text>
-          <Linkify>{props.description}</Linkify>
-        </Text>
+      <HStack
+        fontSize="md"
+        flexDirection={['column', 'column', 'row']}
+        alignItems={['flex-start', 'flex-start', 'center']}
+      >
+        <HStack>
+          <Tooltip placement="top" label={props.status}>
+            <Flex height="10px" width="10px" borderRadius="50%" bg={getStatusColor(props.status)} />
+          </Tooltip>
+          <Text>
+            <Linkify>{props.description}</Linkify>
+          </Text>
+        </HStack>
         <Spacer />
         <HStack>
           <Text>{`${props.points} ${AppData.points}`}</Text>
