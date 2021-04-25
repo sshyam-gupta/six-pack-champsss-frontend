@@ -10,8 +10,8 @@ function MyProfile() {
   const [session] = useSession();
   return (
     <LoginRequired>
-      <PageContainer>
-        <Stack spacing={6} alignItems="center">
+      <PageContainer maxW="48rem" pageTitle="Profile">
+        <Stack spacing={6} alignItems="center" mt="1rem">
           <Avatar size="2xl" name={session?.user.name} src={session?.user.image} />
           <FormControl id="name">
             <FormLabel>Name</FormLabel>

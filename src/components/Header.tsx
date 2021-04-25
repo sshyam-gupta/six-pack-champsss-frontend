@@ -12,12 +12,13 @@ import {
   Stack,
   IconButton,
   Spacer,
+  Heading,
 } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import { MobileNavButton, MobileNavContent } from './MobileNav';
 import Logo from './Logo';
 import { IoMdLogOut } from 'react-icons/io';
-import { useViewportScroll } from 'framer-motion';
+import { AnimatePresence, motion, useViewportScroll } from 'framer-motion';
 
 const Header = props => {
   const bg = useColorModeValue('white', 'gray.800');
@@ -45,20 +46,20 @@ const Header = props => {
       boxShadow="md"
       {...props}
     >
-      <chakra.div height="5rem" mx="auto" maxW="1200px">
-        <HeaderContent />
+      <chakra.div height="5rem" mx="auto" maxW="container.xl">
+        <HeaderContent title={props.title} />
       </chakra.div>
     </chakra.header>
   );
 };
 
-function HeaderContent() {
+function HeaderContent(props: { title: string }) {
   const mobileNav = useDisclosure();
 
   return (
     <>
-      <Flex w="100%" h="100%" px="6" align="center">
-        <Flex align="center">
+      <Flex w="100%" h="100%" align="center" px="1rem">
+        <Flex align="center" w="280px">
           <NextLink href="/" passHref>
             <chakra.a display="block" aria-label="Chakra UI, Back to homepage">
               <Box minW="8rem">
@@ -67,8 +68,17 @@ function HeaderContent() {
             </chakra.a>
           </NextLink>
         </Flex>
-        <Spacer />
-        <Stack isInline justify="flex-end" w="100%" maxW="824px" spacing={4} align="center" color="gray.400">
+        <Stack display={['none', 'none', 'block']}>
+          <AnimatePresence>
+            {props.title ? (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}>
+                <Heading fontFamily="Comfortaa">{props.title}</Heading>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </Stack>
+
+        <Stack flex={1} isInline justify="flex-end" w="100%" spacing={4} align="center" color="gray.400">
           <IconButton
             variant="ghost"
             color={useColorModeValue('gray.800', 'inherit')}

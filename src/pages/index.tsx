@@ -1,7 +1,7 @@
 import LoginRequired from '../components/layout/LoginRequired';
 import PageContainer from '../components/layout/PageContainer';
 import * as AppData from '../constants/app.json';
-import { Grid, GridItem, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
+import { Grid, GridItem, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import getGreetings from '../util/greetings';
 import { useSession } from 'next-auth/client';
@@ -9,6 +9,7 @@ import DashboardBox from '../components/dashboard/DashboardBox';
 import DashboardChart from '../components/dashboard/DashboardChart';
 import { AvailableIcon, RedeemedIcon } from '../components/lottie/PlaceholderIcons';
 import Activities from '../components/Activities';
+import { useToast } from '@chakra-ui/toast';
 
 type HomeProps = {
   quotes?: {
@@ -22,13 +23,11 @@ type HomeProps = {
 
 const Index = (props: HomeProps) => {
   const [session] = useSession();
+  const toast = useToast();
 
   return (
     <LoginRequired>
-      <PageContainer maxW="auto">
-        <Heading fontFamily="Comfortaa">{`${getGreetings()}, ${
-          session?.user?.name.split(' ')?.[0] ?? 'User'
-        }`}</Heading>
+      <PageContainer pageTitle={`${getGreetings()}, ${session?.user?.name.split(' ')?.[0] ?? 'User'}`}>
         {props.quotes ? (
           <Stack isInline mt="0.5rem">
             <Text>
@@ -47,6 +46,14 @@ const Index = (props: HomeProps) => {
                   value={2000}
                   title={`Available ${AppData.points}`}
                   icon={<AvailableIcon px="3rem" py="2rem" />}
+                  onRedeem={() => {
+                    toast({
+                      description: 'Redeeming in process',
+                      variant: 'top-accent',
+                      isClosable: true,
+                      position: 'top',
+                    });
+                  }}
                 />
                 <DashboardBox
                   bg={useColorModeValue('green.50', 'green.900')}

@@ -6,6 +6,7 @@ import { NoActivities } from '../lottie/PlaceholderIcons';
 import SearchInput from '../SearchInput';
 import ActivityItem from './ActivityItem';
 import { ActivityStatus } from '../../util/activity-util';
+import StaggeredStack from '../motion/StaggeredStack';
 
 const ACTIVITIES = [
   {
@@ -16,6 +17,7 @@ const ACTIVITIES = [
     timestamp: '23rd April, 2021',
     status: 'PENDING' as ActivityStatus,
     points: 5,
+    userName: 'Shyam Gupta',
   },
   {
     description: 'KFC meeting',
@@ -25,6 +27,7 @@ const ACTIVITIES = [
     timestamp: '23rd April, 2021',
     status: 'PENDING' as ActivityStatus,
     points: 10,
+    userName: 'Mayank Shukla',
   },
   {
     description: 'Interview candidate https://google.com',
@@ -34,6 +37,7 @@ const ACTIVITIES = [
     timestamp: '23rd April, 2021',
     status: 'APPROVED' as ActivityStatus,
     points: 20,
+    userName: 'Athira',
   },
   {
     description: 'Hackathon Meeting',
@@ -43,6 +47,7 @@ const ACTIVITIES = [
     timestamp: '24th April, 2021',
     status: 'APPROVED' as ActivityStatus,
     points: 5,
+    userName: 'Rohan',
   },
   {
     description: 'KFC Meeting',
@@ -52,6 +57,7 @@ const ACTIVITIES = [
     timestamp: '24rd April, 2021',
     status: 'REJECTED' as ActivityStatus,
     points: 5,
+    userName: 'LargeNameOf anyUserForTEesting',
   },
 ];
 
@@ -80,7 +86,7 @@ function Activities() {
         <Spacer />
         <Button leftIcon={<AiOutlinePlus />}>Add</Button>
       </HStack>
-      <Stack>
+      <StaggeredStack>
         {activityData.length ? (
           <Stack spacing={4} maxHeight="30rem" overflow="auto">
             {activityData.map(activity => (
@@ -93,7 +99,7 @@ function Activities() {
             <Text fontSize="lg">No Activity found</Text>
           </VStack>
         )}
-      </Stack>
+      </StaggeredStack>
     </Stack>
   );
 }
