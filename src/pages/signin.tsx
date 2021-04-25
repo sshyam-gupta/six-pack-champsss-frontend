@@ -1,9 +1,11 @@
+import { useDisclosure } from '@chakra-ui/hooks';
 import React from 'react';
 import { providers, signIn } from 'next-auth/client';
 import { Container, Flex, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { useColorMode } from '@chakra-ui/color-mode';
 import { AiOutlineGoogle } from 'react-icons/ai';
+
 import UncontrolledLottie from '../components/lottie/UncontrolledLottie';
 import animationData from '../../public/lotties/online-work.json';
 import * as AppData from '../constants/app.json';
@@ -12,6 +14,7 @@ import { DarkModeSwitch } from '../components/Header';
 
 export default function SignIn({ providers }: any) {
   const { colorMode } = useColorMode();
+  const { isOpen: showLoader, onOpen: openLoader } = useDisclosure();
 
   return (
     <Flex height="100vh">
@@ -51,9 +54,13 @@ export default function SignIn({ providers }: any) {
           {providers
             ? Object.values(providers).map((provider: any) => (
                 <Button
+                  isLoading={showLoader}
                   mt="2rem"
                   key={provider.name}
-                  onClick={() => signIn(provider.id)}
+                  onClick={() => {
+                    openLoader();
+                    signIn(provider.id);
+                  }}
                   leftIcon={<AiOutlineGoogle />}
                   fontWeight="500"
                 >
