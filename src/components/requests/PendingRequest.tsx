@@ -1,9 +1,9 @@
-import { Stack, Text, VStack } from '@chakra-ui/layout';
+import { Stack } from '@chakra-ui/layout';
 import { useCallback, useState } from 'react';
 import { ActivityStatus } from '../../util/activity-util';
 import StaggeredStack from '../motion/StaggeredStack';
-import { NoActivities } from '../lottie/PlaceholderIcons';
 import RequestItem from './RequestItem';
+import EmptyPlaceholder from '../EmptyPlaceholder';
 
 const REQUESTS = [
   {
@@ -81,10 +81,7 @@ function PendingRequest() {
           ))}
         </StaggeredStack>
       ) : (
-        <VStack spacing={4} py="2rem">
-          <NoActivities width="20rem" />
-          <Text fontSize="lg">No Request available</Text>
-        </VStack>
+        <EmptyPlaceholder description="No Request available" />
       )}
     </Stack>
   );

@@ -26,6 +26,8 @@ const Sidebar = () => {
       pt="4"
       overflowY="auto"
       flexShrink={0}
+      minH="50vh"
+      overflow="auto"
       display={['none', 'none', 'block']}
     >
       <VStack py="1rem">

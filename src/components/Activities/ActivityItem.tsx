@@ -60,7 +60,7 @@ function ActivityItem(props: ActivityItemProps) {
             icon={<BiDotsVerticalRounded />}
             variant="ghost"
           />
-          <MenuList>
+          <MenuList p={0} minWidth="4rem">
             <MenuItem icon={<AiOutlineEdit />}>Edit</MenuItem>
             <MenuItem icon={<AiOutlineDelete />}>Delete</MenuItem>
           </MenuList>

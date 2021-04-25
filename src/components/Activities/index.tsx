@@ -1,12 +1,13 @@
 import { Button } from '@chakra-ui/button';
-import { VStack, Heading, HStack, Spacer, Stack, Text } from '@chakra-ui/layout';
+import { Heading, HStack, Spacer, Stack } from '@chakra-ui/layout';
 import { useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { NoActivities } from '../lottie/PlaceholderIcons';
+
 import SearchInput from '../SearchInput';
 import ActivityItem from './ActivityItem';
 import { ActivityStatus } from '../../util/activity-util';
 import StaggeredStack from '../motion/StaggeredStack';
+import EmptyPlaceholder from '../EmptyPlaceholder';
 
 const ACTIVITIES = [
   {
@@ -94,10 +95,7 @@ function Activities() {
             ))}
           </Stack>
         ) : (
-          <VStack spacing={4} py="2rem">
-            <NoActivities width="20rem" />
-            <Text fontSize="lg">No Activity found</Text>
-          </VStack>
+          <EmptyPlaceholder description="No Activity found" />
         )}
       </StaggeredStack>
     </Stack>
