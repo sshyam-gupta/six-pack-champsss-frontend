@@ -4,6 +4,7 @@ import { providers, signIn } from 'next-auth/client';
 import { Container, Flex, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { AiOutlineGoogle } from 'react-icons/ai';
+import { useColorMode } from '@chakra-ui/color-mode';
 
 import UncontrolledLottie from '../components/lottie/UncontrolledLottie';
 import animationData from '../../public/lotties/online-work.json';
