@@ -10,6 +10,8 @@ import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { Activity, getStatusColor } from '../../util/activity-util';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
+import { minutesToHours } from '../../util/time-util';
+import dayjs from 'dayjs';
 
 interface ActivityItemProps extends Activity {
   disableCrud?: boolean;
@@ -44,10 +46,10 @@ function ActivityItem(props: ActivityItemProps) {
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {props.duration}
+            {minutesToHours(props.duration)}
           </Text>
         </HStack>
-        <Text textAlign="right">{props.timestamp}</Text>
+        <Text textAlign="right">{dayjs(props.timestamp).format('ll LT')}</Text>
       </Flex>
       {!props.disableCrud ? (
         <Menu>

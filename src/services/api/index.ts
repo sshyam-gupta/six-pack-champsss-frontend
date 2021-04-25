@@ -3,10 +3,9 @@ import { getSession, signOut } from 'next-auth/client';
 
 axios.interceptors.request.use(
   async config => {
-    //TODO Add token here.
-    const token = '';
     const session = await getSession();
-    console.log(session);
+    const token = session?.accessToken;
+
     config.headers = {
       ...config.headers,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),

@@ -37,9 +37,9 @@ const options = {
       return token;
     },
     async session(session, { data }) {
-      session.accessToken = data.access_token;
-      session.user.id = data.user.id;
-      session.user.roleId = data.user.role_id;
+      session.accessToken = data?.access_token;
+      session.user.id = data?.user?.id;
+      session.user.roleId = data?.user?.role_id;
       return session;
     },
   },
