@@ -8,6 +8,10 @@ import siteConfig from '../constants/site-config';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import RouteLoadingIndicator from '../components/RouteLoadingIndicator';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+dayjs.extend(localizedFormat);
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();

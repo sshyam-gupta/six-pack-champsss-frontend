@@ -26,8 +26,8 @@ const DropdownIndicator = props => {
 function SelectComponent(restProps: any) {
   return (
     <BaseSelect
-      {...restProps}
       isClearable
+      {...restProps}
       components={{
         Placeholder: restProps.isSearchable ? PlaceholderWithSearch : components.Placeholder,
         DropdownIndicator,
@@ -72,7 +72,6 @@ function SelectComponent(restProps: any) {
 
 SelectComponent.defaultProps = {
   maxMenuHeight: 200,
-  isSearchable: true,
 };
 
 export default SelectComponent;

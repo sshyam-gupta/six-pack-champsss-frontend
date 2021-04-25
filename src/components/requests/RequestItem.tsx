@@ -5,6 +5,7 @@ import { Tooltip } from '@chakra-ui/tooltip';
 import Linkify from 'react-linkify';
 import { BsCheckCircle } from 'react-icons/bs';
 import { IoCloseCircleOutline } from 'react-icons/io5';
+import dayjs from 'dayjs';
 
 import * as AppData from '../../constants/app.json';
 import { Activity, ActivityStatus, getStatusColor } from '../../util/activity-util';
@@ -13,6 +14,7 @@ import { useCallback } from 'react';
 import sleep from '../../util/sleep';
 import { useToast } from '@chakra-ui/toast';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
+import { minutesToHours } from '../../util/time-util';
 
 interface RequestItemProps extends Activity {
   disableCrud?: boolean;
@@ -102,10 +104,10 @@ function RequestItem(props: RequestItemProps) {
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {props.duration}
+            {minutesToHours(props.duration)}
           </Text>
         </HStack>
-        <Text textAlign="right">{props.timestamp}</Text>
+        <Text textAlign="right">{dayjs(props.timestamp).format('ll LT')}</Text>
       </Flex>
     </StaggeredStackItem>
   );

@@ -17,7 +17,7 @@ export type Activity = {
   description: string;
   id: number;
   projectName: string;
-  duration: string;
+  duration: number;
   timestamp: string;
   status: ActivityStatus;
   points: number;
