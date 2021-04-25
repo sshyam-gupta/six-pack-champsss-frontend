@@ -6,7 +6,7 @@ import animationData from '../public/lotties/33049-binoculars.json';
 const OutsideOrganization = () => {
   return (
     <Flex direction="column" alignItems="center" pos="relative" h="100vh">
-      <Box w={['16rem', '32rem']}>
+      <Box w={['24rem', '32rem']}>
         <UncontrolledLottie width="100%" options={{ animationData: animationData }} />
       </Box>
       <Stack textAlign="center" alignItems="center">
