@@ -7,7 +7,7 @@ import PageTransition from './PageTransition';
 import debounce from 'lodash/debounce';
 
 const PageContainer = props => {
-  const scrollBodyRef = useRef();
+  const scrollBodyRef = useRef(null);
 
   const [isHeaderHidden, setHeaderHidden] = useState(false);
 
