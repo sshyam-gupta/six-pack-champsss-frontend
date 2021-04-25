@@ -12,7 +12,7 @@ const PageContainer = props => {
   const [isHeaderHidden, setHeaderHidden] = useState(false);
 
   const onScroll = useCallback(e => {
-    setHeaderHidden(e.target.scrollTop > 120);
+    setHeaderHidden(e.target.scrollTop > 80);
   }, []);
 
   const debouncedScroll = debounce(onScroll, 100);

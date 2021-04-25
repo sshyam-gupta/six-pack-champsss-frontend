@@ -1,76 +1,42 @@
-import { Stack, Text, VStack } from '@chakra-ui/layout';
-import { ActivityStatus } from '../../util/activity-util';
+import { Stack } from '@chakra-ui/layout';
 import StaggeredStack from '../motion/StaggeredStack';
-import { NoActivities } from '../lottie/PlaceholderIcons';
 import RequestItem from './RequestItem';
+import EmptyPlaceholder from '../EmptyPlaceholder';
+import useSWR from 'swr';
+import { Spinner } from '@chakra-ui/spinner';
+import fetcher from '../../util/swr-util';
 
-const REQUESTS = [
-  {
-    description: 'Meeting about Hackathon',
-    id: 1,
-    projectName: 'CoE',
-    duration: '30 mins',
-    timestamp: '23rd April, 2021',
-    status: 'REJECTED' as ActivityStatus,
-    points: 5,
-    userName: 'Shyam Gupta',
-  },
-  {
-    description: 'KFC meeting',
-    id: 2,
-    projectName: 'KFC',
-    duration: '1 hour',
-    timestamp: '23rd April, 2021',
-    status: 'REJECTED' as ActivityStatus,
-    points: 10,
-    userName: 'Mayank Shukla',
-  },
-  {
-    description: 'Interview candidate https://google.com',
-    id: 3,
-    projectName: 'Hiring',
-    duration: '2 hours',
-    timestamp: '23rd April, 2021',
-    status: 'REJECTED' as ActivityStatus,
-    points: 20,
-    userName: 'Athira',
-  },
-  {
-    description: 'Hackathon Meeting',
-    id: 4,
-    projectName: 'CoE',
-    duration: '1 hours',
-    timestamp: '24th April, 2021',
-    status: 'REJECTED' as ActivityStatus,
-    points: 5,
-    userName: 'Rohan',
-  },
-  {
-    description: 'KFC Meeting',
-    id: 5,
-    projectName: 'KFC',
-    duration: '30 mins',
-    timestamp: '24rd April, 2021',
-    status: 'REJECTED' as ActivityStatus,
-    points: 5,
-    userName: 'LargeNameOf anyUserForTEesting',
-  },
-];
+function useRejectedRequest() {
+  const { data, error } = useSWR(`https://60850d5f9b2bed00170417e4.mockapi.io/api/v1/rejectedRequest`, fetcher);
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
 
 function RejectedRequest() {
+  const { data, isError, isLoading } = useRejectedRequest();
+
+  if (isError) {
+    return <EmptyPlaceholder description="Something went wrong!" />;
+  }
+
+  if (isLoading) {
+    return <Spinner size="lg" />;
+  }
+
   return (
     <StaggeredStack>
-      {REQUESTS.length ? (
+      {data.length ? (
         <Stack spacing={4}>
-          {REQUESTS.map(activity => (
+          {data.map(activity => (
             <RequestItem disableCrud key={activity.id} {...activity} />
           ))}
         </Stack>
       ) : (
-        <VStack spacing={4} py="2rem">
-          <NoActivities width="20rem" />
-          <Text fontSize="lg">No Request available</Text>
-        </VStack>
+        <EmptyPlaceholder description="No Request available" />
       )}
     </StaggeredStack>
   );

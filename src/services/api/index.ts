@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { signOut } from 'next-auth/client';
+import { getSession, signOut } from 'next-auth/client';
 
 axios.interceptors.request.use(
-  config => {
-    //TODO Add token here.
-    const token = '';
+  async config => {
+    const session = await getSession();
+    const token = session?.accessToken;
+
     config.headers = {
       ...config.headers,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -17,6 +18,7 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   },
 );
+
 axios.interceptors.response.use(
   res => res,
   err => {

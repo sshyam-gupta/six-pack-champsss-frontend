@@ -1,6 +1,6 @@
 import { IconButton } from '@chakra-ui/button';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import { Stack, HStack, Spacer, Text, Flex } from '@chakra-ui/layout';
+import { HStack, Spacer, Text, Flex } from '@chakra-ui/layout';
 import { MenuButton, MenuItem, Menu, MenuList } from '@chakra-ui/menu';
 import { Tooltip } from '@chakra-ui/tooltip';
 import Linkify from 'react-linkify';
@@ -10,6 +10,8 @@ import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { Activity, getStatusColor } from '../../util/activity-util';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
+import { minutesToHours } from '../../util/time-util';
+import dayjs from 'dayjs';
 
 interface ActivityItemProps extends Activity {
   disableCrud?: boolean;
@@ -44,10 +46,10 @@ function ActivityItem(props: ActivityItemProps) {
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {props.duration}
+            {minutesToHours(props.duration)}
           </Text>
         </HStack>
-        <Text textAlign="right">{props.timestamp}</Text>
+        <Text textAlign="right">{dayjs(props.timestamp).format('ll LT')}</Text>
       </Flex>
       {!props.disableCrud ? (
         <Menu>
@@ -60,7 +62,7 @@ function ActivityItem(props: ActivityItemProps) {
             icon={<BiDotsVerticalRounded />}
             variant="ghost"
           />
-          <MenuList>
+          <MenuList p={0} minWidth="4rem">
             <MenuItem icon={<AiOutlineEdit />}>Edit</MenuItem>
             <MenuItem icon={<AiOutlineDelete />}>Delete</MenuItem>
           </MenuList>

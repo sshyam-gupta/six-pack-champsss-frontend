@@ -11,30 +11,21 @@ import {
   Box,
   Stack,
   IconButton,
-  Spacer,
   Heading,
 } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { MobileNavButton, MobileNavContent } from './MobileNav';
 import Logo from './Logo';
 import { IoMdLogOut } from 'react-icons/io';
-import { AnimatePresence, motion, useViewportScroll } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Header = props => {
   const bg = useColorModeValue('white', 'gray.800');
   const ref = useRef<HTMLHeadingElement>();
-  const [y, setY] = useState(0);
-  const { height = 0 } = ref.current?.getBoundingClientRect() ?? {};
-
-  const { scrollY } = useViewportScroll();
-  useEffect(() => {
-    return scrollY.onChange(() => setY(scrollY.get()));
-  }, [scrollY]);
 
   return (
     <chakra.header
       ref={ref}
-      shadow={y > height ? 'sm' : undefined}
       transition="box-shadow 0.2s, background-color 0.2s"
       pos="sticky"
       top="0"

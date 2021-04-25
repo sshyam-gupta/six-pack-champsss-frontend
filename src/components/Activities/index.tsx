@@ -1,20 +1,21 @@
 import { Button } from '@chakra-ui/button';
-import { VStack, Heading, HStack, Spacer, Stack, Text } from '@chakra-ui/layout';
+import { Heading, HStack, Spacer, Stack } from '@chakra-ui/layout';
 import { useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { NoActivities } from '../lottie/PlaceholderIcons';
+
 import SearchInput from '../SearchInput';
 import ActivityItem from './ActivityItem';
 import { ActivityStatus } from '../../util/activity-util';
 import StaggeredStack from '../motion/StaggeredStack';
+import EmptyPlaceholder from '../EmptyPlaceholder';
 
 const ACTIVITIES = [
   {
     description: 'Meeting about Hackathon',
     id: 1,
     projectName: 'CoE',
-    duration: '30 mins',
-    timestamp: '23rd April, 2021',
+    duration: 20,
+    timestamp: '2021-04-24T12:47:00.127Z',
     status: 'PENDING' as ActivityStatus,
     points: 5,
     userName: 'Shyam Gupta',
@@ -23,8 +24,8 @@ const ACTIVITIES = [
     description: 'KFC meeting',
     id: 2,
     projectName: 'KFC',
-    duration: '1 hour',
-    timestamp: '23rd April, 2021',
+    duration: 60,
+    timestamp: '2021-04-24T10:22:44.115Z',
     status: 'PENDING' as ActivityStatus,
     points: 10,
     userName: 'Mayank Shukla',
@@ -33,8 +34,8 @@ const ACTIVITIES = [
     description: 'Interview candidate https://google.com',
     id: 3,
     projectName: 'Hiring',
-    duration: '2 hours',
-    timestamp: '23rd April, 2021',
+    duration: 90,
+    timestamp: '2021-04-24T22:04:43.365Z',
     status: 'APPROVED' as ActivityStatus,
     points: 20,
     userName: 'Athira',
@@ -43,8 +44,8 @@ const ACTIVITIES = [
     description: 'Hackathon Meeting',
     id: 4,
     projectName: 'CoE',
-    duration: '1 hours',
-    timestamp: '24th April, 2021',
+    duration: 45,
+    timestamp: '2021-04-25T03:06:48.253Z',
     status: 'APPROVED' as ActivityStatus,
     points: 5,
     userName: 'Rohan',
@@ -53,8 +54,8 @@ const ACTIVITIES = [
     description: 'KFC Meeting',
     id: 5,
     projectName: 'KFC',
-    duration: '30 mins',
-    timestamp: '24rd April, 2021',
+    duration: 20,
+    timestamp: '2021-04-25T10:16:38.284Z',
     status: 'REJECTED' as ActivityStatus,
     points: 5,
     userName: 'LargeNameOf anyUserForTEesting',
@@ -94,10 +95,7 @@ function Activities() {
             ))}
           </Stack>
         ) : (
-          <VStack spacing={4} py="2rem">
-            <NoActivities width="20rem" />
-            <Text fontSize="lg">No Activity found</Text>
-          </VStack>
+          <EmptyPlaceholder description="No Activity found" />
         )}
       </StaggeredStack>
     </Stack>

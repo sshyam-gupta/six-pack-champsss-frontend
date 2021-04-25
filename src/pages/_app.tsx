@@ -8,6 +8,10 @@ import siteConfig from '../constants/site-config';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import RouteLoadingIndicator from '../components/RouteLoadingIndicator';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+dayjs.extend(localizedFormat);
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -46,7 +50,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <RouteLoadingIndicator isRouteChanging={state.isRouteChanging} />
-      <Provider session={pageProps.session}>
+      <Provider
+        options={{
+          clientMaxAge: 0,
+          keepAlive: 0,
+        }}
+        session={pageProps.session}
+      >
         <ChakraProvider resetCSS theme={theme}>
           <DefaultSeo {...siteConfig.seo} />
           <Component {...pageProps} />

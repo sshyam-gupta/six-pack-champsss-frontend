@@ -1,76 +1,51 @@
-import { Stack, Text, VStack } from '@chakra-ui/layout';
-import { useCallback, useState } from 'react';
-import { ActivityStatus } from '../../util/activity-util';
+import { Stack } from '@chakra-ui/layout';
+import { useCallback, useEffect, useState } from 'react';
 import StaggeredStack from '../motion/StaggeredStack';
-import { NoActivities } from '../lottie/PlaceholderIcons';
 import RequestItem from './RequestItem';
+import EmptyPlaceholder from '../EmptyPlaceholder';
+import useSWR from 'swr';
+import fetcher from '../../util/swr-util';
+import { Spinner } from '@chakra-ui/spinner';
+import { Activity } from '../../util/activity-util';
 
-const REQUESTS = [
-  {
-    description: 'Meeting about Hackathon',
-    id: 1,
-    projectName: 'CoE',
-    duration: '30 mins',
-    timestamp: '23rd April, 2021',
-    status: 'PENDING' as ActivityStatus,
-    points: 5,
-    userName: 'Shyam Gupta',
-  },
-  {
-    description: 'KFC meeting',
-    id: 2,
-    projectName: 'KFC',
-    duration: '1 hour',
-    timestamp: '23rd April, 2021',
-    status: 'PENDING' as ActivityStatus,
-    points: 10,
-    userName: 'Mayank Shukla',
-  },
-  {
-    description: 'Interview candidate https://google.com',
-    id: 3,
-    projectName: 'Hiring',
-    duration: '2 hours',
-    timestamp: '23rd April, 2021',
-    status: 'PENDING' as ActivityStatus,
-    points: 20,
-    userName: 'Athira',
-  },
-  {
-    description: 'Hackathon Meeting',
-    id: 4,
-    projectName: 'CoE',
-    duration: '1 hours',
-    timestamp: '24th April, 2021',
-    status: 'PENDING' as ActivityStatus,
-    points: 5,
-    userName: 'Rohan',
-  },
-  {
-    description: 'KFC Meeting',
-    id: 5,
-    projectName: 'KFC',
-    duration: '30 mins',
-    timestamp: '24rd April, 2021',
-    status: 'PENDING' as ActivityStatus,
-    points: 5,
-    userName: 'LargeNameOf anyUserForTEesting',
-  },
-];
+function usePendingRequests() {
+  const { data, error } = useSWR(`https://60850d5f9b2bed00170417e4.mockapi.io/api/v1/pendingRequests`, fetcher);
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
 
 function PendingRequest() {
-  const [requests, setRequests] = useState(REQUESTS);
+  const { data, isError, isLoading } = usePendingRequests();
+  const [requests, setRequests] = useState(data ?? []);
+
+  useEffect(() => {
+    setRequests(data);
+  }, [data]);
+
   const updateActivity = useCallback(
     activity => {
       setRequests(requests.filter(req => req.id !== activity.id));
     },
     [requests],
   );
+
+  if (isError) {
+    return <EmptyPlaceholder description="Something went wrong!" />;
+  }
+
+  if (isLoading) {
+    return <Spinner size="lg" />;
+  }
+
   return (
     <Stack>
-      {requests.length ? (
+      {requests?.length ? (
         <StaggeredStack spacing={4}>
-          {requests.map(activity => (
+          {requests.map((activity: Activity) => (
             <RequestItem
               onUpdate={() => {
                 updateActivity(activity);
@@ -81,10 +56,7 @@ function PendingRequest() {
           ))}
         </StaggeredStack>
       ) : (
-        <VStack spacing={4} py="2rem">
-          <NoActivities width="20rem" />
-          <Text fontSize="lg">No Request available</Text>
-        </VStack>
+        <EmptyPlaceholder description="No Request available" />
       )}
     </Stack>
   );

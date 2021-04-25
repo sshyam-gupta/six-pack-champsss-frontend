@@ -11,8 +11,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn run type-check"
+      "pre-commit": "lint-staged && yarn run type-check"
     }
   },
   "lint-staged": {
@@ -32,6 +31,7 @@
     "@svgr/webpack": "^5.5.0",
     "@tanem/react-nprogress": "^3.0.64",
     "axios": "^0.21.1",
+    "dayjs": "^1.10.4",
     "framer-motion": "^3.5.2",
     "lodash": "^4.17.21",
     "next": "latest",
@@ -45,7 +45,8 @@
     "react-number-format": "^4.5.5",
     "react-remove-scroll": "^2.4.1",
     "react-select": "^4.3.0",
-    "react-toggle-dark-mode": "^1.0.4"
+    "react-toggle-dark-mode": "^1.0.4",
+    "swr": "^0.5.5"
   },
   "devDependencies": {
     "@types/next-auth": "^3.13.0",
