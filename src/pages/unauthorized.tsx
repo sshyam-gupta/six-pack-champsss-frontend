@@ -1,30 +1,24 @@
 import Link from 'next/link';
-import { Flex, Stack, Text } from '@chakra-ui/layout';
+import { Box, Flex, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import UncontrolledLottie from '../components/lottie/UncontrolledLottie';
 import animationData from '../public/lotties/33049-binoculars.json';
 const OutsideOrganization = () => {
   return (
-    <Flex
-      height="100vh"
-      justify="space-between"
-      flexDirection={['column', 'column', 'column', 'row-reverse']}
-      position="relative"
-      alignItems="center"
-      overflowY="hidden"
-    >
-      <Stack flex={1} p="2rem">
-        <Text fontSize="4xl" fontFamily="Comfortaa">
-          You are not authorize to access this application
+    <Flex direction="column" alignItems="center" pos="relative" h="100vh">
+      <Box w={['24rem', '32rem']}>
+        <UncontrolledLottie width="100%" options={{ animationData: animationData }} />
+      </Box>
+      <Stack textAlign="center" alignItems="center">
+        <Text fontSize="2xl" fontFamily="Comfortaa">
+          You are not authorized to access this application
         </Text>
         <Link href="/signin">
-          <Button variant="link">Try Again</Button>
+          <Button colorScheme="red" variant="outline">
+            Try Again
+          </Button>
         </Link>
       </Stack>
-
-      <Flex flex={3} justify="center" alignItems="center" maxW={['100%', '60%', '40%', '60%']}>
-        <UncontrolledLottie options={{ animationData: animationData }} />
-      </Flex>
       <Flex position="absolute" bottom="0" left="0" right="0" transform="rotate(180deg)" zIndex="-1">
         <svg viewBox="0 0 1440 200">
           <path
