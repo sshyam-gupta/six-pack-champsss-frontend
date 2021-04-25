@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
-
+import LoginService from '../../../services/login/login';
 const KIPROSH_MAIL = `@kiprosh.com`;
 
 const options = {
@@ -22,8 +22,25 @@ const options = {
       if (email.includes(KIPROSH_MAIL)) {
         return true;
       } else {
-        return '/not-authorized';
+        return '/unauthorized';
       }
+    },
+    async jwt(token, _user, account) {
+      if (account) {
+        const { id_token } = account;
+        const { data, error } = await LoginService.loginUser(id_token);
+        if (error) {
+          return token;
+        }
+        return { ...token, data };
+      }
+      return token;
+    },
+    async session(session, { data }) {
+      session.accessToken = data.access_token;
+      session.user.id = data.user.id;
+      session.user.roleId = data.user.role_id;
+      return session;
     },
   },
 };
