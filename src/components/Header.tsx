@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { signOut } from 'next-auth/client';
+import { signOut, useSession } from 'next-auth/client';
 import { DarkModeSwitch as ThemeSwitcher } from 'react-toggle-dark-mode';
 
 import {
@@ -10,14 +10,25 @@ import {
   Flex,
   Box,
   Stack,
-  IconButton,
   Heading,
+  Menu,
+  MenuButton,
+  Center,
+  Avatar,
+  MenuList,
+  MenuItem,
+  Button,
+  CloseButton,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { MobileNavButton, MobileNavContent } from './MobileNav';
 import Logo from './Logo';
 import { IoMdLogOut } from 'react-icons/io';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { CgProfile } from 'react-icons/cg';
+import { useRouter } from 'next/router';
+import { AiOutlineMenu } from 'react-icons/ai';
 
 const Header = props => {
   const bg = useColorModeValue('white', 'gray.800');
@@ -46,11 +57,14 @@ const Header = props => {
 
 function HeaderContent(props: { title: string }) {
   const mobileNav = useDisclosure();
+  const [session] = useSession();
+  const router = useRouter();
+  const color = useColorModeValue('black', 'white');
 
   return (
     <>
       <Flex w="100%" h="100%" align="center" px="1rem">
-        <Flex align="center" w="280px">
+        <Flex align="center" w="280px" display={['none', 'none', 'flex']}>
           <NextLink href="/" passHref>
             <chakra.a display="block" aria-label="Chakra UI, Back to homepage">
               <Box minW="8rem">
@@ -59,6 +73,11 @@ function HeaderContent(props: { title: string }) {
             </chakra.a>
           </NextLink>
         </Flex>
+        <MobileNavButton
+          aria-label="Toggle Menu"
+          onClick={mobileNav.onToggle}
+          icon={!mobileNav.isOpen ? <AiOutlineMenu /> : <CloseButton />}
+        />
         <Stack display={['none', 'none', 'block']}>
           <AnimatePresence>
             {props.title ? (
@@ -70,15 +89,22 @@ function HeaderContent(props: { title: string }) {
         </Stack>
 
         <Stack flex={1} isInline justify="flex-end" w="100%" spacing={4} align="center" color="gray.400">
-          <IconButton
-            variant="ghost"
-            color={useColorModeValue('gray.800', 'inherit')}
-            aria-label="Logout"
-            onClick={() => void signOut()}
-            icon={<IoMdLogOut fontSize="2rem" />}
-          />
           <DarkModeSwitch />
-          <MobileNavButton aria-label="Open Menu" onClick={mobileNav.onOpen} />
+          <Menu isLazy placement="bottom-end">
+            <MenuButton as={Button} variant="ghost" rightIcon={<ChevronDownIcon />} fontSize="xl">
+              <Center>
+                <Avatar size="sm" name={session?.user.name || 'User'} src={session?.user.image} />
+              </Center>
+            </MenuButton>
+            <MenuList p={0} minW="10rem" color={color}>
+              <MenuItem icon={<CgProfile fontSize="1rem" />} onClick={() => router.push('/profile')}>
+                My Profile
+              </MenuItem>
+              <MenuItem icon={<IoMdLogOut fontSize="1rem" />} onClick={() => void signOut()}>
+                Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
         </Stack>
       </Flex>
       <MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} />

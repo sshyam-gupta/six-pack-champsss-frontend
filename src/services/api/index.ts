@@ -34,6 +34,9 @@ class ApiService {
   static async post(path: string, params: any = {}, headers?: any) {
     return this.xhr(path, params, headers, 'POST');
   }
+  static async put(path: string, params: any = {}, headers?: any) {
+    return this.xhr(path, params, headers, 'PUT');
+  }
   static async get(path: string, params: any = {}, headers?: any) {
     return this.xhr(path, params, headers, 'GET');
   }

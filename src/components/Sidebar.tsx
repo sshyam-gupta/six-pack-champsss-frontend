@@ -1,12 +1,9 @@
 import SidebarLink from './SidebarLink';
 import React from 'react';
-import { Box, Text, VStack } from '@chakra-ui/layout';
-import { Avatar } from '@chakra-ui/avatar';
-import { useSession } from 'next-auth/client';
+import { Box } from '@chakra-ui/layout';
 
 const Sidebar = () => {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [session] = useSession();
 
   return (
     <Box
@@ -26,14 +23,10 @@ const Sidebar = () => {
       pt="4"
       overflowY="auto"
       flexShrink={0}
-      minH="50vh"
+      h="calc(100vh - 5rem)"
       overflow="auto"
       display={['none', 'none', 'block']}
     >
-      <VStack py="1rem">
-        <Avatar size="xl" name={session?.user.name} src={session?.user.image} />
-        <Text size="xl">{session?.user.name ?? 'User'}</Text>
-      </VStack>
       <SidebarContent />
     </Box>
   );
@@ -53,9 +46,6 @@ export function SidebarContent() {
       </SidebarLink>
       <SidebarLink ml="-3" mt="2" href="/users">
         Users
-      </SidebarLink>
-      <SidebarLink ml="-3" mt="2" href="/profile">
-        Profile
       </SidebarLink>
     </>
   );

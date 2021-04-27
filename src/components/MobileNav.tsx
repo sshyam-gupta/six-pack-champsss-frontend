@@ -4,7 +4,6 @@ import { useUpdateEffect } from '@chakra-ui/hooks';
 import { useBreakpointValue } from '@chakra-ui/media-query';
 import { AnimatePresence, motion, useElementScroll } from 'framer-motion';
 import React from 'react';
-import { AiOutlineMenu } from 'react-icons/ai';
 import useRouteChanged from '../hooks/use-route-changed';
 import { Box, BoxProps, Flex } from '@chakra-ui/layout';
 import { SidebarContent } from './Sidebar';
@@ -18,7 +17,6 @@ export const MobileNavButton = React.forwardRef((props: IconButtonProps, ref: Re
       fontSize="20px"
       color={useColorModeValue('gray.800', 'inherit')}
       variant="ghost"
-      icon={<AiOutlineMenu />}
       {...props}
     />
   );
