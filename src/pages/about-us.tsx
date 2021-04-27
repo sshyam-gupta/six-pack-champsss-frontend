@@ -1,9 +1,13 @@
-import { Container, Heading, Stack, Text } from '@chakra-ui/layout';
+import { Container, Flex, Heading, Stack, Text } from '@chakra-ui/layout';
 import Image from 'next/image';
+import { DarkModeSwitch } from '../components/Header';
 
 function AboutUs() {
   return (
     <Container maxW="container.xl" as="main" className="main-content" overflow="auto" h="100vh">
+      <Flex position="absolute" top="2rem" right="2rem">
+        <DarkModeSwitch />
+      </Flex>
       <Stack alignItems="center" mb="2rem">
         <Heading mt="2rem" fontFamily="Comfortaa" textAlign="center">
           Six Pack Champsss
