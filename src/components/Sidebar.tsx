@@ -47,9 +47,6 @@ export function SidebarContent() {
       <SidebarLink ml="-3" mt="2" href="/users">
         Users
       </SidebarLink>
-      <SidebarLink ml="-3" mt="2" href="/profile">
-        Profile
-      </SidebarLink>
     </>
   );
 }
