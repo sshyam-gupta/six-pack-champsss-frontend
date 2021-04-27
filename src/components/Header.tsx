@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { signOut } from 'next-auth/client';
+import { signOut, useSession } from 'next-auth/client';
 import { DarkModeSwitch as ThemeSwitcher } from 'react-toggle-dark-mode';
 
 import {
@@ -12,12 +12,22 @@ import {
   Stack,
   IconButton,
   Heading,
+  Menu,
+  MenuButton,
+  Center,
+  Avatar,
+  MenuList,
+  MenuItem,
+  Button,
 } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { MobileNavButton, MobileNavContent } from './MobileNav';
 import Logo from './Logo';
 import { IoMdLogOut } from 'react-icons/io';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { CgProfile } from 'react-icons/cg';
+import { useRouter } from 'next/router';
 
 const Header = props => {
   const bg = useColorModeValue('white', 'gray.800');
@@ -46,6 +56,8 @@ const Header = props => {
 
 function HeaderContent(props: { title: string }) {
   const mobileNav = useDisclosure();
+  const [session] = useSession();
+  const router = useRouter();
 
   return (
     <>
@@ -78,6 +90,21 @@ function HeaderContent(props: { title: string }) {
             icon={<IoMdLogOut fontSize="2rem" />}
           />
           <DarkModeSwitch />
+          <Menu isLazy placement="bottom-end">
+            <MenuButton as={Button} variant="ghost" rightIcon={<ChevronDownIcon />} fontSize="xl">
+              <Center>
+                <Avatar size="sm" name={session?.user.name || 'User'} src={session?.user.image} />
+              </Center>
+            </MenuButton>
+            <MenuList p={0} minW="10rem">
+              <MenuItem icon={<CgProfile fontSize="1rem" />} onClick={() => router.push('/profile')}>
+                My Profile
+              </MenuItem>
+              <MenuItem icon={<IoMdLogOut fontSize="1rem" />} onClick={() => void signOut()}>
+                Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
           <MobileNavButton aria-label="Open Menu" onClick={mobileNav.onOpen} />
         </Stack>
       </Flex>

@@ -1,12 +1,13 @@
 import { Spinner } from '@chakra-ui/spinner';
 import EmptyPlaceholder from '../EmptyPlaceholder';
 import useSWR from 'swr';
-import fetcher from '../../util/swr-util';
+
 import StaggeredStack from '../motion/StaggeredStack';
 import UserItem, { User } from './UserItem';
+import { USERS } from '../../services/api/endpoints';
 
 function UserList() {
-  const { data, error } = useSWR('https://60850d5f9b2bed00170417e4.mockapi.io/api/v1/users', fetcher);
+  const { data, error } = useSWR(USERS);
 
   if (error) {
     return <EmptyPlaceholder description="Something went wrong!" />;
