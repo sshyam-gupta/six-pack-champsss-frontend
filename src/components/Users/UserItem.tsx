@@ -11,12 +11,18 @@ import { useToast } from '@chakra-ui/toast';
 import sleep from '../../util/sleep';
 import { useDisclosure } from '@chakra-ui/hooks';
 
+export enum UserRole {
+  Owner = 'owner',
+  Admin = 'admin',
+  Associate = 'associate',
+}
+
 export type User = {
   id: string;
   createdAt: string;
   name: string;
   image: string;
-  role: number;
+  role: UserRole;
 };
 
 function UserItem(props: User) {
