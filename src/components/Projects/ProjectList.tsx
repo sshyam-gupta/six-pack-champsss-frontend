@@ -48,16 +48,6 @@ function ProjectList() {
     }
   };
 
-  const deleteProject = (_id: number) => {
-    toast({
-      description: `Project deleted successfully`,
-      variant: 'top-accent',
-      status: 'success',
-      isClosable: true,
-      position: 'top',
-    });
-  };
-
   return (
     <>
       <Flex justify="space-between" mt="1rem">
@@ -71,7 +61,7 @@ function ProjectList() {
       {projects && projects.length ? (
         <StaggeredGrid mt="1rem" columns={[1, 2, 3, 3]} gridGap="1rem">
           {projects.map((project: Project, index) => (
-            <ProjectItem key={project.id + index} {...project} deleteProject={() => deleteProject(project.id)} />
+            <ProjectItem key={project.id + index} {...project} updateProject={initiateClose} />
           ))}
         </StaggeredGrid>
       ) : (

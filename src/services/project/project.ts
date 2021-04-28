@@ -8,6 +8,9 @@ class ProjectService {
   static async addProject(name: string) {
     return await ApiService.post(PROJECTS, { name });
   }
+  static async editProject(data: any) {
+    return await ApiService.put(`${PROJECTS}/${data.id}`, data);
+  }
   static async addActivity(data: any) {
     return await ApiService.post(ADD_ACTIVITY, data);
   }
@@ -16,6 +19,9 @@ class ProjectService {
   }
   static async deleteActivity(id: number) {
     return await ApiService.delete(`${ACTIVITIES}/${id}`);
+  }
+  static async deleteProject(id: number) {
+    return await ApiService.delete(`${PROJECTS}/${id}`);
   }
   static async editActivity(id: number, data: any) {
     return await ApiService.put(`${ACTIVITIES}/${id}`, data);
