@@ -86,9 +86,10 @@ const theme = extendTheme({
       },
       variants: {
         // @ts-ignore
-        solid: () => ({
+        solid: props => ({
           bg: 'primary.500',
           color: 'white',
+          _hover: { bg: props.colorMode === 'dark' ? 'primary.400' : 'primary.600' },
         }),
       },
     },

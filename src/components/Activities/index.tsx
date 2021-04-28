@@ -1,91 +1,82 @@
 import { Button } from '@chakra-ui/button';
 import { Heading, HStack, Spacer, Stack } from '@chakra-ui/layout';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 import SearchInput from '../SearchInput';
 import ActivityItem from './ActivityItem';
-import { ActivityStatus } from '../../util/activity-util';
+
 import StaggeredStack from '../motion/StaggeredStack';
 import EmptyPlaceholder from '../EmptyPlaceholder';
+import useSWR from 'swr';
+import { ACTIVITIES } from '../../services/api/endpoints';
+import { Spinner } from '@chakra-ui/spinner';
+import AddActivity from './AddActivity';
+import { useDisclosure } from '@chakra-ui/hooks';
 
-const ACTIVITIES = [
-  {
-    description: 'Meeting about Hackathon',
-    id: 1,
-    projectName: 'CoE',
-    duration: 20,
-    timestamp: '2021-04-24T12:47:00.127Z',
-    status: 'PENDING' as ActivityStatus,
-    points: 5,
-    userName: 'Shyam Gupta',
-  },
-  {
-    description: 'KFC meeting',
-    id: 2,
-    projectName: 'KFC',
-    duration: 60,
-    timestamp: '2021-04-24T10:22:44.115Z',
-    status: 'PENDING' as ActivityStatus,
-    points: 10,
-    userName: 'Mayank Shukla',
-  },
-  {
-    description: 'Interview candidate https://google.com',
-    id: 3,
-    projectName: 'Hiring',
-    duration: 90,
-    timestamp: '2021-04-24T22:04:43.365Z',
-    status: 'APPROVED' as ActivityStatus,
-    points: 20,
-    userName: 'Athira',
-  },
-  {
-    description: 'Hackathon Meeting',
-    id: 4,
-    projectName: 'CoE',
-    duration: 45,
-    timestamp: '2021-04-25T03:06:48.253Z',
-    status: 'APPROVED' as ActivityStatus,
-    points: 5,
-    userName: 'Rohan',
-  },
-  {
-    description: 'KFC Meeting',
-    id: 5,
-    projectName: 'KFC',
-    duration: 20,
-    timestamp: '2021-04-25T10:16:38.284Z',
-    status: 'REJECTED' as ActivityStatus,
-    points: 5,
-    userName: 'LargeNameOf anyUserForTEesting',
-  },
-];
+function useActivities() {
+  const { data, error } = useSWR(ACTIVITIES);
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
 
 function Activities() {
+  const { data, isError, isLoading } = useActivities();
+  const [activities, setActivities] = useState(data ?? []);
   const [searchText, setSearchText] = useState('');
+  const addActivityDisclosure = useDisclosure();
+
+  useEffect(() => {
+    setActivities(data);
+  }, [data]);
 
   const activityData = useMemo(() => {
     if (searchText) {
-      return ACTIVITIES?.filter(
-        activity =>
-          activity.description?.toLowerCase().includes(searchText.toLowerCase()) ||
-          activity.projectName?.toLowerCase().includes(searchText.toLowerCase()) ||
-          activity.status?.toLowerCase().includes(searchText.toLowerCase()),
+      return (
+        activities?.filter(
+          activity =>
+            activity.description?.toLowerCase().includes(searchText.toLowerCase()) ||
+            activity.projectName?.toLowerCase().includes(searchText.toLowerCase()) ||
+            activity.status?.toLowerCase().includes(searchText.toLowerCase()),
+        ) ?? []
       );
     }
 
-    return ACTIVITIES;
-  }, [searchText]);
+    return activities ?? [];
+  }, [searchText, activities]);
+
+  const initiateClose = useCallback(
+    data => {
+      setActivities([...activities, data]);
+      addActivityDisclosure.onClose();
+    },
+    [activities],
+  );
+
+  if (isError) {
+    return <EmptyPlaceholder description="Something went wrong!" />;
+  }
+
+  if (isLoading) {
+    return <Spinner size="lg" />;
+  }
+
   return (
     <Stack spacing={4}>
       <Heading size="lg" as="h6" fontFamily="Comfortaa">
         Activities
       </Heading>
+      <AddActivity isOpen={addActivityDisclosure.isOpen} onClose={initiateClose} />
       <HStack>
         <SearchInput placeholder="Search for activity, project or status" onSearch={setSearchText} />
         <Spacer />
-        <Button leftIcon={<AiOutlinePlus />}>Add</Button>
+        <Button onClick={addActivityDisclosure.onOpen} leftIcon={<AiOutlinePlus />}>
+          Add
+        </Button>
       </HStack>
       <StaggeredStack>
         {activityData.length ? (

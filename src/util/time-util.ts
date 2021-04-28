@@ -3,6 +3,8 @@ export function minutesToHours(num: number) {
   const minutes = num % 60;
   const hoursLabel = hours > 1 ? 'hours' : 'hour';
   const minutesLabel = minutes > 1 ? 'mins' : 'min';
-  if (hours < 1) return `${minutes}${minutesLabel}`;
-  return `${hours}${hoursLabel} ${minutes}${minutesLabel}`;
+
+  const minutesValue = minutes > 1 ? `${minutes}${minutesLabel}` : '';
+  if (hours < 1) return `${minutesValue}`;
+  return `${hours}${hoursLabel} ${minutesValue}`;
 }

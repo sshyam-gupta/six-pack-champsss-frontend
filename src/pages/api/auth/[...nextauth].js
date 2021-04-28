@@ -19,7 +19,7 @@ const options = {
     },
     async signIn(user) {
       const { email } = user;
-      if (email.includes(KIPROSH_MAIL)) {
+      if (email?.includes(KIPROSH_MAIL)) {
         return true;
       } else {
         return '/unauthorized';
@@ -32,9 +32,9 @@ const options = {
         if (error) {
           return token;
         }
-        return Promise.resolve({ ...token, data });
+        return { ...token, data };
       }
-      return Promise.resolve(token);
+      return token;
     },
     async session(session, { data }) {
       try {
@@ -44,7 +44,7 @@ const options = {
         });
 
         if (error) {
-          return Promise.resolve(session);
+          return session;
         }
 
         session.accessToken = data?.access_token;
@@ -53,9 +53,11 @@ const options = {
           ...userData?.user,
         };
 
-        return Promise.resolve(session);
+        session.points = userData?.points;
+
+        return session;
       } catch (err) {
-        return Promise.resolve(session);
+        return session;
       }
     },
   },
@@ -75,4 +77,5 @@ function setNextAuthUrl(req) {
   }
 
   process.env.NEXTAUTH_URL = `${protocol}://${host}`;
+  process.env.NEXTAUTH_URL_INTERNAL = 'http://localhost:4000';
 }
