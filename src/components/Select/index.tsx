@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Icon } from '@chakra-ui/react';
+import { Stack, Icon, Avatar, Text } from '@chakra-ui/react';
 import { components } from 'react-select';
 import BaseSelect from './BaseSelect';
 import { ChevronDownIcon, ChevronUpIcon, SearchIcon } from '@chakra-ui/icons';
@@ -22,6 +22,35 @@ const DropdownIndicator = props => {
     )
   );
 };
+export function SingleValueLabel(props: any) {
+  return <components.SingleValue {...props}>{props.data.label}</components.SingleValue>;
+}
+export function MultiValueLabel(props: any) {
+  return <components.MultiValueLabel {...props}>{props.data.label}</components.MultiValueLabel>;
+}
+export function FormatOptionLabel(props: any) {
+  return (
+    <Stack
+      isInline
+      spacing={4}
+      key={props.id}
+      alignItems="center"
+      mx={1}
+      justifyContent="space-between"
+      cursor="pointer"
+    >
+      <Stack isInline spacing={4} alignItems="center">
+        <Avatar name={props.name} size="sm" src={props.image} />
+        <Stack spacing={0}>
+          <Text fontSize="md">{props.name}</Text>
+          <Text fontSize="sm" color="gray.600">
+            {props.email}
+          </Text>
+        </Stack>
+      </Stack>
+    </Stack>
+  );
+}
 
 function SelectComponent(restProps: any) {
   return (
