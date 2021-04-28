@@ -1,6 +1,7 @@
 import SidebarLink from './SidebarLink';
 import React from 'react';
 import { Box } from '@chakra-ui/layout';
+import { useUser } from '../hooks/use-user';
 
 const Sidebar = () => {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -33,6 +34,8 @@ const Sidebar = () => {
 };
 
 export function SidebarContent() {
+  const { isAdmin } = useUser();
+
   return (
     <>
       <SidebarLink ml="-3" mt="2" href="/">
@@ -41,12 +44,16 @@ export function SidebarContent() {
       <SidebarLink ml="-3" mt="2" href="/projects">
         Projects
       </SidebarLink>
-      <SidebarLink ml="-3" mt="2" href="/requests">
-        Requests
-      </SidebarLink>
-      <SidebarLink ml="-3" mt="2" href="/users">
-        Users
-      </SidebarLink>
+      {isAdmin ? (
+        <SidebarLink ml="-3" mt="2" href="/requests">
+          Requests
+        </SidebarLink>
+      ) : null}
+      {isAdmin ? (
+        <SidebarLink ml="-3" mt="2" href="/users">
+          Users
+        </SidebarLink>
+      ) : null}
     </>
   );
 }

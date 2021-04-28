@@ -21,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     isRouteChanging: false,
     loadingKey: 0,
   });
+  const [session, setSession] = useState(pageProps.session);
 
   useEffect(() => {
     const handleRouteChangeStart = () => {
@@ -66,7 +67,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         >
           <ChakraProvider resetCSS theme={theme}>
             <DefaultSeo {...siteConfig.seo} />
-            <Component {...pageProps} />
+            <Component {...pageProps} session={session} updateSession={setSession} />
           </ChakraProvider>
         </SWRConfig>
       </Provider>

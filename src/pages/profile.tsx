@@ -12,7 +12,7 @@ import { USERS } from '../services/api/endpoints';
 import { useToast } from '@chakra-ui/toast';
 import { useDisclosure } from '@chakra-ui/hooks';
 
-function MyProfile() {
+function MyProfile(props) {
   const [session, loading] = useSession();
   const [name, setName] = useState(session?.user.name ?? '');
   const toast = useToast();
@@ -36,12 +36,31 @@ function MyProfile() {
       return;
     }
     isLoadingDisclosure.onOpen();
-    await ApiService.put(`${USERS}/${session?.user.id}`, {
+    const { error } = await ApiService.put(`${USERS}/${session?.user.id}`, {
       id: session?.user.id,
       name,
     });
+
+    if (error) {
+      toast({
+        description: 'Something went wrong',
+        status: 'error',
+        position: 'top',
+        isClosable: true,
+      });
+      return;
+    }
+
+    props.updateSession({
+      ...session,
+      user: {
+        ...session.user,
+        name,
+      },
+    });
+
     isLoadingDisclosure.onClose();
-  }, [name, session]);
+  }, [name, session, props.updateSession]);
 
   return (
     <LoginRequired>
@@ -59,7 +78,7 @@ function MyProfile() {
                   setName(e.target.value);
                 }}
               />
-              {name !== session?.user.name ? (
+              {name !== session?.user.name && name !== props.session?.user.name ? (
                 <InputRightElement width="10rem">
                   <ButtonGroup>
                     <Button

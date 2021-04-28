@@ -19,13 +19,13 @@ const options = {
     },
     async signIn(user) {
       const { email } = user;
-      if (email.includes(KIPROSH_MAIL)) {
+      if (email?.includes(KIPROSH_MAIL)) {
         return true;
       } else {
         return '/unauthorized';
       }
     },
-    async jwt(token, _user, account) {
+    async jwt(token, _authToken, account) {
       if (account) {
         const { id_token } = account;
         const { data, error } = await LoginService.loginUser(id_token);
@@ -37,10 +37,28 @@ const options = {
       return token;
     },
     async session(session, { data }) {
-      session.accessToken = data?.access_token;
-      session.user.id = data?.user?.id;
-      session.user.roleId = data?.user?.role_id;
-      return session;
+      try {
+        const { error, data: userData } = await LoginService.getCurrentUser(data?.user?.id, {
+          Authorization: `Bearer ${data?.access_token}`,
+          'Content-Type': 'application/json',
+        });
+
+        if (error) {
+          return session;
+        }
+
+        session.accessToken = data?.access_token;
+        session.user = {
+          ...session.user,
+          ...userData?.user,
+        };
+
+        session.points = userData?.points;
+
+        return session;
+      } catch (err) {
+        return session;
+      }
     },
   },
 };
@@ -49,6 +67,7 @@ export default (req, res) => {
   setNextAuthUrl(req);
   NextAuth(req, res, options);
 };
+
 function setNextAuthUrl(req) {
   const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
   const host = req.headers['host'];
@@ -58,4 +77,5 @@ function setNextAuthUrl(req) {
   }
 
   process.env.NEXTAUTH_URL = `${protocol}://${host}`;
+  process.env.NEXTAUTH_URL_INTERNAL = 'http://localhost:4000';
 }

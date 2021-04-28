@@ -11,12 +11,18 @@ import { useToast } from '@chakra-ui/toast';
 import sleep from '../../util/sleep';
 import { useDisclosure } from '@chakra-ui/hooks';
 
+export enum UserRole {
+  Owner = 'owner',
+  Admin = 'admin',
+  Associate = 'associate',
+}
+
 export type User = {
   id: string;
   createdAt: string;
   name: string;
   image: string;
-  role: number;
+  role: UserRole;
   email?: string;
 };
 
@@ -51,10 +57,14 @@ function UserItem(props: User) {
                 });
               }}
               isClearable={false}
-              defaultValue={props.role === 1 ? { label: 'Admin', value: 1 } : { label: 'Member', value: 2 }}
+              defaultValue={
+                props.role === UserRole.Associate
+                  ? { label: 'Admin', value: UserRole.Admin }
+                  : { label: 'Associate', value: UserRole.Associate }
+              }
               options={[
-                { label: 'Admin', value: 1 },
-                { label: 'Member', value: 2 },
+                { label: 'Admin', value: UserRole.Admin },
+                { label: 'Associate', value: UserRole.Associate },
               ]}
             />
           </Flex>

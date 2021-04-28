@@ -20,6 +20,10 @@ const theme = extendTheme({
       a: {
         color: props.colorMode === 'dark' ? 'primary.300' : 'primary.500',
       },
+      'input[readonly]': {
+        bg: props.colorMode === 'dark' ? 'gray.700' : 'gray.50',
+        cursor: 'not-allowed',
+      },
     }),
   },
 
@@ -82,9 +86,10 @@ const theme = extendTheme({
       },
       variants: {
         // @ts-ignore
-        solid: () => ({
+        solid: props => ({
           bg: 'primary.500',
           color: 'white',
+          _hover: { bg: props.colorMode === 'dark' ? 'primary.400' : 'primary.600' },
         }),
       },
     },

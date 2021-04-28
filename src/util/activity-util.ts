@@ -1,12 +1,12 @@
-export type ActivityStatus = 'PENDING' | 'REJECTED' | 'APPROVED';
+export type ActivityStatus = 'pending' | 'rejected' | 'approved';
 
 export function getStatusColor(status: ActivityStatus) {
   switch (status) {
-    case 'PENDING':
+    case 'pending':
       return 'orange';
-    case 'REJECTED':
+    case 'rejected':
       return 'red';
-    case 'APPROVED':
+    case 'approved':
       return 'green';
     default:
       return 'orange';
@@ -17,9 +17,11 @@ export type Activity = {
   description: string;
   id: number;
   projectName: string;
+  project_id: number;
   duration: number;
-  timestamp: string;
+  performed_on: string;
   status: ActivityStatus;
-  points: number;
-  userName: string;
+  points_requested: number;
+  points_granted: number;
+  user_id: number;
 };

@@ -10,6 +10,7 @@ import DashboardChart from '../components/dashboard/DashboardChart';
 import { AvailableIcon, RedeemedIcon } from '../components/lottie/PlaceholderIcons';
 import Activities from '../components/Activities';
 import { useToast } from '@chakra-ui/toast';
+import { Session } from 'next-auth';
 
 type HomeProps = {
   quotes?: {
@@ -24,6 +25,9 @@ type HomeProps = {
 const Index = (props: HomeProps) => {
   const [session] = useSession();
   const toast = useToast();
+
+  // @ts-ignore
+  const points = session?.points;
 
   return (
     <LoginRequired>
@@ -43,7 +47,7 @@ const Index = (props: HomeProps) => {
                 <DashboardBox
                   bg={useColorModeValue('cyan.50', 'cyan.900')}
                   color={useColorModeValue('cyan.500', 'cyan.400')}
-                  value={2000}
+                  value={points?.available_points ?? 0}
                   title={`Available ${AppData.points}`}
                   icon={<AvailableIcon px="3rem" py="2rem" />}
                   onRedeem={() => {
@@ -58,7 +62,7 @@ const Index = (props: HomeProps) => {
                 <DashboardBox
                   bg={useColorModeValue('green.50', 'green.900')}
                   color={useColorModeValue('green.500', 'green.400')}
-                  value={5000}
+                  value={points?.redeemed_points ?? 0}
                   title={`Redeemed ${AppData.points}`}
                   icon={<RedeemedIcon transform="scaleX(-1)" px="3rem" py="2rem" />}
                 />

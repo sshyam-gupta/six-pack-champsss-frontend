@@ -14,8 +14,11 @@ import { PROJECTS } from '../../services/api/endpoints';
 import StaggeredGrid from '../motion/StaggeredGrid';
 import AddProject from './AddProject';
 
+import { useUser } from '../../hooks/use-user';
+
 function ProjectList() {
   const { isOpen, onOpen: openAddProjectModal, onClose: closeAddProjectModal } = useDisclosure();
+  const { isAdmin } = useUser();
   const [searchText, setSearchText] = useState('');
   const toast = useToast();
 
@@ -57,9 +60,11 @@ function ProjectList() {
     <>
       <Flex justify="space-between" mt="1rem">
         <SearchInput onSearch={setSearchText} />
-        <Button leftIcon={<AiOutlinePlus />} onClick={openAddProjectModal}>
-          Add Project
-        </Button>
+        {isAdmin ? (
+          <Button leftIcon={<AiOutlinePlus />} onClick={openAddProjectModal}>
+            Add Project
+          </Button>
+        ) : null}
       </Flex>
       {projects && projects.length ? (
         <StaggeredGrid mt="1rem" columns={[1, 2, 3, 3]} gridGap="1rem">
