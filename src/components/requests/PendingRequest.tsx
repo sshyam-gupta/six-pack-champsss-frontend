@@ -30,7 +30,7 @@ function PendingRequest() {
 
   const updateActivity = useCallback(() => {
     mutate(`${ADMIN_ACTIVITIES}?status=pending`);
-  }, [requests]);
+  }, []);
 
   if (isError) {
     return <EmptyPlaceholder description="Something went wrong!" />;

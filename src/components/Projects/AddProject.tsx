@@ -28,7 +28,6 @@ const AddProject = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: str
     if (error) {
       toast({
         description: error,
-        variant: 'top-accent',
         status: 'error',
         isClosable: true,
         position: 'top',

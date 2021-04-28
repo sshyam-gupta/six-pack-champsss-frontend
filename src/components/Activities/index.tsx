@@ -8,7 +8,7 @@ import ActivityItem from './ActivityItem';
 
 import StaggeredStack from '../motion/StaggeredStack';
 import EmptyPlaceholder from '../EmptyPlaceholder';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { ACTIVITIES } from '../../services/api/endpoints';
 import { Spinner } from '@chakra-ui/spinner';
 import AddActivity from './AddActivity';
@@ -59,6 +59,10 @@ function Activities() {
     [activities],
   );
 
+  const updateActivity = useCallback(() => {
+    mutate(ACTIVITIES);
+  }, []);
+
   if (isError) {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
@@ -84,7 +88,7 @@ function Activities() {
         {activityData.length ? (
           <Stack spacing={4} maxHeight="30rem" overflow="auto">
             {activityData.map(activity => (
-              <ActivityItem key={activity.id} {...activity} />
+              <ActivityItem key={activity.id} {...activity} onUpdate={updateActivity} />
             ))}
           </Stack>
         ) : (
