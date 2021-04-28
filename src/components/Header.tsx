@@ -100,7 +100,15 @@ function HeaderContent(props: { title: string }) {
               <MenuItem icon={<CgProfile fontSize="1rem" />} onClick={() => router.push('/profile')}>
                 My Profile
               </MenuItem>
-              <MenuItem icon={<IoMdLogOut fontSize="1rem" />} onClick={() => void signOut()}>
+              <MenuItem
+                icon={<IoMdLogOut fontSize="1rem" />}
+                onClick={() => {
+                  void signOut();
+                  if (typeof window !== 'undefined') {
+                    window.sessionStorage.removeItem('token');
+                  }
+                }}
+              >
                 Logout
               </MenuItem>
             </MenuList>

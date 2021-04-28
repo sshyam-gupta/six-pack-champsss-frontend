@@ -1,29 +1,14 @@
 import axios from 'axios';
-import { getSession, signOut } from 'next-auth/client';
-
-axios.interceptors.request.use(
-  async config => {
-    const session = await getSession();
-    const token = session?.accessToken;
-
-    config.headers = {
-      ...config.headers,
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    };
-    return {
-      ...config,
-    };
-  },
-  error => {
-    return Promise.reject(error);
-  },
-);
+import { signOut } from 'next-auth/client';
 
 axios.interceptors.response.use(
   res => res,
   err => {
     if (err.response.status === 401) {
       signOut();
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.removeItem('token');
+      }
       return;
     }
     throw err;
@@ -46,8 +31,13 @@ class ApiService {
       data: params,
       baseURL: process.env.NEXT_PUBLIC_BASE_URL,
     };
+
     config.url = path;
-    config.headers = _headers;
+    config.headers = {
+      ...config.headers,
+      ...(typeof window !== 'undefined' ? { Authorization: `Bearer ${window.sessionStorage.getItem('token')}` } : {}),
+      ..._headers,
+    };
     config.timeout = 30000;
     let response: any = {};
 
