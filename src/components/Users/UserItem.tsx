@@ -37,13 +37,13 @@ function UserItem(props: User) {
     const reqData = {
       user_id: props.id,
       user: {
-        role: val.value
-      }
+        role: val.value,
+      },
     };
     isLoaderDisclaimer.onOpen();
     const { status } = await UserService.assignRole(reqData);
     isLoaderDisclaimer.onClose();
-    if (status !== 200 ) {
+    if (status !== 200) {
       toast({
         description: 'Something went wrong',
         variant: 'top-accent',
@@ -81,8 +81,8 @@ function UserItem(props: User) {
               isClearable={false}
               defaultValue={
                 props.role === UserRole.Associate
-                  ? { label: 'Admin', value: UserRole.Admin }
-                  : { label: 'Associate', value: UserRole.Associate }
+                  ? { label: 'Associate', value: UserRole.Associate }
+                  : { label: 'Admin', value: UserRole.Admin }
               }
               options={[
                 { label: 'Admin', value: UserRole.Admin },
