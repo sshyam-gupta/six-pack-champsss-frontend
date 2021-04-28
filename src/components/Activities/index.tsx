@@ -51,7 +51,9 @@ function Activities() {
 
   const initiateClose = useCallback(
     data => {
-      setActivities([...activities, data]);
+      if (data) {
+        setActivities([...activities, data]);
+      }
       addActivityDisclosure.onClose();
     },
     [activities],

@@ -1,9 +1,11 @@
 import { useToast } from '@chakra-ui/toast';
 import { useSession } from 'next-auth/client';
 import { useState, useMemo, useEffect } from 'react';
+import { SWRConfig } from 'swr';
 
 import { ProjectContext } from '../contexts/project';
 import ProjectService from '../services/project/project';
+import fetcher from '../util/swr-util';
 import { Project } from './Projects/ProjectItem';
 
 const ContextWrapper = ({ children }: any) => {
@@ -12,6 +14,9 @@ const ContextWrapper = ({ children }: any) => {
   const [session] = useSession();
 
   useEffect(() => {
+    if (session && typeof window !== 'undefined') {
+      window.sessionStorage.setItem('token', session.accessToken);
+    }
     async function fetchProjects() {
       const { data, error } = await ProjectService.getProjects();
       if (error) {
@@ -34,6 +39,21 @@ const ContextWrapper = ({ children }: any) => {
 
   const projectsProvider = useMemo(() => ({ projects, setProjects }), [projects, setProjects]);
 
-  return <ProjectContext.Provider value={projectsProvider}>{children}</ProjectContext.Provider>;
+  return (
+    <SWRConfig
+      value={{
+        fetcher: url =>
+          fetcher(url, {
+            headers: {
+              ...(typeof window !== 'undefined'
+                ? { Authorization: `Bearer ${window.sessionStorage.getItem('token')}` }
+                : {}),
+            },
+          }),
+      }}
+    >
+      <ProjectContext.Provider value={projectsProvider}>{children}</ProjectContext.Provider>
+    </SWRConfig>
+  );
 };
 export default ContextWrapper;
