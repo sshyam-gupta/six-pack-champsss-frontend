@@ -47,6 +47,7 @@ class ApiService {
       baseURL: process.env.NEXT_PUBLIC_BASE_URL,
     };
     config.url = path;
+    config.headers = _headers;
     config.timeout = 30000;
     let response: any = {};
 
@@ -72,6 +73,7 @@ class ApiService {
         response = { error: { Message: errorMessage } };
       }
     }
+
     return response;
   }
 }

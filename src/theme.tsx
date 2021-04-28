@@ -20,6 +20,10 @@ const theme = extendTheme({
       a: {
         color: props.colorMode === 'dark' ? 'primary.300' : 'primary.500',
       },
+      'input[readonly]': {
+        bg: props.colorMode === 'dark' ? 'gray.700' : 'gray.50',
+        cursor: 'not-allowed',
+      },
     }),
   },
 

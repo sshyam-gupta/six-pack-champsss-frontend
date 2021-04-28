@@ -25,22 +25,38 @@ const options = {
         return '/unauthorized';
       }
     },
-    async jwt(token, _user, account) {
+    async jwt(token, _authToken, account) {
       if (account) {
         const { id_token } = account;
         const { data, error } = await LoginService.loginUser(id_token);
         if (error) {
           return token;
         }
-        return { ...token, data };
+        return Promise.resolve({ ...token, data });
       }
-      return token;
+      return Promise.resolve(token);
     },
     async session(session, { data }) {
-      session.accessToken = data?.access_token;
-      session.user.id = data?.user?.id;
-      session.user.roleId = data?.user?.role_id;
-      return session;
+      try {
+        const { error, data: userData } = await LoginService.getCurrentUser(data?.user?.id, {
+          Authorization: `Bearer ${data?.access_token}`,
+          'Content-Type': 'application/json',
+        });
+
+        if (error) {
+          return Promise.resolve(session);
+        }
+
+        session.accessToken = data?.access_token;
+        session.user = {
+          ...session.user,
+          ...userData?.user,
+        };
+
+        return Promise.resolve(session);
+      } catch (err) {
+        return Promise.resolve(session);
+      }
     },
   },
 };
@@ -49,6 +65,7 @@ export default (req, res) => {
   setNextAuthUrl(req);
   NextAuth(req, res, options);
 };
+
 function setNextAuthUrl(req) {
   const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
   const host = req.headers['host'];
