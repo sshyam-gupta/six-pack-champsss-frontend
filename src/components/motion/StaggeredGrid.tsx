@@ -25,6 +25,7 @@ function StaggeredGrid(props: SimpleGridProps) {
 export function StaggeredGridItem(props: SimpleGridProps) {
   return (
     <StaggeredGrid
+      //@ts-ignore
       variants={{
         hidden: { opacity: 0, x: 40 },
         show: { opacity: 1, x: 0 },
