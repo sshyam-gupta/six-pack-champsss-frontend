@@ -1,7 +1,7 @@
 import { Spinner } from '@chakra-ui/spinner';
 import { useToast } from '@chakra-ui/toast';
 import { Flex } from '@chakra-ui/layout';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@chakra-ui/button';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useDisclosure } from '@chakra-ui/hooks';
@@ -26,6 +26,13 @@ function ProjectList() {
 
   const { projects: records, error } = useProject();
 
+  const projects = useMemo(() => {
+    return records?.filter((rec: Project) => {
+      const text = searchText.trim().toLowerCase();
+      return rec.name.toLowerCase().includes(text);
+    });
+  }, [records, searchText]);
+
   if (error) {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
@@ -40,11 +47,6 @@ function ProjectList() {
       mutate(PROJECTS);
     }
   };
-
-  const projects = records?.filter((rec: Project) => {
-    const text = searchText.trim().toLowerCase();
-    return rec.name.toLowerCase().includes(text);
-  });
 
   const deleteProject = (_id: number) => {
     toast({
@@ -68,8 +70,8 @@ function ProjectList() {
       </Flex>
       {projects && projects.length ? (
         <StaggeredGrid mt="1rem" columns={[1, 2, 3, 3]} gridGap="1rem">
-          {projects.map((project: Project) => (
-            <ProjectItem key={project.id} {...project} deleteProject={() => deleteProject(project.id)} />
+          {projects.map((project: Project, index) => (
+            <ProjectItem key={project.id + index} {...project} deleteProject={() => deleteProject(project.id)} />
           ))}
         </StaggeredGrid>
       ) : (
