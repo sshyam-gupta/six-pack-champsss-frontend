@@ -11,7 +11,7 @@ import * as AppData from '../../constants/app.json';
 import { Activity, ActivityStatus, getStatusColor } from '../../util/activity-util';
 import { useDisclosure } from '@chakra-ui/hooks';
 import { useCallback } from 'react';
-import sleep from '../../util/sleep';
+
 import { useToast } from '@chakra-ui/toast';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import { minutesToHours } from '../../util/time-util';

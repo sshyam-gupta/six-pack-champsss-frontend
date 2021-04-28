@@ -44,8 +44,8 @@ const AddProject = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: str
         <ModalCloseButton />
         <ModalBody>
           <Input placeholder="Enter project name" onChange={({ target: { value } }: any) => setProjectName(value)} />
-          <Text color="red.500" fontSize="sm" mt="1rem">
-            {AppData['hours-to-clap-mapping']}
+          <Text fontWeight="500" color="red.500" fontSize="sm" mt="1rem">
+            Points calculation: {AppData['hours-to-clap-mapping']}
           </Text>
         </ModalBody>
         <ModalFooter>
