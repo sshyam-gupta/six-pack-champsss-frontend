@@ -57,10 +57,14 @@ function UserItem(props: User) {
                 });
               }}
               isClearable={false}
-              defaultValue={props.role === 1 ? { label: 'Admin', value: 1 } : { label: 'Member', value: 2 }}
+              defaultValue={
+                props.role === UserRole.Associate
+                  ? { label: 'Admin', value: UserRole.Admin }
+                  : { label: 'Associate', value: UserRole.Associate }
+              }
               options={[
-                { label: 'Admin', value: 1 },
-                { label: 'Member', value: 2 },
+                { label: 'Admin', value: UserRole.Admin },
+                { label: 'Associate', value: UserRole.Associate },
               ]}
             />
           </Flex>

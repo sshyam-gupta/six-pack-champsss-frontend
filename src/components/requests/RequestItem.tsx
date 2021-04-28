@@ -60,7 +60,7 @@ function RequestItem(props: RequestItemProps) {
         </HStack>
         <Spacer />
         <HStack>
-          <Text>{`${props.points} ${AppData.points}`}</Text>
+          <Text>{`${props.points_requested} ${AppData.points}`}</Text>
           {!props.disableCrud ? (
             <Tooltip placement="top" label="Approve">
               <IconButton
@@ -93,7 +93,7 @@ function RequestItem(props: RequestItemProps) {
       </HStack>
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
-          <Text minW="80px">{props.userName}</Text>
+          <Text minW="80px">{props.user_id}</Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
@@ -107,7 +107,7 @@ function RequestItem(props: RequestItemProps) {
             {minutesToHours(props.duration)}
           </Text>
         </HStack>
-        <Text textAlign="right">{dayjs(props.timestamp).format('ll LT')}</Text>
+        <Text textAlign="right">{dayjs(props.performed_on).format('ll LT')}</Text>
       </Flex>
     </StaggeredStackItem>
   );
