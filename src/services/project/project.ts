@@ -4,6 +4,9 @@ class ProjectService {
   static async addMembers(data: any) {
     return await ApiService.post(ADD_USERS.replace('{{id}}', data.project_id), data);
   }
+  static async getProjects() {
+    return await ApiService.get(PROJECTS);
+  }
   static async addProject(name: string) {
     return await ApiService.post(PROJECTS, { name });
   }

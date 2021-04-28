@@ -7,10 +7,11 @@ import { useToast } from '@chakra-ui/toast';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useSWR from 'swr';
-import * as AppData from '../../constants/app.json';
-import { useUser } from '../../hooks/use-user';
 
-import { PROJECT_BY_ID, USERS } from '../../services/api/endpoints';
+import * as AppData from '../../constants/app.json';
+import { useProject } from '../../hooks/use-project';
+import { useUser } from '../../hooks/use-user';
+import { USERS } from '../../services/api/endpoints';
 import ProjectService from '../../services/project/project';
 import EmptyPlaceholder from '../EmptyPlaceholder';
 import PageContainer from '../layout/PageContainer';
@@ -21,20 +22,21 @@ import { User } from '../Users/UserItem';
 
 const ProjectDetailedView = () => {
   const bg = useColorModeValue('gray.50', 'gray.700');
-  const { isAdmin } = useUser();
+  const toast = useToast();
 
   const router = useRouter();
   const {
     query: { id },
   } = router;
 
-  const toast = useToast();
+  const { isAdmin } = useUser();
+  const { getProjectNameById, getProjectById, updateProject, error } = useProject();
 
   const [isAddingMembers, setIsAddingMembers] = useState(false);
   const [addedMembers, setAddedMembers] = useState([]);
   const [searchText, setSearchText] = useState('');
 
-  const { data: project, error } = useSWR(PROJECT_BY_ID.replace('{{id}}', id as string));
+  const project = getProjectById(parseInt(id as string));
   const { data: users } = useSWR(USERS);
 
   const addMembers = async () => {
@@ -61,8 +63,14 @@ const ProjectDetailedView = () => {
       isClosable: true,
       position: 'top',
     });
-    project.users = project.users.concat(addedMembers.map(member => ({ name: member.name, email: member.email })));
+    const users = project.users.concat(
+      addedMembers.map((member: User) => ({ ...member, name: member.name, email: member.email })),
+    );
     setAddedMembers([]);
+    updateProject({
+      ...project,
+      users: users,
+    });
     setIsAddingMembers(false);
   };
 
@@ -83,7 +91,7 @@ const ProjectDetailedView = () => {
         {isAdmin ? (
           <Flex justify="space-between" flexWrap={['wrap', 'nowrap']}>
             <SelectComponent
-              placeholder={`Invite members to ${project.name}`}
+              placeholder={`Invite members to ${getProjectNameById(parseInt(id as string))}`}
               value={addedMembers}
               onChange={setAddedMembers}
               components={{ MultiValueLabel: MultiValueLabel }}
@@ -125,7 +133,7 @@ const ProjectDetailedView = () => {
                 ))}
               </StaggeredGrid>
             ) : (
-              <EmptyPlaceholder description="Please add team addedMembers" />
+              <EmptyPlaceholder description="Please add team members" />
             )}
           </Stack>
         </Stack>

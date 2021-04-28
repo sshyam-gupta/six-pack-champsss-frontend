@@ -3,15 +3,16 @@ import { Provider } from 'next-auth/client';
 import theme from '../theme';
 import { DefaultSeo } from 'next-seo';
 import { SWRConfig } from 'swr';
+import dayjs from 'dayjs';
 
 import { AppProps } from 'next/app';
 import siteConfig from '../constants/site-config';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import RouteLoadingIndicator from '../components/RouteLoadingIndicator';
-import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import fetcher from '../util/swr-util';
+import ContextWrapper from '../components/ContextWrapper';
 
 dayjs.extend(localizedFormat);
 
@@ -67,7 +68,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         >
           <ChakraProvider resetCSS theme={theme}>
             <DefaultSeo {...siteConfig.seo} />
-            <Component {...pageProps} session={session} updateSession={setSession} />
+            <ContextWrapper>
+              <Component {...pageProps} session={session} updateSession={setSession} />
+            </ContextWrapper>
           </ChakraProvider>
         </SWRConfig>
       </Provider>

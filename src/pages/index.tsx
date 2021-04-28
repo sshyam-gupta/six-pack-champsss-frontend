@@ -10,7 +10,6 @@ import DashboardChart from '../components/dashboard/DashboardChart';
 import { AvailableIcon, RedeemedIcon } from '../components/lottie/PlaceholderIcons';
 import Activities from '../components/Activities';
 import { useToast } from '@chakra-ui/toast';
-import { Session } from 'next-auth';
 
 type HomeProps = {
   quotes?: {

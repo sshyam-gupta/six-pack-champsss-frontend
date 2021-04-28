@@ -2,7 +2,6 @@ import { Spinner } from '@chakra-ui/spinner';
 import { useToast } from '@chakra-ui/toast';
 import { Flex } from '@chakra-ui/layout';
 import { useState } from 'react';
-import useSWR from 'swr';
 import { Button } from '@chakra-ui/button';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useDisclosure } from '@chakra-ui/hooks';
@@ -10,11 +9,12 @@ import { useDisclosure } from '@chakra-ui/hooks';
 import EmptyPlaceholder from '../EmptyPlaceholder';
 import ProjectItem, { Project } from './ProjectItem';
 import SearchInput from '../SearchInput';
-import { PROJECTS } from '../../services/api/endpoints';
 import StaggeredGrid from '../motion/StaggeredGrid';
 import AddProject from './AddProject';
 
 import { useUser } from '../../hooks/use-user';
+import { useProject } from '../../hooks/use-project';
+import ProjectService from '../../services/project/project';
 
 function ProjectList() {
   const { isOpen, onOpen: openAddProjectModal, onClose: closeAddProjectModal } = useDisclosure();
@@ -22,23 +22,29 @@ function ProjectList() {
   const [searchText, setSearchText] = useState('');
   const toast = useToast();
 
-  const { data, error } = useSWR(PROJECTS);
-
-  let records = data?.projects;
+  const { projects: records, error, addProject } = useProject();
 
   if (error) {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
 
-  if (!records) {
+  if (!records?.length) {
     return <Spinner size="lg" />;
   }
 
-  const initiateClose = (name?: string) => {
-    if (name) {
-      records = records.concat({ name });
-    }
+  const initiateClose = async (name?: string) => {
     closeAddProjectModal();
+    if (name) {
+      const { data, error } = await ProjectService.getProjects();
+      if (error) {
+        return;
+      }
+      //temporary fix to update newly added project
+      const addedProject = data.projects.filter((project: Project) => project.name === name)?.[0];
+      if (addedProject) {
+        addProject(addedProject);
+      }
+    }
   };
 
   const projects = records?.filter((rec: Project) => {
