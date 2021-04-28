@@ -33,6 +33,7 @@ function UserItem(props: User) {
   const isLoaderDisclaimer = useDisclosure();
 
   const onChange = async val => {
+    if (val.value === props.role) return;
     const reqData = {
       user_id: props.id,
       user: {
