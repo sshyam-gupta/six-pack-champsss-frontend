@@ -1,8 +1,7 @@
 import SidebarLink from './SidebarLink';
 import React from 'react';
 import { Box } from '@chakra-ui/layout';
-import { useSession } from 'next-auth/client';
-import { UserRole } from './Users/UserItem';
+import { useUser } from '../hooks/use-user';
 
 const Sidebar = () => {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -35,7 +34,7 @@ const Sidebar = () => {
 };
 
 export function SidebarContent() {
-  const [session] = useSession();
+  const { isAdmin } = useUser();
 
   return (
     <>
@@ -45,12 +44,12 @@ export function SidebarContent() {
       <SidebarLink ml="-3" mt="2" href="/projects">
         Projects
       </SidebarLink>
-      {session?.user.role !== UserRole.Associate ? (
+      {isAdmin ? (
         <SidebarLink ml="-3" mt="2" href="/requests">
           Requests
         </SidebarLink>
       ) : null}
-      {session?.user.role !== UserRole.Associate ? (
+      {isAdmin ? (
         <SidebarLink ml="-3" mt="2" href="/users">
           Users
         </SidebarLink>

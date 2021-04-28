@@ -23,7 +23,7 @@ function ProjectItem({ ...props }: Project & { deleteProject: () => void }) {
         background={bg}
         p="1rem"
         position="relative"
-        spacing={3}
+        spacing={2}
       >
         <Flex justify="space-between" alignItems="center">
           <Text fontWeight={500} fontSize="lg">
@@ -53,7 +53,7 @@ function ProjectItem({ ...props }: Project & { deleteProject: () => void }) {
             return <Avatar borderWidth="0" key={index} name={user.name} src={user.image} />;
           })}
         </AvatarGroup>
-        <Text>Points: {`${props.total_points} ${AppData.points} `}</Text>
+        <Text fontSize="sm">Total: {`${props.total_points} ${AppData.points}`}</Text>
       </StaggeredGridItem>
     </Link>
   );

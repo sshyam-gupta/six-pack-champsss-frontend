@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import useSWR from 'swr';
 import * as AppData from '../../constants/app.json';
+import { useUser } from '../../hooks/use-user';
 
 import { PROJECT_BY_ID, USERS } from '../../services/api/endpoints';
 import ProjectService from '../../services/project/project';
@@ -20,6 +21,7 @@ import { User } from '../Users/UserItem';
 
 const ProjectDetailedView = () => {
   const bg = useColorModeValue('gray.50', 'gray.700');
+  const { isAdmin } = useUser();
 
   const router = useRouter();
   const {
@@ -78,41 +80,47 @@ const ProjectDetailedView = () => {
     }
     return (
       <Stack spacing={4}>
-        <Flex justify="space-between" flexWrap={['wrap', 'nowrap']}>
-          <SelectComponent
-            placeholder={`Invite members to ${project.name}`}
-            value={addedMembers}
-            onChange={setAddedMembers}
-            components={{ MultiValueLabel: MultiValueLabel }}
-            formatOptionLabel={FormatOptionLabel}
-            options={users?.map((u: User) => ({ ...u, label: u.name, value: u.id }))}
-            allowClear
-            isMulti
-          />
-          <Button
-            px="2rem"
-            ml={[null, '1rem']}
-            mt={['1rem', 0]}
-            isLoading={isAddingMembers}
-            disabled={!addedMembers.length}
-            onClick={addMembers}
-          >
-            Invite Members
-          </Button>
-        </Flex>
-        <Stack spacing={2} boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative" mt="1rem">
-          <Stack spacing={2}>
-            <Text fontWeight={500}>Project Members ({project.users?.length})</Text>
-            <SearchInput onSearch={setSearchText} placeholder="Search member" />
+        {isAdmin ? (
+          <Flex justify="space-between" flexWrap={['wrap', 'nowrap']}>
+            <SelectComponent
+              placeholder={`Invite members to ${project.name}`}
+              value={addedMembers}
+              onChange={setAddedMembers}
+              components={{ MultiValueLabel: MultiValueLabel }}
+              formatOptionLabel={FormatOptionLabel}
+              options={users?.map((u: User) => ({ ...u, label: u.name, value: u.id }))}
+              allowClear
+              isMulti
+            />
+            <Button
+              px="2rem"
+              ml={[null, '1rem']}
+              mt={['1rem', 0]}
+              isLoading={isAddingMembers}
+              disabled={!addedMembers.length}
+              onClick={addMembers}
+            >
+              Invite Members
+            </Button>
+          </Flex>
+        ) : null}
+        <Stack spacing={2} position="relative" mt="1rem">
+          <Stack spacing={4}>
+            <Stack spacing={2}>
+              <Text fontWeight={500}>Project Members ({project.users?.length})</Text>
+              <SearchInput onSearch={setSearchText} placeholder="Search member" />
+            </Stack>
             {filteredUsers?.length ? (
-              <StaggeredGrid mt="1rem" columns={[1, 2, 3, 3]} gridGap="1rem">
+              <StaggeredGrid columns={[1, 2, 3, 3]} gridGap="1rem">
                 {filteredUsers.map((u: User) => (
-                  <StaggeredGridItem p="1rem" key={u.id} boxShadow="md" borderRadius="md">
-                    <Stack alignItems="center" spacing={1}>
+                  <StaggeredGridItem p="1rem" key={u.id} bg={bg} boxShadow="md" borderRadius="md">
+                    <Flex flexDirection="column" alignItems="center" spacing={2}>
                       <Avatar name={u.name} />
-                      <Text>{u.name}</Text>
-                      <Text fontSize="sm">{u.email}</Text>
-                    </Stack>
+                      <Text mt="0.5rem">{u.name}</Text>
+                      <Text fontSize="xs" isTruncated>
+                        {u.email}
+                      </Text>
+                    </Flex>
                   </StaggeredGridItem>
                 ))}
               </StaggeredGrid>
@@ -127,7 +135,7 @@ const ProjectDetailedView = () => {
   return (
     <PageContainer pageTitle={project?.name || 'Project Details'}>
       <Flex justify="flex-end" pos="absolute" right="20px" top="12px">
-        <Text fontSize="md">Points: {`${project?.total_points ?? 0} ${AppData.points}`}</Text>
+        <Text fontSize="md">Total: {`${project?.total_points ?? 0} ${AppData.points}`}</Text>
       </Flex>
       <Box mt="1rem">{getView()}</Box>
     </PageContainer>

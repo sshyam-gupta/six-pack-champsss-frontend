@@ -17,41 +17,41 @@ interface ActivityItemProps extends Activity {
   disableCrud?: boolean;
 }
 
-function ActivityItem(props: ActivityItemProps) {
+function ActivityItem(activity: ActivityItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
 
   return (
     <StaggeredStackItem boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
       <HStack fontSize="md">
-        <Tooltip placement="top" label={props.status}>
-          <Flex mr="0.5rem" height="10px" width="10px" borderRadius="50%" bg={getStatusColor(props.status)} />
+        <Tooltip placement="top" label={activity.status}>
+          <Flex mr="0.5rem" height="10px" width="10px" borderRadius="50%" bg={getStatusColor(activity.status)} />
         </Tooltip>
         <Text>
-          <Linkify>{props.description}</Linkify>
+          <Linkify>{activity.description}</Linkify>
         </Text>
         <Spacer />
       </HStack>
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
           <Flex alignItems="center" minW="80px">
-            <Text>{`${props.points} ${AppData.points}`}</Text>
+            <Text>{`${activity.points} ${AppData.points}`}</Text>
           </Flex>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {props.projectName}
+            {activity.projectName}
           </Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {minutesToHours(props.duration)}
+            {minutesToHours(activity.duration)}
           </Text>
         </HStack>
-        <Text textAlign="right">{dayjs(props.timestamp).format('ll LT')}</Text>
+        <Text textAlign="right">{dayjs(activity.timestamp).format('ll LT')}</Text>
       </Flex>
-      {!props.disableCrud ? (
+      {!activity.disableCrud && activity.status === 'PENDING' ? (
         <Menu>
           <MenuButton
             position="absolute"
