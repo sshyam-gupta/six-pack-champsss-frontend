@@ -33,7 +33,6 @@ function UserItem(props: User) {
   const isLoaderDisclaimer = useDisclosure();
 
   const onChange = async val => {
-    console.log(props);
     const reqData = {
       user_id: props.id,
       user: {
@@ -75,20 +74,22 @@ function UserItem(props: User) {
         <Spacer />
         <HStack mt={['1rem', '1rem', 0]}>
           <Flex width="10rem">
-            <SelectComponent
-              isLoading={isLoaderDisclaimer.isOpen}
-              onChange={onChange}
-              isClearable={false}
-              defaultValue={
-                props.role === UserRole.Associate
-                  ? { label: 'Associate', value: UserRole.Associate }
-                  : { label: 'Admin', value: UserRole.Admin }
-              }
-              options={[
-                { label: 'Admin', value: UserRole.Admin },
-                { label: 'Associate', value: UserRole.Associate },
-              ]}
-            />
+            {props.role !== UserRole.Owner ? (
+              <SelectComponent
+                isLoading={isLoaderDisclaimer.isOpen}
+                onChange={onChange}
+                isClearable={false}
+                defaultValue={
+                  props.role === UserRole.Associate
+                    ? { label: 'Associate', value: UserRole.Associate }
+                    : { label: 'Admin', value: UserRole.Admin }
+                }
+                options={[
+                  { label: 'Admin', value: UserRole.Admin },
+                  { label: 'Associate', value: UserRole.Associate },
+                ]}
+              />
+            ) : null}
           </Flex>
           <Menu>
             <MenuButton as={IconButton} aria-label="Options" icon={<BiDotsVerticalRounded />} variant="ghost" />
