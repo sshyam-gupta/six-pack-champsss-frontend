@@ -1,11 +1,23 @@
 import { Avatar } from '@chakra-ui/avatar';
-import { Button } from '@chakra-ui/button';
+import { Button, IconButton } from '@chakra-ui/button';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import { Box, Flex, Stack, Text } from '@chakra-ui/layout';
+import { useDisclosure } from '@chakra-ui/hooks';
+import { Box, Flex, HStack, Spacer, Stack, Text } from '@chakra-ui/layout';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+} from '@chakra-ui/modal';
 import { Spinner } from '@chakra-ui/spinner';
 import { useToast } from '@chakra-ui/toast';
+import { Tooltip } from '@chakra-ui/tooltip';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { AiOutlineDelete } from 'react-icons/ai';
+
 import useSWR from 'swr';
 
 import * as AppData from '../../constants/app.json';
@@ -13,15 +25,16 @@ import { useProject } from '../../hooks/use-project';
 import { useUser } from '../../hooks/use-user';
 import { USERS } from '../../services/api/endpoints';
 import ProjectService from '../../services/project/project';
+import sleep from '../../util/sleep';
 import EmptyPlaceholder from '../EmptyPlaceholder';
 import PageContainer from '../layout/PageContainer';
-import StaggeredGrid, { StaggeredGridItem } from '../motion/StaggeredGrid';
+
+import StaggeredStack, { StaggeredStackItem } from '../motion/StaggeredStack';
 import SearchInput from '../SearchInput';
 import SelectComponent, { FormatOptionLabel, MultiValueLabel } from '../Select';
 import { User } from '../Users/UserItem';
 
 const ProjectDetailedView = () => {
-  const bg = useColorModeValue('gray.50', 'gray.700');
   const toast = useToast();
 
   const router = useRouter();
@@ -74,6 +87,15 @@ const ProjectDetailedView = () => {
     setIsAddingMembers(false);
   };
 
+  const removeUser = async (member: User) => {
+    const users = project.users.filter(user => user.id !== member.id);
+
+    updateProject({
+      ...project,
+      users: users,
+    });
+  };
+
   const filteredUsers = project?.users?.filter((user: User) => {
     const text = searchText.trim().toLowerCase();
     return user.name.toLowerCase().includes(text);
@@ -112,26 +134,18 @@ const ProjectDetailedView = () => {
             </Button>
           </Flex>
         ) : null}
-        <Stack spacing={2} position="relative" mt="1rem">
+        <Stack spacing={4} position="relative" mt="1rem">
+          <Stack spacing={2}>
+            <Text fontWeight={500}>Project Members ({project.users?.length})</Text>
+            <SearchInput onSearch={setSearchText} placeholder="Search member" />
+          </Stack>
           <Stack spacing={4}>
-            <Stack spacing={2}>
-              <Text fontWeight={500}>Project Members ({project.users?.length})</Text>
-              <SearchInput onSearch={setSearchText} placeholder="Search member" />
-            </Stack>
             {filteredUsers?.length ? (
-              <StaggeredGrid columns={[1, 2, 3, 3]} gridGap="1rem">
-                {filteredUsers.map((u: User) => (
-                  <StaggeredGridItem p="1rem" key={u.id} bg={bg} boxShadow="md" borderRadius="md">
-                    <Flex flexDirection="column" alignItems="center" spacing={2}>
-                      <Avatar name={u.name} />
-                      <Text mt="0.5rem">{u.name}</Text>
-                      <Text fontSize="xs" isTruncated>
-                        {u.email}
-                      </Text>
-                    </Flex>
-                  </StaggeredGridItem>
+              <StaggeredStack>
+                {filteredUsers.map((user: User) => (
+                  <ProjectMember {...user} key={user.id} onRemove={removeUser} />
                 ))}
-              </StaggeredGrid>
+              </StaggeredStack>
             ) : (
               <EmptyPlaceholder description="Please add team members" />
             )}
@@ -149,5 +163,71 @@ const ProjectDetailedView = () => {
     </PageContainer>
   );
 };
+
+function ProjectMember(user: User & { onRemove: (user: User) => void }) {
+  const bg = useColorModeValue('gray.50', 'gray.700');
+  const deleteDisclosure = useDisclosure();
+  const isDeletingDisclosure = useDisclosure();
+  const cancelRef = useRef();
+
+  const onDelete = useCallback(async () => {
+    isDeletingDisclosure.onOpen();
+    // Integrate api
+    await sleep();
+    user.onRemove?.(user);
+    isDeletingDisclosure.onClose();
+    deleteDisclosure.onClose();
+  }, [user]);
+
+  return (
+    <StaggeredStackItem key={user.id} boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
+      <Flex flexDirection={['column', 'column', 'row']} alignItems={['flex-start', 'flex-start', 'center']}>
+        <HStack spacing={4}>
+          <Avatar size="sm" src={user.image} alt={user.name} />
+          <Stack spacing={0}>
+            <Text>{user.name}</Text>
+            <Text fontSize="sm">{user.email}</Text>
+          </Stack>
+        </HStack>
+        <Spacer />
+        <HStack mt={['1rem', '1rem', 0]}>
+          <Tooltip label="Remove" placement="top">
+            <IconButton
+              onClick={deleteDisclosure.onOpen}
+              aria-label="Remove"
+              variant="ghost"
+              icon={<AiOutlineDelete />}
+            />
+          </Tooltip>
+        </HStack>
+      </Flex>
+      <AlertDialog isOpen={deleteDisclosure.isOpen} leastDestructiveRef={cancelRef} onClose={deleteDisclosure.onClose}>
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Remove User
+            </AlertDialogHeader>
+
+            <AlertDialogBody>{`Are you sure? You can't undo this action afterwards.`}</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button
+                ref={cancelRef}
+                onClick={deleteDisclosure.onClose}
+                variant="ghost"
+                isDisabled={isDeletingDisclosure.isOpen}
+              >
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={onDelete} ml={3} isLoading={isDeletingDisclosure.isOpen}>
+                Remove
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </StaggeredStackItem>
+  );
+}
 
 export default ProjectDetailedView;
