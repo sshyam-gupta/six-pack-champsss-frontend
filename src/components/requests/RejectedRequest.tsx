@@ -4,10 +4,10 @@ import RequestItem from './RequestItem';
 import EmptyPlaceholder from '../EmptyPlaceholder';
 import useSWR from 'swr';
 import { Spinner } from '@chakra-ui/spinner';
-import fetcher from '../../util/swr-util';
+import { ADMIN_ACTIVITIES } from '../../services/api/endpoints';
 
 function useRejectedRequest() {
-  const { data, error } = useSWR(`https://60850d5f9b2bed00170417e4.mockapi.io/api/v1/rejectedRequest`, fetcher);
+  const { data, error } = useSWR(`${ADMIN_ACTIVITIES}?status=rejected`);
 
   return {
     data,

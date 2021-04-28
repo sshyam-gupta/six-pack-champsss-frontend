@@ -12,6 +12,7 @@ import { Activity, getStatusColor } from '../../util/activity-util';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import { minutesToHours } from '../../util/time-util';
 import dayjs from 'dayjs';
+import { useProject } from '../../hooks/use-project';
 
 interface ActivityItemProps extends Activity {
   disableCrud?: boolean;
@@ -19,11 +20,12 @@ interface ActivityItemProps extends Activity {
 
 function ActivityItem(activity: ActivityItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
+  const { getProjectNameById } = useProject();
 
   return (
     <StaggeredStackItem boxShadow="md" borderRadius="md" background={bg} p="1rem">
       <HStack fontSize="md">
-        <Tooltip placement="top" label={activity.status}>
+        <Tooltip placement="top" label={activity.status.toUpperCase()}>
           <Flex mr="0.5rem" height="10px" width="10px" borderRadius="50%" bg={getStatusColor(activity.status)} />
         </Tooltip>
         <Text>
@@ -50,14 +52,15 @@ function ActivityItem(activity: ActivityItemProps) {
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
           <Flex alignItems="center" minW="80px">
-            <Text>{`${activity.points_requested} ${AppData.points}`}</Text>
+            <Text>{`${activity.status === 'approved' ? activity.points_granted : activity.points_requested} ${
+              AppData.points
+            }`}</Text>
           </Flex>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {/** Get project name from project id */}
-            {activity.project_id}
+            {getProjectNameById(activity.project_id)}
           </Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>

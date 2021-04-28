@@ -15,6 +15,8 @@ import sleep from '../../util/sleep';
 import { useToast } from '@chakra-ui/toast';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import { minutesToHours } from '../../util/time-util';
+import { useProject } from '../../hooks/use-project';
+import ProjectService from '../../services/project/project';
 
 interface RequestItemProps extends Activity {
   disableCrud?: boolean;
@@ -25,12 +27,28 @@ function RequestItem(props: RequestItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
   const isLoadingDisclosure = useDisclosure();
   const toast = useToast();
+  const { getProjectNameById } = useProject();
 
   const updateStatus = useCallback(
     async (status: ActivityStatus) => {
       isLoadingDisclosure.onOpen();
-      await sleep();
+      const { error } = await ProjectService.updateActivityStatus(`/admin/activities/${props.id}/${status}`, {
+        id: props.id,
+        activity: {
+          points_granted: props.points_requested,
+        },
+      });
       isLoadingDisclosure.onClose();
+      if (error) {
+        toast({
+          description: `Something went wrong!`,
+          variant: 'top-accent',
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+        });
+        return;
+      }
       props.onUpdate?.(status);
       toast({
         description: `Activity ${status} successfully`,
@@ -51,7 +69,7 @@ function RequestItem(props: RequestItemProps) {
         alignItems={['flex-start', 'flex-start', 'center']}
       >
         <HStack>
-          <Tooltip placement="top" label={props.status}>
+          <Tooltip placement="top" label={props.status.toUpperCase()}>
             <Flex height="10px" width="10px" borderRadius="50%" bg={getStatusColor(props.status)} />
           </Tooltip>
           <Text>
@@ -60,16 +78,18 @@ function RequestItem(props: RequestItemProps) {
         </HStack>
         <Spacer />
         <HStack>
-          <Text>{`${props.points_requested} ${AppData.points}`}</Text>
+          <Text>{`${props.status === 'approved' ? props.points_granted : props.points_requested} ${
+            AppData.points
+          }`}</Text>
           {!props.disableCrud ? (
             <Tooltip placement="top" label="Approve">
               <IconButton
                 isLoading={isLoadingDisclosure.isOpen}
-                fontSize="1.2rem"
+                size="sm"
                 variant="outline"
                 aria-label="Approve"
                 onClick={() => {
-                  updateStatus('APPROVED' as ActivityStatus);
+                  updateStatus('approve' as ActivityStatus);
                 }}
                 icon={<BsCheckCircle />}
               />
@@ -79,11 +99,12 @@ function RequestItem(props: RequestItemProps) {
             <Tooltip placement="top" label="Reject">
               <IconButton
                 isLoading={isLoadingDisclosure.isOpen}
-                fontSize="1.2rem"
+                fontSize="1.1rem"
                 variant="outline"
+                size="sm"
                 aria-label="Approve"
                 onClick={() => {
-                  updateStatus('REJECTED' as ActivityStatus);
+                  updateStatus('reject' as ActivityStatus);
                 }}
                 icon={<IoCloseCircleOutline />}
               />
@@ -98,7 +119,7 @@ function RequestItem(props: RequestItemProps) {
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {props.projectName}
+            {getProjectNameById(props.project_id)}
           </Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>

@@ -7,7 +7,7 @@ export function useProject() {
 
   const getProjectNameById = useCallback(
     (id: number) => {
-      const project = projects?.filter((project: Project) => project.id === id);
+      const project = projects?.filter?.((project: Project) => project.id === id);
 
       const name = project?.length ? project[0]?.name : null;
       return name;
@@ -17,7 +17,7 @@ export function useProject() {
 
   const getProjectById = useCallback(
     (id: number) => {
-      const project = projects?.filter((project: Project) => project.id === id);
+      const project = projects?.filter?.((project: Project) => project.id === id);
       return project?.[0] ?? null;
     },
     [projects],
@@ -25,7 +25,7 @@ export function useProject() {
 
   const updateProject = useCallback(
     (project: Project) => {
-      const updatedProjects = projects.map(p => {
+      const updatedProjects = projects?.map?.(p => {
         if (p.id === project.id) {
           return project;
         }
@@ -36,19 +36,11 @@ export function useProject() {
     [projects, setProjects],
   );
 
-  const addProject = useCallback(
-    (project: Project) => {
-      setProjects(projects.concat(project));
-    },
-    [setProjects, projects],
-  );
-
   return {
     projects,
     error: !projects,
     getProjectNameById,
     getProjectById,
     updateProject,
-    addProject,
   };
 }

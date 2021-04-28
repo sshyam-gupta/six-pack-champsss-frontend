@@ -13,6 +13,9 @@ class ProjectService {
   static async addActivity(data: any) {
     return await ApiService.post(ADD_ACTIVITY, data);
   }
+  static async updateActivityStatus(url: string, data: any) {
+    return await ApiService.put(url, data);
+  }
 }
 
 export default ProjectService;

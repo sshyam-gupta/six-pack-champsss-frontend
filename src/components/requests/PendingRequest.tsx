@@ -1,15 +1,17 @@
 import { Stack } from '@chakra-ui/layout';
 import { useCallback, useEffect, useState } from 'react';
+import { Spinner } from '@chakra-ui/spinner';
+
 import StaggeredStack from '../motion/StaggeredStack';
 import RequestItem from './RequestItem';
 import EmptyPlaceholder from '../EmptyPlaceholder';
-import useSWR from 'swr';
-import fetcher from '../../util/swr-util';
-import { Spinner } from '@chakra-ui/spinner';
+import useSWR, { mutate } from 'swr';
+
 import { Activity } from '../../util/activity-util';
+import { ADMIN_ACTIVITIES } from '../../services/api/endpoints';
 
 function usePendingRequests() {
-  const { data, error } = useSWR(`https://60850d5f9b2bed00170417e4.mockapi.io/api/v1/pendingRequests`, fetcher);
+  const { data, error } = useSWR(`${ADMIN_ACTIVITIES}?status=pending`);
 
   return {
     data,
@@ -26,12 +28,9 @@ function PendingRequest() {
     setRequests(data);
   }, [data]);
 
-  const updateActivity = useCallback(
-    activity => {
-      setRequests(requests.filter(req => req.id !== activity.id));
-    },
-    [requests],
-  );
+  const updateActivity = useCallback(() => {
+    mutate(`${ADMIN_ACTIVITIES}?status=pending`);
+  }, [requests]);
 
   if (isError) {
     return <EmptyPlaceholder description="Something went wrong!" />;

@@ -14,7 +14,9 @@ import AddProject from './AddProject';
 
 import { useUser } from '../../hooks/use-user';
 import { useProject } from '../../hooks/use-project';
-import ProjectService from '../../services/project/project';
+
+import { mutate } from 'swr';
+import { PROJECTS } from '../../services/api/endpoints';
 
 function ProjectList() {
   const { isOpen, onOpen: openAddProjectModal, onClose: closeAddProjectModal } = useDisclosure();
@@ -22,7 +24,7 @@ function ProjectList() {
   const [searchText, setSearchText] = useState('');
   const toast = useToast();
 
-  const { projects: records, error, addProject } = useProject();
+  const { projects: records, error } = useProject();
 
   if (error) {
     return <EmptyPlaceholder description="Something went wrong!" />;
@@ -35,15 +37,7 @@ function ProjectList() {
   const initiateClose = async (name?: string) => {
     closeAddProjectModal();
     if (name) {
-      const { data, error } = await ProjectService.getProjects();
-      if (error) {
-        return;
-      }
-      //temporary fix to update newly added project
-      const addedProject = data.projects.filter((project: Project) => project.name === name)?.[0];
-      if (addedProject) {
-        addProject(addedProject);
-      }
+      mutate(PROJECTS);
     }
   };
 

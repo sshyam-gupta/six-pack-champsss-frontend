@@ -3,11 +3,12 @@ import StaggeredStack from '../motion/StaggeredStack';
 import RequestItem from './RequestItem';
 import EmptyPlaceholder from '../EmptyPlaceholder';
 import useSWR from 'swr';
-import fetcher from '../../util/swr-util';
+
 import { Spinner } from '@chakra-ui/spinner';
+import { ADMIN_ACTIVITIES } from '../../services/api/endpoints';
 
 function useApprovedRequests() {
-  const { data, error } = useSWR(`https://60850d5f9b2bed00170417e4.mockapi.io/api/v1/approvedRequests`, fetcher);
+  const { data, error } = useSWR(`${ADMIN_ACTIVITIES}?status=approved`);
 
   return {
     data,
