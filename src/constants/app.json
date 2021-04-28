@@ -1,6 +1,7 @@
 {
-    "app-name": "Kiprosh Laureate Awards Portal",
-    "presented-by": "Six Pack Champsss",
-    "description": "Reward Portal for Kiproshers",
-    "points": "klaps"
+  "app-name": "Kiprosh Laureate Awards Portal",
+  "presented-by": "Six Pack Champsss",
+  "description": "Reward Portal for Kiproshers",
+  "points": "klaps",
+  "hours-to-clap-mapping": "1 hour is equal to 20 klaps"
 }
