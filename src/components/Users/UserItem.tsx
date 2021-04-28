@@ -17,6 +17,7 @@ export type User = {
   name: string;
   image: string;
   role: number;
+  email?: string;
 };
 
 function UserItem(props: User) {
