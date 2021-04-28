@@ -45,13 +45,7 @@ function PendingRequest() {
       {requests?.length ? (
         <StaggeredStack spacing={4}>
           {requests.map((activity: Activity) => (
-            <RequestItem
-              onUpdate={() => {
-                updateActivity(activity);
-              }}
-              key={activity.id}
-              {...activity}
-            />
+            <RequestItem onUpdate={updateActivity} key={activity.id} {...activity} />
           ))}
         </StaggeredStack>
       ) : (

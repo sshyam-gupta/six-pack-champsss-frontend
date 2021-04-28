@@ -91,7 +91,7 @@ const ProjectDetailedView = () => {
         {isAdmin ? (
           <Flex justify="space-between" flexWrap={['wrap', 'nowrap']}>
             <SelectComponent
-              placeholder={`Invite members to ${getProjectNameById(parseInt(id as string))}`}
+              placeholder={`Add members to ${getProjectNameById(parseInt(id as string))}`}
               value={addedMembers}
               onChange={setAddedMembers}
               components={{ MultiValueLabel: MultiValueLabel }}
@@ -108,7 +108,7 @@ const ProjectDetailedView = () => {
               disabled={!addedMembers.length}
               onClick={addMembers}
             >
-              Invite Members
+              Add Members
             </Button>
           </Flex>
         ) : null}
