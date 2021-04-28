@@ -10,7 +10,7 @@ function PieChart<RawData>(props: Partial<PieSvgProps<RawData>>) {
 
   return (
     <ResponsivePie
-      margin={{ bottom: 30, top: isLargerThan786 ? 10 : -10 }}
+      margin={{ bottom: 30, top: isLargerThan786 ? 30 : -10 }}
       innerRadius={0.6}
       colors={{ scheme: 'set1' }}
       padAngle={0.7}
