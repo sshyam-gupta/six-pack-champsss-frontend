@@ -61,7 +61,7 @@ function ProjectItem({ ...props }: Project & { updateProject: (name?: string) =>
     });
     props.updateProject?.(props.name);
     deleteDisclosure.onClose();
-  }, [props.id, toast]);
+  }, [deleteDisclosure, isDeletingDisclosure, props, toast]);
 
   const onEdit = useCallback(
     async name => {

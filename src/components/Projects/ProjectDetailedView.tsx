@@ -177,7 +177,7 @@ function ProjectMember(user: User & { onRemove: (user: User) => void }) {
     user.onRemove?.(user);
     isDeletingDisclosure.onClose();
     deleteDisclosure.onClose();
-  }, [user]);
+  }, [deleteDisclosure, isDeletingDisclosure, user]);
 
   return (
     <StaggeredStackItem key={user.id} boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">

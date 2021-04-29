@@ -50,6 +50,11 @@ export function SidebarContent() {
         </SidebarLink>
       ) : null}
       {isAdmin ? (
+        <SidebarLink ml="-3" mt="2" href="/redemptions">
+          Redemptions
+        </SidebarLink>
+      ) : null}
+      {isAdmin ? (
         <SidebarLink ml="-3" mt="2" href="/users">
           Users
         </SidebarLink>

@@ -22,7 +22,6 @@ function ProjectList() {
   const { isOpen, onOpen: openAddProjectModal, onClose: closeAddProjectModal } = useDisclosure();
   const { isAdmin } = useUser();
   const [searchText, setSearchText] = useState('');
-  const toast = useToast();
 
   const { projects: records, error } = useProject();
 

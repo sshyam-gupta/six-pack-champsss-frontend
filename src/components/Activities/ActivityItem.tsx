@@ -57,7 +57,7 @@ function ActivityItem(activity: ActivityItemProps) {
     }
     activity.onUpdate?.();
     deleteDisclosure.onClose();
-  }, [activity.id]);
+  }, [activity, deleteDisclosure, isDeletingDisclosure, toast]);
 
   const onEdit = useCallback(
     async name => {
@@ -66,7 +66,7 @@ function ActivityItem(activity: ActivityItemProps) {
       }
       editDisclosure.onClose();
     },
-    [activity.id],
+    [activity, editDisclosure],
   );
 
   return (
