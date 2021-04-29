@@ -71,7 +71,7 @@ function RedemptionItem(props: RedemptionItemProps) {
           <Text>{`${props.points} ${AppData.points}`}</Text>
         </HStack>
         <Spacer />
-        {props.disableCrud ? (
+        {!props.disableCrud ? (
           <HStack>
             <Tooltip placement="top" label="Mark as complete">
               <IconButton

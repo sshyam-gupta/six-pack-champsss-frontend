@@ -28,7 +28,7 @@ const options = {
     async jwt(token, _authToken, account) {
       if (account) {
         const { id_token } = account;
-        const { data, error } = await LoginService.loginUser(id_token);
+        const { data, error } = await LoginService.loginUser(id_token, token.name);
         if (error) {
           return token;
         }
