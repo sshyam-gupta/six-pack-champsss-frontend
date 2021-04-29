@@ -126,7 +126,7 @@ function RequestItem(props: RequestItemProps) {
       </HStack>
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
-          <Text minW="80px">{props.user_id}</Text>
+          <Text minW="80px">{props.user_name}</Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;

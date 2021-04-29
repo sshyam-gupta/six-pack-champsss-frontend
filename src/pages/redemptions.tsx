@@ -2,7 +2,7 @@ import { useColorModeValue } from '@chakra-ui/color-mode';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/tabs';
 import LoginRequired from '../components/layout/LoginRequired';
 import PageContainer from '../components/layout/PageContainer';
-import ApprovedRedemption from '../components/redemptions/ApprovedRedemption';
+import CompletedRedemption from '../components/redemptions/CompletedRedemption';
 import PendingRedemption from '../components/redemptions/PendingRedemption';
 
 function Redemptions() {
@@ -14,14 +14,14 @@ function Redemptions() {
         <Tabs mt="2rem" isLazy>
           <TabList position="sticky" top="0" zIndex={2} bg={bg}>
             <Tab>Pending</Tab>
-            <Tab>Approved</Tab>
+            <Tab>Completed</Tab>
           </TabList>
           <TabPanels>
             <TabPanel px="0">
               <PendingRedemption />
             </TabPanel>
             <TabPanel px="0">
-              <ApprovedRedemption />
+              <CompletedRedemption />
             </TabPanel>
           </TabPanels>
         </Tabs>
