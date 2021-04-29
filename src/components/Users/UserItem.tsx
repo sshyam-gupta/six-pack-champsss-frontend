@@ -2,7 +2,6 @@ import { Avatar } from '@chakra-ui/avatar';
 import { IconButton } from '@chakra-ui/button';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { Text, HStack, Spacer, Flex, Stack } from '@chakra-ui/layout';
-import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -10,6 +9,7 @@ import SelectComponent from '../Select';
 import { useToast } from '@chakra-ui/toast';
 import sleep from '../../util/sleep';
 import { useDisclosure } from '@chakra-ui/hooks';
+import UserService from '../../services/user/user';
 
 export enum UserRole {
   Owner = 'owner',
@@ -31,6 +31,36 @@ function UserItem(props: User) {
   const toast = useToast();
   const isLoaderDisclaimer = useDisclosure();
 
+  const onChange = async val => {
+    if (val.value === props.role) return;
+    const reqData = {
+      user_id: props.id,
+      user: {
+        role: val.value,
+      },
+    };
+    isLoaderDisclaimer.onOpen();
+    const { status } = await UserService.assignRole(reqData);
+    isLoaderDisclaimer.onClose();
+    if (status !== 200) {
+      toast({
+        description: 'Something went wrong',
+        variant: 'top-accent',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
+      return;
+    }
+    toast({
+      description: `User ${props.name} is now an ${val.value}`,
+      variant: 'top-accent',
+      status: 'success',
+      isClosable: true,
+      position: 'top',
+    });
+  };
+
   return (
     <StaggeredStackItem boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
       <Flex flexDirection={['column', 'column', 'row']} alignItems={['flex-start', 'flex-start', 'center']}>
@@ -44,39 +74,23 @@ function UserItem(props: User) {
         <Spacer />
         <HStack mt={['1rem', '1rem', 0]}>
           <Flex width="10rem">
-            <SelectComponent
-              isLoading={isLoaderDisclaimer.isOpen}
-              onChange={async val => {
-                if (val.value === props.role) return;
-                isLoaderDisclaimer.onOpen();
-                await sleep();
-                isLoaderDisclaimer.onClose();
-                toast({
-                  description: `Updated ${props.name}'s role to ${val.label}`,
-                  variant: 'top-accent',
-                  status: 'success',
-                  isClosable: true,
-                  position: 'top',
-                });
-              }}
-              isClearable={false}
-              defaultValue={
-                props.role === UserRole.Associate
-                  ? { label: 'Admin', value: UserRole.Admin }
-                  : { label: 'Associate', value: UserRole.Associate }
-              }
-              options={[
-                { label: 'Admin', value: UserRole.Admin },
-                { label: 'Associate', value: UserRole.Associate },
-              ]}
-            />
+            {props.role !== UserRole.Owner ? (
+              <SelectComponent
+                isLoading={isLoaderDisclaimer.isOpen}
+                onChange={onChange}
+                isClearable={false}
+                defaultValue={
+                  props.role === UserRole.Associate
+                    ? { label: 'Associate', value: UserRole.Associate }
+                    : { label: 'Admin', value: UserRole.Admin }
+                }
+                options={[
+                  { label: 'Admin', value: UserRole.Admin },
+                  { label: 'Associate', value: UserRole.Associate },
+                ]}
+              />
+            ) : null}
           </Flex>
-          <Menu>
-            <MenuButton as={IconButton} aria-label="Options" icon={<BiDotsVerticalRounded />} variant="ghost" />
-            <MenuList p={0} minWidth="4rem">
-              <MenuItem icon={<AiOutlineDelete />}>Delete</MenuItem>
-            </MenuList>
-          </Menu>
         </HStack>
       </Flex>
     </StaggeredStackItem>
