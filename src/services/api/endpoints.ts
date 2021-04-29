@@ -13,3 +13,4 @@ export const REDEEM_POINTS = `${baseUrl}redeem_requests`;
 export const REDEEM_REQUESTS = `${baseUrl}admin/redeem_requests`;
 
 export const ASSIGN_USER_ROLE = `${baseUrl}users/{{id}}/assign_role`;
+export const REMOVE_USERS_FROM_PROJECT = `${baseUrl}projects/{{id}}/users/remove`
