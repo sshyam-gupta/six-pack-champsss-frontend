@@ -46,6 +46,7 @@ const Dashboard = (props: HomeProps) => {
   const klapsCountDialogDisclosure = useDisclosure();
   const klapsConfirmationDialogDisclosure = useDisclosure();
   const [isRedeeming, setIsRedeeming] = useState(false);
+  const bg = useColorModeValue('purple.50', 'purple.800');
 
   useEffect(() => {
     async function getUser() {
@@ -140,7 +141,7 @@ const Dashboard = (props: HomeProps) => {
             {points?.projects?.length ? (
               <GridItem colSpan={[3, 2]}>
                 <DashboardChart
-                  bg={useColorModeValue('purple.50', 'purple.800')}
+                  bg={bg}
                   data={points?.projects.map(project => ({
                     id: project.name,
                     label: project.name,
