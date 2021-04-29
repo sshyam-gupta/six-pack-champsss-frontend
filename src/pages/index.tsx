@@ -4,12 +4,14 @@ import * as AppData from '../constants/app.json';
 import { Grid, GridItem, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import getGreetings from '../util/greetings';
-import { useSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 import DashboardBox from '../components/dashboard/DashboardBox';
 import DashboardChart from '../components/dashboard/DashboardChart';
 import { AvailableIcon, RedeemedIcon } from '../components/lottie/PlaceholderIcons';
 import Activities from '../components/Activities';
 import { useToast } from '@chakra-ui/toast';
+import { useEffect, useState } from 'react';
+import { Session } from 'next-auth';
 
 type HomeProps = {
   quotes?: {
@@ -22,8 +24,17 @@ type HomeProps = {
 };
 
 const Index = (props: HomeProps) => {
-  const [session] = useSession();
+  const [data] = useSession();
+  const [session, setSession] = useState<Session | null>(data);
   const toast = useToast();
+
+  useEffect(() => {
+    async function getUser() {
+      const response = await getSession();
+      setSession(response);
+    }
+    getUser();
+  }, []);
 
   // @ts-ignore
   const points = session?.points;
@@ -67,9 +78,18 @@ const Index = (props: HomeProps) => {
                 />
               </SimpleGrid>
             </GridItem>
-            <GridItem colSpan={[3, 2]}>
-              <DashboardChart bg={useColorModeValue('purple.50', 'purple.800')} title="Chart" />
-            </GridItem>
+            {points?.projects?.length ? (
+              <GridItem colSpan={[3, 2]}>
+                <DashboardChart
+                  bg={useColorModeValue('purple.50', 'purple.800')}
+                  data={points?.projects.map(project => ({
+                    id: project.name,
+                    label: project.name,
+                    value: project.total_points,
+                  }))}
+                />
+              </GridItem>
+            ) : null}
           </Grid>
         </Stack>
         <Stack mt="2rem">

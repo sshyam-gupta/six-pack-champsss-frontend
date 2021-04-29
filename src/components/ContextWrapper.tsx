@@ -1,41 +1,45 @@
 import { useToast } from '@chakra-ui/toast';
 import { useSession } from 'next-auth/client';
 import { useState, useMemo, useEffect } from 'react';
-import { SWRConfig } from 'swr';
+import useSWR, { SWRConfig } from 'swr';
 
 import { ProjectContext } from '../contexts/project';
-import ProjectService from '../services/project/project';
+import { PROJECTS } from '../services/api/endpoints';
+
 import fetcher from '../util/swr-util';
 import { Project } from './Projects/ProjectItem';
 
+function useProjects() {
+  const [session] = useSession();
+  const { data, error } = useSWR(session ? PROJECTS : null, url =>
+    fetcher(url, {
+      headers: {
+        ...(typeof window !== 'undefined' ? { Authorization: `Bearer ${window.sessionStorage.getItem('token')}` } : {}),
+      },
+    }),
+  );
+
+  return {
+    data: data?.projects ?? [],
+    isLoading: !error && !data,
+    isError: error,
+  };
+}
+
 const ContextWrapper = ({ children }: any) => {
+  const { data } = useProjects();
   const [projects, setProjects] = useState<Array<Project>>([]);
-  const toast = useToast();
   const [session] = useSession();
 
   useEffect(() => {
     if (session && typeof window !== 'undefined') {
       window.sessionStorage.setItem('token', session.accessToken);
     }
-    async function fetchProjects() {
-      const { data, error } = await ProjectService.getProjects();
-      if (error) {
-        toast({
-          description: error,
-          variant: 'top-accent',
-          status: 'error',
-          isClosable: true,
-          position: 'top',
-        });
-        setProjects(null);
-        return;
-      }
-      setProjects(data?.projects);
-    }
-    if (session) {
-      fetchProjects();
-    }
-  }, [toast, session]);
+  }, [session]);
+
+  useEffect(() => {
+    setProjects(data);
+  }, [data]);
 
   const projectsProvider = useMemo(() => ({ projects, setProjects }), [projects, setProjects]);
 

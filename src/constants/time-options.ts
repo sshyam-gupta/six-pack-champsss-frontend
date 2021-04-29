@@ -192,3 +192,7 @@ export const TIME_OPTIONS = [
     label: '12 Hours',
   },
 ];
+
+export function getTimeOptionByValue(val: number) {
+  return TIME_OPTIONS.find(option => option.value === val);
+}

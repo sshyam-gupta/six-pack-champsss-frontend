@@ -1,7 +1,7 @@
 import { Spinner } from '@chakra-ui/spinner';
 import { useToast } from '@chakra-ui/toast';
 import { Flex } from '@chakra-ui/layout';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@chakra-ui/button';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useDisclosure } from '@chakra-ui/hooks';
@@ -14,7 +14,9 @@ import AddProject from './AddProject';
 
 import { useUser } from '../../hooks/use-user';
 import { useProject } from '../../hooks/use-project';
-import ProjectService from '../../services/project/project';
+
+import { mutate } from 'swr';
+import { PROJECTS } from '../../services/api/endpoints';
 
 function ProjectList() {
   const { isOpen, onOpen: openAddProjectModal, onClose: closeAddProjectModal } = useDisclosure();
@@ -22,7 +24,14 @@ function ProjectList() {
   const [searchText, setSearchText] = useState('');
   const toast = useToast();
 
-  const { projects: records, error, addProject } = useProject();
+  const { projects: records, error } = useProject();
+
+  const projects = useMemo(() => {
+    return records?.filter((rec: Project) => {
+      const text = searchText.trim().toLowerCase();
+      return rec.name.toLowerCase().includes(text);
+    });
+  }, [records, searchText]);
 
   if (error) {
     return <EmptyPlaceholder description="Something went wrong!" />;
@@ -35,31 +44,8 @@ function ProjectList() {
   const initiateClose = async (name?: string) => {
     closeAddProjectModal();
     if (name) {
-      const { data, error } = await ProjectService.getProjects();
-      if (error) {
-        return;
-      }
-      //temporary fix to update newly added project
-      const addedProject = data.projects.filter((project: Project) => project.name === name)?.[0];
-      if (addedProject) {
-        addProject(addedProject);
-      }
+      mutate(PROJECTS);
     }
-  };
-
-  const projects = records?.filter((rec: Project) => {
-    const text = searchText.trim().toLowerCase();
-    return rec.name.toLowerCase().includes(text);
-  });
-
-  const deleteProject = (_id: number) => {
-    toast({
-      description: `Project deleted successfully`,
-      variant: 'top-accent',
-      status: 'success',
-      isClosable: true,
-      position: 'top',
-    });
   };
 
   return (
@@ -74,8 +60,8 @@ function ProjectList() {
       </Flex>
       {projects && projects.length ? (
         <StaggeredGrid mt="1rem" columns={[1, 2, 3, 3]} gridGap="1rem">
-          {projects.map((project: Project) => (
-            <ProjectItem key={project.id} {...project} deleteProject={() => deleteProject(project.id)} />
+          {projects.map((project: Project, index) => (
+            <ProjectItem key={project.id + index} {...project} updateProject={initiateClose} />
           ))}
         </StaggeredGrid>
       ) : (

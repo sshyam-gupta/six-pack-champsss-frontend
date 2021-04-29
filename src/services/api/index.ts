@@ -25,6 +25,9 @@ class ApiService {
   static async get(path: string, params: any = {}, headers?: any) {
     return this.xhr(path, params, headers, 'GET');
   }
+  static async delete(path: string, params: any = {}, headers?: any) {
+    return this.xhr(path, params, headers, 'DELETE');
+  }
   private static async xhr(path: string, params: any = {}, _headers: any = {}, method = 'GET') {
     const config: any = {
       method,

@@ -15,20 +15,36 @@ import { useToast } from '@chakra-ui/toast';
 
 import * as AppData from '../../constants/app.json';
 import ProjectService from '../../services/project/project';
+import { Project } from './ProjectItem';
 
-const AddProject = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: string) => void }) => {
-  const [projectName, setProjectName] = useState('');
+const AddProject = ({
+  isOpen,
+  onClose,
+  type = 'Add',
+  project,
+}: {
+  isOpen: boolean;
+  onClose: (name?: string) => void;
+  type?: 'Add' | 'Edit';
+  project?: Project;
+}) => {
+  const [projectName, setProjectName] = useState(project?.name ?? '');
   const [isAddingProject, setIsAddingProject] = useState(false);
   const toast = useToast();
 
   const addProject = async () => {
     setIsAddingProject(true);
-    const { error } = await ProjectService.addProject(projectName);
+    const { error } =
+      type === 'Add'
+        ? await ProjectService.addProject(projectName)
+        : await ProjectService.editProject({
+            id: project.id,
+            name: projectName,
+          });
     setIsAddingProject(false);
     if (error) {
       toast({
         description: error,
-        variant: 'top-accent',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -41,17 +57,21 @@ const AddProject = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: str
     <Modal closeOnOverlayClick={false} isCentered isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Project</ModalHeader>
+        <ModalHeader>{type === 'Add' ? 'Add Project' : 'Edit Project'}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Input placeholder="Enter project name" onChange={({ target: { value } }: any) => setProjectName(value)} />
-          <Text color="red.500" fontSize="sm" mt="1rem">
-            {AppData['hours-to-clap-mapping']}
+          <Input
+            value={projectName}
+            placeholder="Enter project name"
+            onChange={({ target: { value } }: any) => setProjectName(value)}
+          />
+          <Text fontWeight="500" color="red.500" fontSize="sm" mt="1rem">
+            Points calculation: {AppData['hours-to-clap-mapping']}
           </Text>
         </ModalBody>
         <ModalFooter>
           <Button disabled={!projectName.trim().length} onClick={addProject} isLoading={isAddingProject}>
-            Add
+            {type}
           </Button>
         </ModalFooter>
       </ModalContent>

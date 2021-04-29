@@ -6,14 +6,73 @@ import { User } from '../Users/UserItem';
 import * as AppData from '../../constants/app.json';
 import { StaggeredGridItem } from '../motion/StaggeredGrid';
 
+import { Menu, MenuList, MenuButton, MenuItem } from '@chakra-ui/menu';
+import { Button, IconButton } from '@chakra-ui/button';
+import { BiDotsVerticalRounded } from 'react-icons/bi';
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+} from '@chakra-ui/modal';
+import { useDisclosure } from '@chakra-ui/hooks';
+import { useCallback, useRef } from 'react';
+import { useToast } from '@chakra-ui/toast';
+
+import ProjectService from '../../services/project/project';
+import AddProject from './AddProject';
+
 export type Project = {
   id: number;
   name: string;
   users: Array<User>;
   total_points: number;
 };
-function ProjectItem({ ...props }: Project & { deleteProject: () => void }) {
+function ProjectItem({ ...props }: Project & { updateProject: (name?: string) => void }) {
   const bg = useColorModeValue('gray.50', 'gray.700');
+  const editDisclosure = useDisclosure();
+  const deleteDisclosure = useDisclosure();
+  const isDeletingDisclosure = useDisclosure();
+  const cancelRef = useRef();
+  const toast = useToast();
+
+  const onDelete = useCallback(async () => {
+    isDeletingDisclosure.onOpen();
+    const { error } = await ProjectService.deleteProject(props.id);
+
+    isDeletingDisclosure.onClose();
+    if (error) {
+      toast({
+        description: error,
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
+      return;
+    }
+    toast({
+      description: 'Project deleted successfully',
+      status: 'success',
+      isClosable: true,
+      position: 'top',
+    });
+    props.updateProject?.(props.name);
+    deleteDisclosure.onClose();
+  }, [props.id, toast]);
+
+  const onEdit = useCallback(
+    async name => {
+      if (name) {
+        props.updateProject?.(props.name);
+      }
+      editDisclosure.onClose();
+    },
+    [props.updateProject, props.name],
+  );
+
   return (
     <Link href={`/projects/${props.id}`}>
       <StaggeredGridItem
@@ -29,24 +88,38 @@ function ProjectItem({ ...props }: Project & { deleteProject: () => void }) {
           <Text fontWeight={500} fontSize="lg">
             {props.name}
           </Text>
-          {/* TODO: Add this when api gets ready */}
-          {/*  <Menu>
+          <Menu>
             <MenuButton
               h="24px"
               as={IconButton}
               aria-label="Options"
               icon={<BiDotsVerticalRounded />}
               variant="ghost"
-              onClick={e => e.stopPropagation()}
+              onClick={e => {
+                e.stopPropagation();
+              }}
             />
             <MenuList p={0} minWidth="4rem">
-              <MenuItem icon={<AiOutlineEdit />}>Edit</MenuItem>
-              <MenuItem icon={<AiOutlineDelete />} onClick={deleteProject}>
+              <MenuItem
+                onClick={e => {
+                  e.stopPropagation();
+                  editDisclosure.onOpen();
+                }}
+                icon={<AiOutlineEdit />}
+              >
+                Edit
+              </MenuItem>
+              <MenuItem
+                icon={<AiOutlineDelete />}
+                onClick={e => {
+                  e.stopPropagation();
+                  deleteDisclosure.onOpen();
+                }}
+              >
                 Delete
               </MenuItem>
-              <MenuItem icon={<AiOutlineDelete />}>Manage</MenuItem>
             </MenuList>
-          </Menu> */}
+          </Menu>
         </Flex>
         <AvatarGroup size="sm" max={2}>
           {props.users.map((user: User, index: number) => {
@@ -54,6 +127,38 @@ function ProjectItem({ ...props }: Project & { deleteProject: () => void }) {
           })}
         </AvatarGroup>
         <Text fontSize="sm">Total: {`${props.total_points} ${AppData.points}`}</Text>
+        <AlertDialog
+          isOpen={deleteDisclosure.isOpen}
+          leastDestructiveRef={cancelRef}
+          onClose={deleteDisclosure.onClose}
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                Delete Project
+              </AlertDialogHeader>
+
+              <AlertDialogBody>{`Are you sure? You can't undo this action afterwards.`}</AlertDialogBody>
+
+              <AlertDialogFooter>
+                <Button
+                  ref={cancelRef}
+                  onClick={deleteDisclosure.onClose}
+                  variant="ghost"
+                  isDisabled={isDeletingDisclosure.isOpen}
+                >
+                  Cancel
+                </Button>
+                <Button colorScheme="red" onClick={onDelete} ml={3} isLoading={isDeletingDisclosure.isOpen}>
+                  Delete
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
+        {editDisclosure.isOpen ? (
+          <AddProject type="Edit" project={props} isOpen={editDisclosure.isOpen} onClose={onEdit} />
+        ) : null}
       </StaggeredGridItem>
     </Link>
   );

@@ -14,7 +14,7 @@ import { useToast } from '@chakra-ui/toast';
 
 import ProjectService from '../../services/project/project';
 import SelectComponent from '../Select';
-import { TIME_OPTIONS } from '../../constants/time-options';
+import { getTimeOptionByValue, TIME_OPTIONS } from '../../constants/time-options';
 import { Textarea } from '@chakra-ui/textarea';
 import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control';
 import { useColorMode } from '@chakra-ui/color-mode';
@@ -23,11 +23,19 @@ import { Controller, useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import useSWR from 'swr';
 import { PROJECTS } from '../../services/api/endpoints';
+import { Activity } from '../../util/activity-util';
+import { useProject } from '../../hooks/use-project';
 
-const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: string) => void }) => {
-  const [isAddingActivity, setIsAddingActivity] = useState(false);
+interface EditActivityProps extends Activity {
+  isOpen: boolean;
+  onClose: (name?: string) => void;
+}
+
+const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
+  const [isEditingActivity, setIsEditingActivity] = useState(false);
   const { data } = useSWR(PROJECTS);
   const toast = useToast();
+  const { getProjectNameById } = useProject();
   const { colorMode } = useColorMode();
   const {
     colors: { gray },
@@ -40,10 +48,21 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
     formState: { errors },
   } = useForm({
     mode: 'onBlur',
+    defaultValues: {
+      description: activity.description,
+      duration: {
+        label: getTimeOptionByValue(activity.duration).label,
+        value: activity.duration,
+      },
+      project_id: {
+        value: activity.project_id,
+        label: getProjectNameById(activity.project_id),
+      },
+    },
   });
 
   const onSubmit = async data => {
-    setIsAddingActivity(true);
+    setIsEditingActivity(true);
     const reqData = {
       description: data.description,
       duration: data.duration.value,
@@ -51,8 +70,8 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
       points_requested: (20 * data.duration.value) / 60,
       performed_on: dayjs().format(),
     };
-    const { error, data: activities } = await ProjectService.addActivity(reqData);
-    setIsAddingActivity(false);
+    const { error, data: activities } = await ProjectService.editActivity(activity.id, reqData);
+    setIsEditingActivity(false);
     if (error) {
       toast({
         description: error,
@@ -63,7 +82,7 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
       return;
     }
     toast({
-      description: `${reqData.description} added successfully`,
+      description: `${reqData.description} edited successfully`,
       status: 'success',
       isClosable: true,
       position: 'top',
@@ -77,7 +96,7 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add Activity</ModalHeader>
+          <ModalHeader>Edit Activity</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Stack>
@@ -148,8 +167,11 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" isLoading={isAddingActivity}>
-              Add
+            <Button variant="ghost" isDisabled={isEditingActivity} onClick={() => void onClose()}>
+              Close
+            </Button>
+            <Button type="submit" ml={3} isLoading={isEditingActivity}>
+              Edit
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -157,4 +179,4 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
     </Modal>
   );
 };
-export default AddActivity;
+export default EditActivity;
