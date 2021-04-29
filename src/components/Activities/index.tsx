@@ -20,12 +20,12 @@ function useActivities() {
   return {
     data,
     isLoading: !error && !data,
-    isError: error,
+    hasError: error,
   };
 }
 
 function Activities() {
-  const { data, isError, isLoading } = useActivities();
+  const { data, hasError, isLoading } = useActivities();
   const [activities, setActivities] = useState(data ?? []);
   const [searchText, setSearchText] = useState('');
   const addActivityDisclosure = useDisclosure();
@@ -68,7 +68,7 @@ function Activities() {
       return <Spinner size="lg" />;
     }
 
-    if (isError) {
+    if (hasError) {
       return <EmptyPlaceholder description="Something went wrong!" />;
     }
 

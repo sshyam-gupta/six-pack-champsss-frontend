@@ -47,7 +47,7 @@ export function useAllProjects() {
   return {
     projects: data?.projects ?? [],
     isLoading: !error && !data,
-    isError: error,
+    hasError: error,
     getProjectNameById,
     getProjectById,
     updateProject,

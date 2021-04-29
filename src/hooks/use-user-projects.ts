@@ -44,7 +44,7 @@ export function useUserProjects() {
   return {
     projects: data?.projects ?? [],
     isLoading: !error && !data,
-    isError: error,
+    hasError: error,
     getProjectNameById,
     getProjectPointsById,
     getProjectById,

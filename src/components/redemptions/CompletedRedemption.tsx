@@ -13,14 +13,14 @@ function useCompletedRedemptions() {
   return {
     data,
     isLoading: !error && !data,
-    isError: error,
+    hasError: error,
   };
 }
 
 function CompletedRedemption() {
-  const { data, isError, isLoading } = useCompletedRedemptions();
+  const { data, hasError, isLoading } = useCompletedRedemptions();
 
-  if (isError) {
+  if (hasError) {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
 

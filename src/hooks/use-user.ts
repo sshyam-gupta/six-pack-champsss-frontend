@@ -20,7 +20,7 @@ function useCurrentUser() {
       },
     },
     isLoading: !error && !data,
-    isError: error,
+    hasError: error,
   };
 }
 

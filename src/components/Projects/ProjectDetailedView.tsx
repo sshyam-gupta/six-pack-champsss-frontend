@@ -43,7 +43,7 @@ const ProjectDetailedView = () => {
   } = router;
 
   const { isAdmin } = useUser();
-  const { getProjectNameById, getProjectById, updateProject, isError } = useUserProjects();
+  const { getProjectNameById, getProjectById, updateProject, hasError } = useUserProjects();
 
   const [isAddingMembers, setIsAddingMembers] = useState(false);
   const [addedMembers, setAddedMembers] = useState([]);
@@ -94,7 +94,7 @@ const ProjectDetailedView = () => {
   });
 
   const getView = () => {
-    if (isError) {
+    if (hasError) {
       return <EmptyPlaceholder description="Something went wrong!" />;
     }
     if (!project) {

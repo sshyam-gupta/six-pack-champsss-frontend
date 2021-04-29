@@ -18,7 +18,7 @@ function ProjectList() {
   const { isAdmin } = useUser();
   const [searchText, setSearchText] = useState('');
 
-  const { projects: records, isError, updateProject } = useUserProjects();
+  const { projects: records, hasError, updateProject } = useUserProjects();
 
   const projects = useMemo(() => {
     return records?.filter((rec: Project) => {
@@ -27,7 +27,7 @@ function ProjectList() {
     });
   }, [records, searchText]);
 
-  if (isError) {
+  if (hasError) {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
 
