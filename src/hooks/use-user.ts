@@ -8,7 +8,9 @@ function useCurrentUser() {
   const [session] = useSession();
 
   const { data = {}, error } = useSWR(
-    typeof window !== 'undefined' && window.sessionStorage.getItem('token') ? `${GET_USER}/${session?.user.id}` : null,
+    typeof window !== 'undefined' && window.sessionStorage.getItem('token') && session?.user?.id
+      ? `${GET_USER}/${session?.user.id}`
+      : null,
   );
 
   return {
