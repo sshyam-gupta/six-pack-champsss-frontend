@@ -36,10 +36,6 @@ function ProjectList() {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
 
-  if (!records?.length) {
-    return <Spinner size="lg" />;
-  }
-
   const initiateClose = async (name?: string) => {
     closeAddProjectModal();
     if (name) {

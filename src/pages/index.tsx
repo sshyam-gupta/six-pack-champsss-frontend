@@ -97,7 +97,6 @@ const Dashboard = (props: HomeProps) => {
     });
     toast({
       description: `Redeemed ${pointsToRedeem} ${AppData.points} successfully, you will receive reward in 3-4 working days.`,
-      variant: 'top-accent',
       isClosable: true,
       position: 'top',
     });

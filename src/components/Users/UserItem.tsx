@@ -41,7 +41,6 @@ function UserItem(props: User) {
     if (status !== 200) {
       toast({
         description: 'Something went wrong',
-        variant: 'top-accent',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -50,7 +49,6 @@ function UserItem(props: User) {
     }
     toast({
       description: `User ${props.name} is now an ${val.value}`,
-      variant: 'top-accent',
       status: 'success',
       isClosable: true,
       position: 'top',
@@ -86,7 +84,9 @@ function UserItem(props: User) {
                 ]}
               />
             ) : (
-              <Text fontSize="sm" px="0.15rem">Owner</Text>
+              <Text fontSize="sm" px="0.15rem">
+                Owner
+              </Text>
             )}
           </Flex>
         </HStack>
