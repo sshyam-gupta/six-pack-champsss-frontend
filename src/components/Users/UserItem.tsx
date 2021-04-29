@@ -90,7 +90,7 @@ function UserItem(props: User) {
                 ]}
               />
             ) : (
-              <Text fontSize="sm">Owner</Text>
+              <Text fontSize="sm" px="2rem">Owner</Text>
             )}
           </Flex>
         </HStack>
