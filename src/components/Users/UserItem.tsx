@@ -89,7 +89,9 @@ function UserItem(props: User) {
                   { label: 'Associate', value: UserRole.Associate },
                 ]}
               />
-            ) : null}
+            ) : (
+              <Text fontSize="sm">Owner</Text>
+            )}
           </Flex>
         </HStack>
       </Flex>

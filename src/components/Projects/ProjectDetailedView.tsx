@@ -23,7 +23,8 @@ import useSWR from 'swr';
 import * as AppData from '../../constants/app.json';
 import { useProject } from '../../hooks/use-project';
 import { useUser } from '../../hooks/use-user';
-import { USERS } from '../../services/api/endpoints';
+import ApiService from '../../services/api';
+import { REMOVE_USERS_FROM_PROJECT, USERS } from '../../services/api/endpoints';
 import ProjectService from '../../services/project/project';
 import sleep from '../../util/sleep';
 import EmptyPlaceholder from '../EmptyPlaceholder';
@@ -149,7 +150,7 @@ const ProjectDetailedView = () => {
             {filteredUsers?.length ? (
               <StaggeredStack>
                 {filteredUsers.map((user: User) => (
-                  <ProjectMember {...user} key={user.id} onRemove={removeUser} />
+                  <ProjectMember {...user} key={user.id} onRemove={removeUser} projectId={id as string} />
                 ))}
               </StaggeredStack>
             ) : (
@@ -170,7 +171,7 @@ const ProjectDetailedView = () => {
   );
 };
 
-function ProjectMember(user: User & { onRemove: (user: User) => void }) {
+function ProjectMember(user: User & { projectId: string; onRemove: (user: User) => void }) {
   const bg = useColorModeValue('gray.50', 'gray.700');
   const deleteDisclosure = useDisclosure();
   const isDeletingDisclosure = useDisclosure();
@@ -178,8 +179,11 @@ function ProjectMember(user: User & { onRemove: (user: User) => void }) {
 
   const onDelete = useCallback(async () => {
     isDeletingDisclosure.onOpen();
-    // Integrate api
-    await sleep();
+    const payload = {
+      project_id: user.projectId,
+      user_ids: [user.id],
+    };
+    await ApiService.put(REMOVE_USERS_FROM_PROJECT.replace('{{id}}', user.projectId), payload);
     user.onRemove?.(user);
     isDeletingDisclosure.onClose();
     deleteDisclosure.onClose();

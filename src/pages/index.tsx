@@ -25,7 +25,7 @@ import {
 import { Button } from '@chakra-ui/button';
 import { Input } from '@chakra-ui/input';
 import RedeemService from '../services/redeem/redeem';
-import { AiOutlineQuestion } from 'react-icons/ai';
+import { Image } from '@chakra-ui/image';
 
 type HomeProps = {
   quotes?: {
@@ -210,7 +210,7 @@ const Dashboard = (props: HomeProps) => {
 
             <AlertDialogBody textAlign="center" justifyContent="center">
               <Flex justify="center ">
-                <AiOutlineQuestion fontSize="8rem" />
+                <Image src="/images/question.svg" width="12rem" height="12rem" />
               </Flex>
               <Text fontSize="2xl">Are you sure?</Text>
               <Text fontSize="md">

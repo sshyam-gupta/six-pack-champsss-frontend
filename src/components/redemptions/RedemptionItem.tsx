@@ -29,7 +29,7 @@ function RedemptionItem(props: RedemptionItemProps) {
     async (status: RedemptionStatus) => {
       isLoadingDisclosure.onOpen();
       const { error } = await ProjectService.updateRedemptionStatus(
-        `/admin/admin/redeem_requests/${props.id}/mark_complete`,
+        `/admin/redeem_requests/${props.id}/mark_complete`,
         {
           id: props.id,
         },
