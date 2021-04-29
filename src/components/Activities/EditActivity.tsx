@@ -170,7 +170,7 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
                   </FormHelperText>
                 )}
               </FormControl>
-              <FormControl id="desc">
+              <FormControl id="points">
                 <FormLabel textTransform="capitalize">{AppData.points}</FormLabel>
                 <Input
                   isDisabled

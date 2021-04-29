@@ -152,7 +152,7 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
                 )}
               </FormControl>
 
-              <FormControl id="desc">
+              <FormControl id="points">
                 <FormLabel textTransform="capitalize">{AppData.points}</FormLabel>
                 <Input
                   isDisabled
