@@ -14,7 +14,7 @@ type DashboardBoxProps = {
 
 function DashboardBox(props: DashboardBoxProps) {
   return (
-    <Box p="1rem" borderRadius="md" boxShadow="md" bg={props.bg} position="relative">
+    <Box p="1rem" borderRadius="md" boxShadow="md" bg={props.bg} position="relative" minH={['auto', 'auto', '220px']}>
       <Stat zIndex={2}>
         <StatLabel
           display="flex"

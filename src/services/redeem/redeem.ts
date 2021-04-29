@@ -1,9 +1,9 @@
 import ApiService from '../api';
-import { REDEEM_KLAPS } from '../api/endpoints';
+import { REDEEM_POINTS } from '../api/endpoints';
 
 class RedeemService {
   static async redeemKlaps(payload: any) {
-    return await ApiService.post(REDEEM_KLAPS, payload);
+    return await ApiService.post(REDEEM_POINTS, payload);
   }
 }
 export default RedeemService;

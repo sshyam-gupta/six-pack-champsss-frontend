@@ -17,6 +17,9 @@ class ProjectService {
   static async updateActivityStatus(url: string, data: any) {
     return await ApiService.put(url, data);
   }
+  static async updateRedemptionStatus(url: string, data: any) {
+    return await ApiService.post(url, data);
+  }
   static async deleteActivity(id: number) {
     return await ApiService.delete(`${ACTIVITIES}/${id}`);
   }

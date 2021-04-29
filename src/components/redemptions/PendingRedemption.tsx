@@ -7,11 +7,11 @@ import RedemptionItem from './RedemptionItem';
 import EmptyPlaceholder from '../EmptyPlaceholder';
 import useSWR, { mutate } from 'swr';
 
-import { Activity } from '../../util/activity-util';
-import { ADMIN_ACTIVITIES } from '../../services/api/endpoints';
+import { Redemption } from '../../util/activity-util';
+import { REDEEM_REQUESTS } from '../../services/api/endpoints';
 
 function usePendingRedemptions() {
-  const { data, error } = useSWR(`${ADMIN_ACTIVITIES}?status=pending`);
+  const { data, error } = useSWR(`${REDEEM_REQUESTS}?status=pending`);
 
   return {
     data,
@@ -29,7 +29,7 @@ function PendingRedemption() {
   }, [data]);
 
   const updateActivity = useCallback(() => {
-    mutate(`${ADMIN_ACTIVITIES}?status=pending`);
+    mutate(`${REDEEM_REQUESTS}?status=pending`);
   }, []);
 
   if (isError) {
@@ -44,7 +44,7 @@ function PendingRedemption() {
     <Stack>
       {requests?.length ? (
         <StaggeredStack spacing={4}>
-          {requests.map((activity: Activity) => (
+          {requests.map((activity: Redemption) => (
             <RedemptionItem onUpdate={updateActivity} key={activity.id} {...activity} />
           ))}
         </StaggeredStack>

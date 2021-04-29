@@ -5,10 +5,10 @@ import EmptyPlaceholder from '../EmptyPlaceholder';
 import useSWR from 'swr';
 
 import { Spinner } from '@chakra-ui/spinner';
-import { ADMIN_ACTIVITIES } from '../../services/api/endpoints';
+import { REDEEM_REQUESTS } from '../../services/api/endpoints';
 
-function useApprovedRedemptions() {
-  const { data, error } = useSWR(`${ADMIN_ACTIVITIES}?status=approved`);
+function useCompletedRedemptions() {
+  const { data, error } = useSWR(`${REDEEM_REQUESTS}?status=completed`);
 
   return {
     data,
@@ -17,8 +17,8 @@ function useApprovedRedemptions() {
   };
 }
 
-function ApprovedRedemption() {
-  const { data, isError, isLoading } = useApprovedRedemptions();
+function CompletedRedemption() {
+  const { data, isError, isLoading } = useCompletedRedemptions();
 
   if (isError) {
     return <EmptyPlaceholder description="Something went wrong!" />;
@@ -43,4 +43,4 @@ function ApprovedRedemption() {
   );
 }
 
-export default ApprovedRedemption;
+export default CompletedRedemption;
