@@ -1,13 +1,9 @@
 import { Avatar } from '@chakra-ui/avatar';
-import { IconButton } from '@chakra-ui/button';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { Text, HStack, Spacer, Flex, Stack } from '@chakra-ui/layout';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
-import { BiDotsVerticalRounded } from 'react-icons/bi';
-import { AiOutlineDelete } from 'react-icons/ai';
 import SelectComponent from '../Select';
 import { useToast } from '@chakra-ui/toast';
-import sleep from '../../util/sleep';
 import { useDisclosure } from '@chakra-ui/hooks';
 import UserService from '../../services/user/user';
 
