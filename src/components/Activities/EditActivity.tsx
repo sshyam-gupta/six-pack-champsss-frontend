@@ -11,6 +11,7 @@ import { Stack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { useState } from 'react';
 import { useToast } from '@chakra-ui/toast';
+import * as AppData from '../../constants/app.json';
 
 import ProjectService from '../../services/project/project';
 import SelectComponent from '../Select';
@@ -171,7 +172,7 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
                 )}
               </FormControl>
               <FormControl id="desc">
-                <FormLabel>Points</FormLabel>
+                <FormLabel textTransform="capitalize">{AppData.points}</FormLabel>
                 <Input
                   isDisabled
                   value={

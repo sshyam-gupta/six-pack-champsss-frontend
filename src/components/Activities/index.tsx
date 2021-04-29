@@ -81,7 +81,7 @@ function Activities() {
             ))}
           </Stack>
         ) : (
-          <EmptyPlaceholder description="No Activity found" />
+          <EmptyPlaceholder description="No activity found" />
         )}
       </StaggeredStack>
     );

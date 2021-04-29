@@ -49,7 +49,7 @@ function PendingRedemption() {
           ))}
         </StaggeredStack>
       ) : (
-        <EmptyPlaceholder description="No Request available" />
+        <EmptyPlaceholder description="No request available" />
       )}
     </Stack>
   );

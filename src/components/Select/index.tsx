@@ -43,9 +43,7 @@ export function FormatOptionLabel(props: any) {
         <Avatar name={props.name} size="sm" src={props.image} />
         <Stack spacing={0}>
           <Text fontSize="md">{props.name}</Text>
-          <Text fontSize="sm" color="gray.600">
-            {props.email}
-          </Text>
+          <Text fontSize="sm">{props.email}</Text>
         </Stack>
       </Stack>
     </Stack>

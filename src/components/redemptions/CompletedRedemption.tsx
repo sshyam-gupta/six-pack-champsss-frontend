@@ -37,7 +37,7 @@ function CompletedRedemption() {
           ))}
         </Stack>
       ) : (
-        <EmptyPlaceholder description="No Request available" />
+        <EmptyPlaceholder description="No request available" />
       )}
     </StaggeredStack>
   );

@@ -26,7 +26,7 @@ function AboutUs() {
       <Stack alignItems="center" mb="2rem">
         <Image src="/images/logo.png" height={300} width={300} alt="Logo" />
         <Stack maxW="50rem" fontSize="lg" spacing={6}>
-          <Text>
+          <Text textAlign="center">
             <Text fontWeight={500} display="inline">
               Six Pack Champsss
             </Text>
@@ -44,12 +44,12 @@ function AboutUs() {
             </Text>
             is initials of we six people. ok lets think about describing our logo, why we choose that structure.
           </Text>
-          <Text>
+          <Text textAlign="center">
             We selected Hexagon as base because we are team of 6 where each member represents one side of hexagon that
             makes our team strong. And as we all know Hexagon is the strongest shape. So our tagline also says that
             Hex-a-gone beyond your power - we as a team has gone beyond individual power
           </Text>
-          <Text>
+          <Text textAlign="center">
             <Text fontWeight={500} display="inline">
               Kiprosh Laureate Awards Portal (KLAP)
             </Text>
@@ -57,7 +57,7 @@ function AboutUs() {
             is a portal which we have created for the Kiprosh associates. Associates can login to this portal and claim
             for points if they have contributed to other departments like Hiring, KFC, & COE of the Organization.
           </Text>
-          <Text>
+          <Text textAlign="center">
             The reason we have named it as KLAP because with the help of this portal we are applauding associates for
             their dedication towards the organization.
           </Text>

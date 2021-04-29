@@ -26,7 +26,6 @@ import { useUser } from '../../hooks/use-user';
 import ApiService from '../../services/api';
 import { REMOVE_USERS_FROM_PROJECT, USERS } from '../../services/api/endpoints';
 import ProjectService from '../../services/project/project';
-import sleep from '../../util/sleep';
 import EmptyPlaceholder from '../EmptyPlaceholder';
 import PageContainer from '../layout/PageContainer';
 

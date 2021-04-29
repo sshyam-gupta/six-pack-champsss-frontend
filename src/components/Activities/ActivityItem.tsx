@@ -102,7 +102,7 @@ function ActivityItem(activity: ActivityItemProps) {
       </HStack>
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
-          <Flex alignItems="center" minW="80px">
+          <Flex alignItems="center" minW="60px">
             <Text>{`${activity.status === 'approved' ? activity.points_granted : activity.points_requested} ${
               AppData.points
             }`}</Text>

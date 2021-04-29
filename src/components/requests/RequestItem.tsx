@@ -50,7 +50,7 @@ function RequestItem(props: RequestItemProps) {
       const { error } = await ProjectService.updateActivityStatus(`/admin/activities/${props.id}/${status}`, {
         id: props.id,
         activity: {
-          points_granted: status === 'approved' ? pointsToGrant : props.points_requested,
+          points_granted: status === 'approve' ? pointsToGrant : props.points_requested,
         },
       });
       isLoadingDisclosure.onClose();
@@ -157,8 +157,10 @@ function RequestItem(props: RequestItemProps) {
 
             <AlertDialogBody>
               <Stack spacing={2}>
-                <HStack spacing={4}>
-                  <Text fontSize="md">{AppData.points} Requested:</Text>
+                <HStack spacing={2}>
+                  <Text fontSize="md" textTransform="capitalize">
+                    {AppData.points} requested:
+                  </Text>
                   <Text fontWeight={500}>{props.points_requested}</Text>
                 </HStack>
                 <Input
