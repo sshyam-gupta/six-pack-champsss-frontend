@@ -12,7 +12,7 @@ function AboutUs() {
 
   return (
     <Container p={0} pl="0.5rem" maxW="container.xl" as="main" className="main-content" overflow="auto" h="100vh">
-      <Flex boxShadow="md" zIndex={1} bg={bg} p="1.5rem" top={0} justify="center" alignItems="center" position="sticky">
+      <Flex zIndex={1} bg={bg} p="1.5rem" top={0} justify="center" alignItems="center" position="sticky">
         <IconButton aria-label="Back" fontSize="2rem" variant="outline" onClick={() => router.push('/')}>
           <ChevronLeftIcon />
         </IconButton>
