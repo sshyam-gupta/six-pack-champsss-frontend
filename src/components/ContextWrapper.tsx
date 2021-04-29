@@ -3,14 +3,14 @@ import { useState, useMemo, useEffect } from 'react';
 import useSWR, { SWRConfig } from 'swr';
 
 import { ProjectContext } from '../contexts/project';
-import { PROJECTS } from '../services/api/endpoints';
+import { ALL_PROJECTS } from '../services/api/endpoints';
 
 import fetcher from '../util/swr-util';
 import { Project } from './Projects/ProjectItem';
 
 function useProjects() {
   const { data, error } = useSWR(
-    typeof window !== 'undefined' && window.sessionStorage.getItem('token') ? PROJECTS : null,
+    typeof window !== 'undefined' && window.sessionStorage.getItem('token') ? ALL_PROJECTS : null,
     url =>
       fetcher(url, {
         headers: {

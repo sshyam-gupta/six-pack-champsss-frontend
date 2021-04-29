@@ -48,7 +48,7 @@ function ActivityItem(activity: ActivityItemProps) {
     isDeletingDisclosure.onClose();
     if (error) {
       toast({
-        description: error,
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -111,13 +111,13 @@ function ActivityItem(activity: ActivityItemProps) {
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {getProjectNameById(activity.project_id)}
+            {getProjectNameById(activity.project_id) ?? '---'}
           </Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {minutesToHours(activity.duration)}
+            {minutesToHours(activity.duration) ?? '---'}
           </Text>
         </HStack>
         <Text textAlign="right">{dayjs(activity.performed_on).format('ll LT')}</Text>

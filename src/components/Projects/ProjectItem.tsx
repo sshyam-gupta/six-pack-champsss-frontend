@@ -49,7 +49,7 @@ function ProjectItem({ ...props }: Project & { updateProject: (name?: string) =>
     isDeletingDisclosure.onClose();
     if (error) {
       toast({
-        description: error,
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',

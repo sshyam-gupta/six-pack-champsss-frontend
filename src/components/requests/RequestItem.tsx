@@ -126,18 +126,18 @@ function RequestItem(props: RequestItemProps) {
       </HStack>
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
-          <Text minW="80px">{props.user_name}</Text>
+          <Text minW="80px">{props.user_name ?? '---'}</Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {getProjectNameById(props.project_id)}
+            {getProjectNameById(props.project_id) ?? '---'}
           </Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {minutesToHours(props.duration)}
+            {minutesToHours(props.duration) ?? '---'}
           </Text>
         </HStack>
         <Text textAlign="right">{dayjs(props.performed_on).format('ll LT')}</Text>

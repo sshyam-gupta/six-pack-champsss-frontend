@@ -16,7 +16,7 @@ import { useUser } from '../../hooks/use-user';
 import { useProject } from '../../hooks/use-project';
 
 import { mutate } from 'swr';
-import { PROJECTS } from '../../services/api/endpoints';
+import { ALL_PROJECTS } from '../../services/api/endpoints';
 
 function ProjectList() {
   const { isOpen, onOpen: openAddProjectModal, onClose: closeAddProjectModal } = useDisclosure();
@@ -39,7 +39,7 @@ function ProjectList() {
   const initiateClose = async (name?: string) => {
     closeAddProjectModal();
     if (name) {
-      mutate(PROJECTS);
+      mutate(ALL_PROJECTS);
     }
   };
 

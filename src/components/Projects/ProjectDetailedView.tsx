@@ -65,7 +65,7 @@ const ProjectDetailedView = () => {
     const { error } = await ProjectService.addMembers(payload);
     if (error) {
       toast({
-        description: error,
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',

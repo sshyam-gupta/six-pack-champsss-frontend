@@ -23,7 +23,7 @@ import { useTheme } from '@chakra-ui/system';
 import { Controller, useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import useSWR from 'swr';
-import { PROJECTS } from '../../services/api/endpoints';
+import { USER_PROJECTS } from '../../services/api/endpoints';
 import { Activity } from '../../util/activity-util';
 import { useProject } from '../../hooks/use-project';
 import { Input } from '@chakra-ui/input';
@@ -35,7 +35,7 @@ interface EditActivityProps extends Activity {
 
 const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
   const [isEditingActivity, setIsEditingActivity] = useState(false);
-  const { data } = useSWR(PROJECTS);
+  const { data } = useSWR(USER_PROJECTS);
   const toast = useToast();
   const { getProjectNameById, getProjectPointsById } = useProject();
   const { colorMode } = useColorMode();
@@ -81,7 +81,7 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
     setIsEditingActivity(false);
     if (error) {
       toast({
-        description: error,
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',
