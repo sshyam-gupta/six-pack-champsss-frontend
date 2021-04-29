@@ -21,7 +21,7 @@ const PageContainer = props => {
     scrollBodyRef?.current?.addEventListener('scroll', debouncedScroll);
 
     return () => scrollBodyRef?.current?.removeEventListener('scroll', debouncedScroll);
-  }, []);
+  }, [debouncedScroll]);
 
   return (
     <>

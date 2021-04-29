@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { Box, Flex, Stack, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import UncontrolledLottie from '../components/lottie/UncontrolledLottie';
-import animationData from '../public/lotties/33049-binoculars.json';
+import animationData from '../../public/lotties/binoculars.json';
+
 const OutsideOrganization = () => {
   return (
     <Flex direction="column" alignItems="center" pos="relative" h="100vh">

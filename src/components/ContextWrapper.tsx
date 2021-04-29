@@ -1,4 +1,3 @@
-import { useToast } from '@chakra-ui/toast';
 import { useSession } from 'next-auth/client';
 import { useState, useMemo, useEffect } from 'react';
 import useSWR, { SWRConfig } from 'swr';
@@ -10,13 +9,16 @@ import fetcher from '../util/swr-util';
 import { Project } from './Projects/ProjectItem';
 
 function useProjects() {
-  const [session] = useSession();
-  const { data, error } = useSWR(session ? PROJECTS : null, url =>
-    fetcher(url, {
-      headers: {
-        ...(typeof window !== 'undefined' ? { Authorization: `Bearer ${window.sessionStorage.getItem('token')}` } : {}),
-      },
-    }),
+  const { data, error } = useSWR(
+    typeof window !== 'undefined' && window.sessionStorage.getItem('token') ? PROJECTS : null,
+    url =>
+      fetcher(url, {
+        headers: {
+          ...(typeof window !== 'undefined'
+            ? { Authorization: `Bearer ${window.sessionStorage.getItem('token')}` }
+            : {}),
+        },
+      }),
   );
 
   return {
@@ -32,13 +34,15 @@ const ContextWrapper = ({ children }: any) => {
   const [session] = useSession();
 
   useEffect(() => {
-    if (session && typeof window !== 'undefined') {
-      window.sessionStorage.setItem('token', session.accessToken);
+    if (session?.accessToken && typeof window !== 'undefined') {
+      window.sessionStorage.setItem('token', session?.accessToken);
     }
-  }, [session]);
+  }, [session?.accessToken]);
 
   useEffect(() => {
-    setProjects(data);
+    if (data) {
+      setProjects(data);
+    }
   }, [data]);
 
   const projectsProvider = useMemo(() => ({ projects, setProjects }), [projects, setProjects]);

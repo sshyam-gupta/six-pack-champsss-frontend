@@ -23,7 +23,7 @@ type HomeProps = {
   };
 };
 
-const Index = (props: HomeProps) => {
+const Dashboard = (props: HomeProps) => {
   const [data] = useSession();
   const [session, setSession] = useState<Session | null>(data);
   const toast = useToast();
@@ -109,4 +109,4 @@ export async function getStaticProps() {
   };
 }
 
-export default Index;
+export default Dashboard;

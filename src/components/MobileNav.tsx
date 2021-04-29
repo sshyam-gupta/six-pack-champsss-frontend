@@ -43,7 +43,7 @@ export function MobileNavContent(props: MobileNavContentProps) {
     if (showOnBreakpoint == false) {
       onClose();
     }
-  }, [showOnBreakpoint]);
+  }, [onClose, showOnBreakpoint]);
 
   useUpdateEffect(() => {
     if (isOpen) {

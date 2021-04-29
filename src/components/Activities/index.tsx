@@ -56,7 +56,7 @@ function Activities() {
       }
       addActivityDisclosure.onClose();
     },
-    [activities],
+    [activities, addActivityDisclosure],
   );
 
   const updateActivity = useCallback(() => {

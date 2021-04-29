@@ -4,7 +4,7 @@ import { HStack, Spacer, Text, Flex } from '@chakra-ui/layout';
 import { Tooltip } from '@chakra-ui/tooltip';
 import Linkify from 'react-linkify';
 import { BsCheckCircle } from 'react-icons/bs';
-import { IoCloseCircleOutline } from 'react-icons/io5';
+
 import dayjs from 'dayjs';
 
 import * as AppData from '../../constants/app.json';
@@ -18,12 +18,12 @@ import { minutesToHours } from '../../util/time-util';
 import { useProject } from '../../hooks/use-project';
 import ProjectService from '../../services/project/project';
 
-interface RequestItemProps extends Activity {
+interface RedemptionItemProps extends Activity {
   disableCrud?: boolean;
   onUpdate?: (status: ActivityStatus) => void;
 }
 
-function RequestItem(props: RequestItemProps) {
+function RedemptionItem(props: RedemptionItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
   const isLoadingDisclosure = useDisclosure();
   const toast = useToast();
@@ -81,35 +81,19 @@ function RequestItem(props: RequestItemProps) {
           <Text>{`${props.status === 'approved' ? props.points_granted : props.points_requested} ${
             AppData.points
           }`}</Text>
-          {!props.disableCrud ? (
-            <Tooltip placement="top" label="Approve">
-              <IconButton
-                isLoading={isLoadingDisclosure.isOpen}
-                size="sm"
-                variant="outline"
-                aria-label="Approve"
-                onClick={() => {
-                  updateStatus('approve' as ActivityStatus);
-                }}
-                icon={<BsCheckCircle />}
-              />
-            </Tooltip>
-          ) : null}
-          {!props.disableCrud ? (
-            <Tooltip placement="top" label="Reject">
-              <IconButton
-                isLoading={isLoadingDisclosure.isOpen}
-                fontSize="1.1rem"
-                variant="outline"
-                size="sm"
-                aria-label="Approve"
-                onClick={() => {
-                  updateStatus('reject' as ActivityStatus);
-                }}
-                icon={<IoCloseCircleOutline />}
-              />
-            </Tooltip>
-          ) : null}
+
+          <Tooltip placement="top" label="Mark as complete">
+            <IconButton
+              isLoading={isLoadingDisclosure.isOpen}
+              size="sm"
+              variant="outline"
+              aria-label="Approve"
+              onClick={() => {
+                updateStatus('approve' as ActivityStatus);
+              }}
+              icon={<BsCheckCircle />}
+            />
+          </Tooltip>
         </HStack>
       </HStack>
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
@@ -134,4 +118,4 @@ function RequestItem(props: RequestItemProps) {
   );
 }
 
-export default RequestItem;
+export default RedemptionItem;
