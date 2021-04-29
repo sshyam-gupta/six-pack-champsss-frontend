@@ -2,7 +2,6 @@ import { Avatar } from '@chakra-ui/avatar';
 import { IconButton } from '@chakra-ui/button';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { Text, HStack, Spacer, Flex, Stack } from '@chakra-ui/layout';
-import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -92,12 +91,6 @@ function UserItem(props: User) {
               />
             ) : null}
           </Flex>
-          <Menu>
-            <MenuButton as={IconButton} aria-label="Options" icon={<BiDotsVerticalRounded />} variant="ghost" />
-            <MenuList p={0} minWidth="4rem">
-              <MenuItem icon={<AiOutlineDelete />}>Delete</MenuItem>
-            </MenuList>
-          </Menu>
         </HStack>
       </Flex>
     </StaggeredStackItem>
