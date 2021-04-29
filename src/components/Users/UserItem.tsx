@@ -1,7 +1,7 @@
 import { Avatar } from '@chakra-ui/avatar';
 import { IconButton } from '@chakra-ui/button';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import { Text, HStack, Spacer, Flex } from '@chakra-ui/layout';
+import { Text, HStack, Spacer, Flex, Stack } from '@chakra-ui/layout';
 import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
@@ -36,7 +36,10 @@ function UserItem(props: User) {
       <Flex flexDirection={['column', 'column', 'row']} alignItems={['flex-start', 'flex-start', 'center']}>
         <HStack spacing={4}>
           <Avatar size="sm" src={props.image} alt={props.name} />
-          <Text>{props.name}</Text>
+          <Stack spacing={0}>
+            <Text>{props.name}</Text>
+            <Text fontSize="sm">{props.email}</Text>
+          </Stack>
         </HStack>
         <Spacer />
         <HStack mt={['1rem', '1rem', 0]}>

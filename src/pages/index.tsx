@@ -10,8 +10,21 @@ import DashboardChart from '../components/dashboard/DashboardChart';
 import { AvailableIcon, RedeemedIcon } from '../components/lottie/PlaceholderIcons';
 import Activities from '../components/Activities';
 import { useToast } from '@chakra-ui/toast';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Session } from 'next-auth';
+import { useDisclosure } from '@chakra-ui/hooks';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogHeader,
+  AlertDialogCloseButton,
+} from '@chakra-ui/modal';
+import { Button } from '@chakra-ui/button';
+import { Input } from '@chakra-ui/input';
+import RedeemService from '../services/redeem/redeem';
 
 type HomeProps = {
   quotes?: {
@@ -27,6 +40,11 @@ const Dashboard = (props: HomeProps) => {
   const [data] = useSession();
   const [session, setSession] = useState<Session | null>(data);
   const toast = useToast();
+  const cancelRef = useRef();
+  const [pointsToRedeem, setPointsToRedeem] = useState<number>();
+  const klapsCountDialogDisclosure = useDisclosure();
+  const klapsConfirmationDialogDisclosure = useDisclosure();
+  const [isRedeeming, setIsRedeeming] = useState(false);
 
   useEffect(() => {
     async function getUser() {
@@ -38,6 +56,47 @@ const Dashboard = (props: HomeProps) => {
 
   // @ts-ignore
   const points = session?.points;
+
+  const initiateRedeem = useCallback(() => {
+    if (pointsToRedeem > points?.available_points || pointsToRedeem <= AppData['min-points-to-redeem'] - 1) {
+      toast({
+        description: `${AppData.points} should  be in range ${AppData['min-points-to-redeem']} - ${points?.available_points}`,
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
+    } else {
+      klapsCountDialogDisclosure.onClose();
+      klapsConfirmationDialogDisclosure.onOpen();
+    }
+  }, [pointsToRedeem, klapsConfirmationDialogDisclosure, klapsCountDialogDisclosure, points, toast]);
+
+  const confirmRedeem = useCallback(async () => {
+    setIsRedeeming(true);
+    const payload = {
+      redeem_request: {
+        points: pointsToRedeem,
+      },
+    };
+    const { error } = await RedeemService.redeemKlaps(payload);
+    setIsRedeeming(false);
+    if (error) {
+      toast({
+        description: error,
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+      });
+      return;
+    }
+    toast({
+      description: 'Redeeming in process',
+      variant: 'top-accent',
+      isClosable: true,
+      position: 'top',
+    });
+    klapsConfirmationDialogDisclosure.onClose();
+  }, [toast, klapsConfirmationDialogDisclosure, pointsToRedeem]);
 
   return (
     <LoginRequired>
@@ -60,14 +119,7 @@ const Dashboard = (props: HomeProps) => {
                   value={points?.available_points ?? 0}
                   title={`Available ${AppData.points}`}
                   icon={<AvailableIcon px="3rem" py="2rem" />}
-                  onRedeem={() => {
-                    toast({
-                      description: 'Redeeming in process',
-                      variant: 'top-accent',
-                      isClosable: true,
-                      position: 'top',
-                    });
-                  }}
+                  onRedeem={klapsCountDialogDisclosure.onOpen}
                 />
                 <DashboardBox
                   bg={useColorModeValue('green.50', 'green.900')}
@@ -96,6 +148,88 @@ const Dashboard = (props: HomeProps) => {
           <Activities />
         </Stack>
       </PageContainer>
+      <AlertDialog
+        isCentered
+        isOpen={klapsCountDialogDisclosure.isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={klapsCountDialogDisclosure.onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Enter {AppData.points} to Redeem
+              <AlertDialogCloseButton />
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              <Input
+                placeholder={`Enter ${AppData.points} to Redeem`}
+                value={pointsToRedeem}
+                onChange={({ target: { value } }) => setPointsToRedeem(parseInt(value))}
+                type="number"
+                min={AppData['min-points-to-redeem']}
+                max={points?.available_points ?? 0}
+              />
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={klapsCountDialogDisclosure.onClose} variant="ghost">
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={initiateRedeem}
+                ml={3}
+                disabled={!pointsToRedeem || pointsToRedeem > points?.available_points}
+              >
+                Redeem
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      <AlertDialog
+        isCentered
+        isOpen={klapsConfirmationDialogDisclosure.isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={klapsConfirmationDialogDisclosure.onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Redeem {AppData.points}
+              <AlertDialogCloseButton />
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              <Text fontSize="2xl">
+                Redeem {pointsToRedeem} {AppData.points}
+              </Text>
+              <Text fontSize="md">
+                Are you sure you want to redeem {pointsToRedeem} {AppData.points} ?
+              </Text>
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button
+                ref={cancelRef}
+                onClick={() => {
+                  klapsConfirmationDialogDisclosure.onClose();
+                  klapsCountDialogDisclosure.onOpen();
+                }}
+                variant="ghost"
+                disabled={isRedeeming}
+              >
+                Back
+              </Button>
+              <Button isLoading={isRedeeming} colorScheme="red" onClick={confirmRedeem} ml={3}>
+                Redeem
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </LoginRequired>
   );
 };

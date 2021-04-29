@@ -9,3 +9,4 @@ export const USERS = `${baseUrl}users`;
 export const ACTIVITIES = `${baseUrl}activities`;
 export const ADMIN_ACTIVITIES = `${baseUrl}admin/activities`;
 export const ADD_USERS = `${baseUrl}projects/{{id}}/users`;
+export const REDEEM_KLAPS = `${baseUrl}redeem_requests`;
