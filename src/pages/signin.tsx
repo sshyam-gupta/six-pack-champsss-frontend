@@ -11,7 +11,7 @@ import * as AppData from '../constants/app.json';
 import SEO from '../components/Seo';
 import { DarkModeSwitch } from '../components/Header';
 
-export default function SignIn({ providers }: any) {
+export default function SignIn() {
   const { isOpen: showLoader, onOpen: openLoader } = useDisclosure();
 
   return (
@@ -48,23 +48,18 @@ export default function SignIn({ providers }: any) {
             </Text>
           </Stack>
 
-          {providers
-            ? Object.values(providers).map((provider: any) => (
-                <Button
-                  isLoading={showLoader}
-                  mt="2rem"
-                  key={provider.name}
-                  onClick={() => {
-                    openLoader();
-                    signIn(provider.id);
-                  }}
-                  leftIcon={<AiOutlineGoogle />}
-                  fontWeight="500"
-                >
-                  Login with Google
-                </Button>
-              ))
-            : null}
+          <Button
+            isLoading={showLoader}
+            mt="2rem"
+            onClick={() => {
+              openLoader();
+              signIn('google');
+            }}
+            leftIcon={<AiOutlineGoogle />}
+            fontWeight="500"
+          >
+            Login with Google
+          </Button>
         </Flex>
         <Flex flex={3} justify="center" alignItems="center" p={['1rem', null, '2rem']}>
           <UncontrolledLottie options={{ animationData: animationData }} />

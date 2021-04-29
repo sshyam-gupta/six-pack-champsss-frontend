@@ -182,7 +182,7 @@ function RequestItem(props: RequestItemProps) {
               </Button>
               <Button
                 isLoading={isLoadingDisclosure.isOpen}
-                disabled={!pointsToGrant || pointsToGrant > props.points_requested}
+                disabled={!pointsToGrant}
                 colorScheme="red"
                 onClick={() => updateStatus('approve')}
                 ml={3}
