@@ -63,13 +63,29 @@ function Activities() {
     mutate(ACTIVITIES);
   }, []);
 
-  if (isError) {
-    return <EmptyPlaceholder description="Something went wrong!" />;
-  }
+  const getView = () => {
+    if (isLoading) {
+      return <Spinner size="lg" />;
+    }
 
-  if (isLoading) {
-    return <Spinner size="lg" />;
-  }
+    if (isError) {
+      return <EmptyPlaceholder description="Something went wrong!" />;
+    }
+
+    return (
+      <StaggeredStack>
+        {activityData.length ? (
+          <Stack spacing={4} maxHeight="30rem" overflow="auto">
+            {activityData.map(activity => (
+              <ActivityItem key={activity.id} {...activity} onUpdate={updateActivity} />
+            ))}
+          </Stack>
+        ) : (
+          <EmptyPlaceholder description="No Activity found" />
+        )}
+      </StaggeredStack>
+    );
+  };
 
   return (
     <Stack spacing={4}>
@@ -84,17 +100,7 @@ function Activities() {
           Add
         </Button>
       </HStack>
-      <StaggeredStack>
-        {activityData.length ? (
-          <Stack spacing={4} maxHeight="30rem" overflow="auto">
-            {activityData.map(activity => (
-              <ActivityItem key={activity.id} {...activity} onUpdate={updateActivity} />
-            ))}
-          </Stack>
-        ) : (
-          <EmptyPlaceholder description="No Activity found" />
-        )}
-      </StaggeredStack>
+      {getView()}
     </Stack>
   );
 }
