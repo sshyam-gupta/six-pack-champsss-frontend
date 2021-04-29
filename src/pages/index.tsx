@@ -1,7 +1,7 @@
 import LoginRequired from '../components/layout/LoginRequired';
 import PageContainer from '../components/layout/PageContainer';
 import * as AppData from '../constants/app.json';
-import { Grid, GridItem, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
+import { Flex, Grid, GridItem, SimpleGrid, Stack, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import getGreetings from '../util/greetings';
 import { getSession, useSession } from 'next-auth/client';
@@ -25,6 +25,7 @@ import {
 import { Button } from '@chakra-ui/button';
 import { Input } from '@chakra-ui/input';
 import RedeemService from '../services/redeem/redeem';
+import { AiOutlineQuestion } from 'react-icons/ai';
 
 type HomeProps = {
   quotes?: {
@@ -204,33 +205,33 @@ const Dashboard = (props: HomeProps) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Redeem {AppData.points}
               <AlertDialogCloseButton />
             </AlertDialogHeader>
 
-            <AlertDialogBody>
-              <Text fontSize="2xl">
-                Redeem {pointsToRedeem} {AppData.points}
-              </Text>
+            <AlertDialogBody textAlign="center" justifyContent="center">
+              <Flex justify="center ">
+                <AiOutlineQuestion fontSize="8rem" />
+              </Flex>
+              <Text fontSize="2xl">Are you sure?</Text>
               <Text fontSize="md">
-                Are you sure you want to redeem {pointsToRedeem} {AppData.points} ?
+                Do you really want to redeem {pointsToRedeem} {AppData.points} ?
               </Text>
             </AlertDialogBody>
 
-            <AlertDialogFooter>
+            <AlertDialogFooter justifyContent="center">
               <Button
                 ref={cancelRef}
                 onClick={() => {
                   klapsConfirmationDialogDisclosure.onClose();
                   klapsCountDialogDisclosure.onOpen();
                 }}
-                variant="ghost"
+                variant="outline"
                 disabled={isRedeeming}
               >
-                Back
+                No
               </Button>
               <Button isLoading={isRedeeming} colorScheme="red" onClick={confirmRedeem} ml={3}>
-                Redeem
+                Yes
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

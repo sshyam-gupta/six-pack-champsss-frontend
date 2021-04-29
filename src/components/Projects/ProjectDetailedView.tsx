@@ -50,6 +50,10 @@ const ProjectDetailedView = () => {
   const [searchText, setSearchText] = useState('');
 
   const project = getProjectById(parseInt(id as string));
+  const projectMembersIdMap = project?.users?.reduce((acc: any, user: User) => {
+    acc[user.id] = user;
+    return acc;
+  }, {});
   const { data: users } = useSWR(USERS);
 
   const addMembers = async () => {
@@ -118,7 +122,9 @@ const ProjectDetailedView = () => {
               onChange={setAddedMembers}
               components={{ MultiValueLabel: MultiValueLabel }}
               formatOptionLabel={FormatOptionLabel}
-              options={users?.map((u: User) => ({ ...u, label: u.name, value: u.id }))}
+              options={users
+                ?.filter((u: User) => !projectMembersIdMap[u.id])
+                ?.map((user: User) => ({ ...user, label: user.name, value: user.id }))}
               allowClear
               isMulti
             />
