@@ -25,7 +25,7 @@ function AboutUs() {
       </Flex>
       <Stack alignItems="center" mb="2rem">
         <Image src="/images/logo.png" height={300} width={300} alt="Logo" />
-        <Stack maxW="50rem" fontSize="lg" spacing={6}>
+        <Stack maxW="50rem" fontSize="lg" spacing={6} textAlign="center">
           <Text textAlign="center">
             <Text fontWeight={500} display="inline">
               Six Pack Champsss
@@ -42,7 +42,7 @@ function AboutUs() {
             <Text fontWeight={500} display="inline">
               Ampsss{` `}
             </Text>
-            is initials of we six people. ok lets think about describing our logo, why we choose that structure.
+            is initials of we six people. Lets think about describing our logo, why we choose that structure.
           </Text>
           <Text textAlign="center">
             We selected Hexagon as base because we are team of 6 where each member represents one side of hexagon that
