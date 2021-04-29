@@ -14,6 +14,7 @@ import { useCallback } from 'react';
 import { useToast } from '@chakra-ui/toast';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import ProjectService from '../../services/project/project';
+import { useUser } from '../../hooks/use-user';
 
 interface RedemptionItemProps extends Redemption {
   disableCrud?: boolean;
@@ -24,6 +25,7 @@ function RedemptionItem(props: RedemptionItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
   const isLoadingDisclosure = useDisclosure();
   const toast = useToast();
+  const { isAdmin } = useUser();
 
   const updateStatus = useCallback(
     async (status: RedemptionStatus) => {
@@ -38,7 +40,6 @@ function RedemptionItem(props: RedemptionItemProps) {
       if (error) {
         toast({
           description: `Something went wrong!`,
-          variant: 'top-accent',
           status: 'error',
           isClosable: true,
           position: 'top',
@@ -48,7 +49,6 @@ function RedemptionItem(props: RedemptionItemProps) {
       props.onUpdate?.(status);
       toast({
         description: `Redemption completed successfully`,
-        variant: 'top-accent',
         status: 'success',
         isClosable: true,
         position: 'top',
@@ -71,7 +71,7 @@ function RedemptionItem(props: RedemptionItemProps) {
           <Text>{`${props.points} ${AppData.points}`}</Text>
         </HStack>
         <Spacer />
-        {!props.disableCrud ? (
+        {!props.disableCrud && isAdmin ? (
           <HStack>
             <Tooltip placement="top" label="Mark as complete">
               <IconButton

@@ -24,11 +24,13 @@ import { useToast } from '@chakra-ui/toast';
 
 import ProjectService from '../../services/project/project';
 import AddProject from './AddProject';
+import { useUser } from '../../hooks/use-user';
 
 export type Project = {
   id: number;
   name: string;
   users: Array<User>;
+  points_per_hour: number;
   total_points: number;
 };
 function ProjectItem({ ...props }: Project & { updateProject: (name?: string) => void }) {
@@ -38,6 +40,7 @@ function ProjectItem({ ...props }: Project & { updateProject: (name?: string) =>
   const isDeletingDisclosure = useDisclosure();
   const cancelRef = useRef();
   const toast = useToast();
+  const { isAdmin } = useUser();
 
   const onDelete = useCallback(async () => {
     isDeletingDisclosure.onOpen();
@@ -70,7 +73,7 @@ function ProjectItem({ ...props }: Project & { updateProject: (name?: string) =>
       }
       editDisclosure.onClose();
     },
-    [props.updateProject, props.name],
+    [editDisclosure, props],
   );
 
   return (
@@ -88,38 +91,40 @@ function ProjectItem({ ...props }: Project & { updateProject: (name?: string) =>
           <Text fontWeight={500} fontSize="lg">
             {props.name}
           </Text>
-          <Menu>
-            <MenuButton
-              h="24px"
-              as={IconButton}
-              aria-label="Options"
-              icon={<BiDotsVerticalRounded />}
-              variant="ghost"
-              onClick={e => {
-                e.stopPropagation();
-              }}
-            />
-            <MenuList p={0} minWidth="4rem">
-              <MenuItem
+          {isAdmin ? (
+            <Menu>
+              <MenuButton
+                h="24px"
+                as={IconButton}
+                aria-label="Options"
+                icon={<BiDotsVerticalRounded />}
+                variant="ghost"
                 onClick={e => {
                   e.stopPropagation();
-                  editDisclosure.onOpen();
                 }}
-                icon={<AiOutlineEdit />}
-              >
-                Edit
-              </MenuItem>
-              <MenuItem
-                icon={<AiOutlineDelete />}
-                onClick={e => {
-                  e.stopPropagation();
-                  deleteDisclosure.onOpen();
-                }}
-              >
-                Delete
-              </MenuItem>
-            </MenuList>
-          </Menu>
+              />
+              <MenuList p={0} minWidth="4rem">
+                <MenuItem
+                  onClick={e => {
+                    e.stopPropagation();
+                    editDisclosure.onOpen();
+                  }}
+                  icon={<AiOutlineEdit />}
+                >
+                  Edit
+                </MenuItem>
+                <MenuItem
+                  icon={<AiOutlineDelete />}
+                  onClick={e => {
+                    e.stopPropagation();
+                    deleteDisclosure.onOpen();
+                  }}
+                >
+                  Delete
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          ) : null}
         </Flex>
         <AvatarGroup size="sm" max={2}>
           {props.users.map((user: User, index: number) => {

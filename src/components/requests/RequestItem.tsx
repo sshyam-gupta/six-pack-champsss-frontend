@@ -27,6 +27,7 @@ import {
   AlertDialogFooter,
 } from '@chakra-ui/modal';
 import { Input } from '@chakra-ui/input';
+import { useUser } from '../../hooks/use-user';
 
 interface RequestItemProps extends Activity {
   disableCrud?: boolean;
@@ -41,6 +42,7 @@ function RequestItem(props: RequestItemProps) {
   const pointsGrantDisclosure = useDisclosure();
   const cancelRef = useRef();
   const [pointsToGrant, setPointsToGrant] = useState<number>(props.points_requested);
+  const { isAdmin } = useUser();
 
   const updateStatus = useCallback(
     async (status: 'approve' | ActivityStatus) => {
@@ -56,7 +58,6 @@ function RequestItem(props: RequestItemProps) {
       if (error) {
         toast({
           description: `Something went wrong!`,
-          variant: 'top-accent',
           status: 'error',
           isClosable: true,
           position: 'top',
@@ -66,7 +67,6 @@ function RequestItem(props: RequestItemProps) {
       props.onUpdate?.(status);
       toast({
         description: `Activity ${status} successfully`,
-        variant: 'top-accent',
         status: 'success',
         isClosable: true,
         position: 'top',
@@ -95,7 +95,7 @@ function RequestItem(props: RequestItemProps) {
           <Text>{`${props.status === 'approved' ? props.points_granted : props.points_requested} ${
             AppData.points
           }`}</Text>
-          {!props.disableCrud ? (
+          {!props.disableCrud && isAdmin ? (
             <Tooltip placement="top" label="Approve">
               <IconButton
                 isLoading={isLoadingDisclosure.isOpen}
@@ -107,7 +107,7 @@ function RequestItem(props: RequestItemProps) {
               />
             </Tooltip>
           ) : null}
-          {!props.disableCrud ? (
+          {!props.disableCrud && isAdmin ? (
             <Tooltip placement="top" label="Reject">
               <IconButton
                 isLoading={isLoadingDisclosure.isOpen}

@@ -2,28 +2,30 @@ import { Avatar } from '@chakra-ui/avatar';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { Stack } from '@chakra-ui/layout';
-import { useSession } from 'next-auth/client';
+
 import PageContainer from '../components/layout/PageContainer';
 import LoginRequired from '../components/layout/LoginRequired';
 import { useCallback, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from '@chakra-ui/button';
 import ApiService from '../services/api';
-import { USERS } from '../services/api/endpoints';
+import { GET_USER, USERS } from '../services/api/endpoints';
 import { useToast } from '@chakra-ui/toast';
 import { useDisclosure } from '@chakra-ui/hooks';
+import { useUser } from '../hooks/use-user';
+import { mutate } from 'swr';
 
-function MyProfile(props) {
-  const [session, loading] = useSession();
-  const [name, setName] = useState(session?.user.name ?? '');
+function MyProfile() {
+  const { isLoading, user = {} } = useUser();
+
+  const [name, setName] = useState(user?.name ?? '');
   const toast = useToast();
   const isLoadingDisclosure = useDisclosure();
 
   useEffect(() => {
-    if (session && !loading) {
-      setName(session?.user.name);
-      return;
+    if (!isLoading) {
+      setName(user.name);
     }
-  }, [loading, session]);
+  }, [isLoading, user.name]);
 
   const saveUserName = useCallback(async () => {
     if (!name) {
@@ -36,8 +38,8 @@ function MyProfile(props) {
       return;
     }
     isLoadingDisclosure.onOpen();
-    const { error } = await ApiService.put(`${USERS}/${session?.user.id}`, {
-      id: session?.user.id,
+    const { error } = await ApiService.put(`${USERS}/${user.id}`, {
+      id: user.id,
       name,
     });
 
@@ -51,41 +53,41 @@ function MyProfile(props) {
       return;
     }
 
-    props.updateSession({
-      ...session,
-      user: {
-        ...session.user,
-        name,
-      },
+    toast({
+      description: 'Profile updated successfully',
+      status: 'success',
+      position: 'top',
+      isClosable: true,
     });
+    mutate(`${GET_USER}/${user.id}`);
 
     isLoadingDisclosure.onClose();
-  }, [name, session, props.updateSession]);
+  }, [name, isLoadingDisclosure, user.id, toast]);
 
   return (
     <LoginRequired>
       <PageContainer maxW="48rem" pageTitle="Profile">
         <Stack spacing={6} alignItems="center" mt="1rem">
-          <Avatar size="2xl" name={session?.user.name} src={session?.user.image} />
+          <Avatar size="2xl" name={user.name} src={user.image} />
           <FormControl id="name">
             <FormLabel>Name</FormLabel>
             <InputGroup>
               <Input
                 type="email"
-                defaultValue={session?.user.name}
-                value={name ?? session?.user.name}
+                defaultValue={user.name}
+                value={name}
                 onChange={e => {
                   setName(e.target.value);
                 }}
               />
-              {name !== session?.user.name && name !== props.session?.user.name ? (
+              {name !== user.name ? (
                 <InputRightElement width="10rem">
                   <ButtonGroup>
                     <Button
                       variant="outline"
                       h="1.75rem"
                       size="sm"
-                      onClick={() => setName(session?.user.name)}
+                      onClick={() => setName(user.name)}
                       isDisabled={isLoadingDisclosure.isOpen}
                     >
                       Cancel
@@ -100,7 +102,7 @@ function MyProfile(props) {
           </FormControl>
           <FormControl id="email">
             <FormLabel>Email address</FormLabel>
-            <Input isReadOnly type="email" value={session?.user.email} />
+            <Input isReadOnly type="email" value={user.email} />
           </FormControl>
         </Stack>
       </PageContainer>

@@ -67,7 +67,6 @@ const ProjectDetailedView = () => {
     if (error) {
       toast({
         description: error,
-        variant: 'top-accent',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -76,7 +75,6 @@ const ProjectDetailedView = () => {
     }
     toast({
       description: 'Member added successfully',
-      variant: 'top-accent',
       status: 'success',
       isClosable: true,
       position: 'top',
@@ -176,6 +174,7 @@ function ProjectMember(user: User & { projectId: string; onRemove: (user: User) 
   const deleteDisclosure = useDisclosure();
   const isDeletingDisclosure = useDisclosure();
   const cancelRef = useRef();
+  const { isAdmin } = useUser();
 
   const onDelete = useCallback(async () => {
     isDeletingDisclosure.onOpen();
@@ -200,16 +199,18 @@ function ProjectMember(user: User & { projectId: string; onRemove: (user: User) 
           </Stack>
         </HStack>
         <Spacer />
-        <HStack mt={['1rem', '1rem', 0]}>
-          <Tooltip label="Remove" placement="top">
-            <IconButton
-              onClick={deleteDisclosure.onOpen}
-              aria-label="Remove"
-              variant="ghost"
-              icon={<AiOutlineDelete />}
-            />
-          </Tooltip>
-        </HStack>
+        {isAdmin ? (
+          <HStack mt={['1rem', '1rem', 0]}>
+            <Tooltip label="Remove" placement="top">
+              <IconButton
+                onClick={deleteDisclosure.onOpen}
+                aria-label="Remove"
+                variant="ghost"
+                icon={<AiOutlineDelete />}
+              />
+            </Tooltip>
+          </HStack>
+        ) : null}
       </Flex>
       <AlertDialog isOpen={deleteDisclosure.isOpen} leastDestructiveRef={cancelRef} onClose={deleteDisclosure.onClose}>
         <AlertDialogOverlay>

@@ -40,7 +40,7 @@ const ContextWrapper = ({ children }: any) => {
   }, [session?.accessToken]);
 
   useEffect(() => {
-    if (data) {
+    if (data.length) {
       setProjects(data);
     }
   }, [data]);

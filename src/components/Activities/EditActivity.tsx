@@ -25,6 +25,7 @@ import useSWR from 'swr';
 import { PROJECTS } from '../../services/api/endpoints';
 import { Activity } from '../../util/activity-util';
 import { useProject } from '../../hooks/use-project';
+import { Input } from '@chakra-ui/input';
 
 interface EditActivityProps extends Activity {
   isOpen: boolean;
@@ -35,7 +36,7 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
   const [isEditingActivity, setIsEditingActivity] = useState(false);
   const { data } = useSWR(PROJECTS);
   const toast = useToast();
-  const { getProjectNameById } = useProject();
+  const { getProjectNameById, getProjectPointsById } = useProject();
   const { colorMode } = useColorMode();
   const {
     colors: { gray },
@@ -45,6 +46,7 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
     handleSubmit,
     control,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     mode: 'onBlur',
@@ -57,9 +59,13 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
       project_id: {
         value: activity.project_id,
         label: getProjectNameById(activity.project_id),
+        points_per_hour: getProjectPointsById(activity.project_id),
       },
     },
   });
+
+  const watchProject = watch('project_id');
+  const watchDuration = watch('duration');
 
   const onSubmit = async data => {
     setIsEditingActivity(true);
@@ -67,7 +73,7 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
       description: data.description,
       duration: data.duration.value,
       project_id: data.project_id.value,
-      points_requested: (20 * data.duration.value) / 60,
+      points_requested: (data.project_id.points_per_hour * data.duration.value) / 60,
       performed_on: dayjs().format(),
     };
     const { error, data: activities } = await ProjectService.editActivity(activity.id, reqData);
@@ -153,7 +159,7 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
                           background: colorMode === 'dark' ? gray[700] : 'white',
                         }),
                       }}
-                      options={data.projects.map(project => ({ label: project.name, value: project.id }))}
+                      options={data.projects.map(project => ({ ...project, label: project.name, value: project.id }))}
                       {...field}
                     />
                   )}
@@ -164,6 +170,15 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
                   </FormHelperText>
                 )}
               </FormControl>
+              <FormControl id="desc">
+                <FormLabel>Points</FormLabel>
+                <Input
+                  isDisabled
+                  value={
+                    watchProject && watchDuration ? (watchProject.points_per_hour * watchDuration.value) / 60 : '0'
+                  }
+                />
+              </FormControl>
             </Stack>
           </ModalBody>
           <ModalFooter>
@@ -171,7 +186,7 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
               Close
             </Button>
             <Button type="submit" ml={3} isLoading={isEditingActivity}>
-              Edit
+              Update
             </Button>
           </ModalFooter>
         </ModalContent>
