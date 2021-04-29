@@ -33,7 +33,7 @@ function CompletedRedemption() {
       {data.length ? (
         <Stack spacing={4}>
           {data.map(activity => (
-            <RedemptionItem key={activity.id} {...activity} />
+            <RedemptionItem key={activity.id} {...activity} disableCrud />
           ))}
         </Stack>
       ) : (

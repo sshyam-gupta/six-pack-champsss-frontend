@@ -71,20 +71,22 @@ function RedemptionItem(props: RedemptionItemProps) {
           <Text>{`${props.points} ${AppData.points}`}</Text>
         </HStack>
         <Spacer />
-        <HStack>
-          <Tooltip placement="top" label="Mark as complete">
-            <IconButton
-              isLoading={isLoadingDisclosure.isOpen}
-              size="sm"
-              variant="outline"
-              aria-label="Approve"
-              onClick={() => {
-                updateStatus('complete' as RedemptionStatus);
-              }}
-              icon={<BsCheckCircle />}
-            />
-          </Tooltip>
-        </HStack>
+        {props.disableCrud ? (
+          <HStack>
+            <Tooltip placement="top" label="Mark as complete">
+              <IconButton
+                isLoading={isLoadingDisclosure.isOpen}
+                size="sm"
+                variant="outline"
+                aria-label="Approve"
+                onClick={() => {
+                  updateStatus('complete' as RedemptionStatus);
+                }}
+                icon={<BsCheckCircle />}
+              />
+            </Tooltip>
+          </HStack>
+        ) : null}
       </HStack>
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
