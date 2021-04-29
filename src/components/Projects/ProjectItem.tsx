@@ -29,6 +29,7 @@ export type Project = {
   id: number;
   name: string;
   users: Array<User>;
+  points_per_hour: number;
   total_points: number;
 };
 function ProjectItem({ ...props }: Project & { updateProject: (name?: string) => void }) {

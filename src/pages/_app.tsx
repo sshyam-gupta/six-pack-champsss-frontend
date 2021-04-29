@@ -55,8 +55,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <RouteLoadingIndicator isRouteChanging={state.isRouteChanging} />
       <Provider
         options={{
-          clientMaxAge: 0,
-          keepAlive: 0,
+          clientMaxAge: 60,
+          keepAlive: 5 * 60,
         }}
         session={pageProps.session}
       >

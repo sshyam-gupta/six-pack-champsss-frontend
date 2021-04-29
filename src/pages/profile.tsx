@@ -2,7 +2,7 @@ import { Avatar } from '@chakra-ui/avatar';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { Stack } from '@chakra-ui/layout';
-import { useSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 import PageContainer from '../components/layout/PageContainer';
 import LoginRequired from '../components/layout/LoginRequired';
 import { useCallback, useEffect, useState } from 'react';
@@ -11,15 +11,26 @@ import ApiService from '../services/api';
 import { USERS } from '../services/api/endpoints';
 import { useToast } from '@chakra-ui/toast';
 import { useDisclosure } from '@chakra-ui/hooks';
+import { Session } from 'next-auth';
 
 function MyProfile(props) {
-  const [session, loading] = useSession();
-  const [name, setName] = useState(session?.user.name ?? '');
+  const [data, loading] = useSession();
+  const [name, setName] = useState(data?.user.name ?? '');
   const toast = useToast();
   const isLoadingDisclosure = useDisclosure();
 
+  const [session, setSession] = useState<Session | null>(data);
+
   useEffect(() => {
-    if (session && !loading) {
+    async function getUser() {
+      const response = await getSession();
+      setSession(response);
+    }
+    getUser();
+  }, []);
+
+  useEffect(() => {
+    if (session) {
       setName(session?.user.name);
       return;
     }
@@ -59,14 +70,29 @@ function MyProfile(props) {
       },
     });
 
+    setSession({
+      ...session,
+      user: {
+        ...session.user,
+        name,
+      },
+    });
+
+    toast({
+      description: 'Profile updated successfully',
+      status: 'success',
+      position: 'top',
+      isClosable: true,
+    });
+
     isLoadingDisclosure.onClose();
-  }, [name, session, props.updateSession]);
+  }, [name, isLoadingDisclosure, session, props, toast]);
 
   return (
     <LoginRequired>
       <PageContainer maxW="48rem" pageTitle="Profile">
         <Stack spacing={6} alignItems="center" mt="1rem">
-          <Avatar size="2xl" name={session?.user.name} src={session?.user.image} />
+          <Avatar size="2xl" name={data?.user.name} src={data?.user.image} />
           <FormControl id="name">
             <FormLabel>Name</FormLabel>
             <InputGroup>
@@ -78,7 +104,7 @@ function MyProfile(props) {
                   setName(e.target.value);
                 }}
               />
-              {name !== session?.user.name && name !== props.session?.user.name ? (
+              {name !== session?.user.name ? (
                 <InputRightElement width="10rem">
                   <ButtonGroup>
                     <Button
@@ -100,7 +126,7 @@ function MyProfile(props) {
           </FormControl>
           <FormControl id="email">
             <FormLabel>Email address</FormLabel>
-            <Input isReadOnly type="email" value={session?.user.email} />
+            <Input isReadOnly type="email" value={data?.user.email} />
           </FormControl>
         </Stack>
       </PageContainer>

@@ -15,6 +15,15 @@ export function useProject() {
     [projects],
   );
 
+  const getProjectPointsById = useCallback(
+    (id: number) => {
+      const project = projects?.filter?.((project: Project) => project.id === id);
+
+      return project?.length ? project[0]?.points_per_hour : null;
+    },
+    [projects],
+  );
+
   const getProjectById = useCallback(
     (id: number) => {
       const project = projects?.filter?.((project: Project) => project.id === id);
@@ -42,5 +51,6 @@ export function useProject() {
     getProjectNameById,
     getProjectById,
     updateProject,
+    getProjectPointsById,
   };
 }
