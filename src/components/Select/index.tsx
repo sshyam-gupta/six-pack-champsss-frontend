@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Icon, Avatar, Text } from '@chakra-ui/react';
+import { Stack, Icon, Avatar, Text, forwardRef } from '@chakra-ui/react';
 import { components } from 'react-select';
 import BaseSelect from './BaseSelect';
 import { ChevronDownIcon, ChevronUpIcon, SearchIcon } from '@chakra-ui/icons';
@@ -50,10 +50,11 @@ export function FormatOptionLabel(props: any) {
   );
 }
 
-function SelectComponent(restProps: any) {
+const SelectComponent = forwardRef((restProps: any, ref: any) => {
   return (
     <BaseSelect
       isClearable
+      ref={ref}
       {...restProps}
       components={{
         Placeholder: restProps.isSearchable ? PlaceholderWithSearch : components.Placeholder,
@@ -95,7 +96,7 @@ function SelectComponent(restProps: any) {
       }}
     />
   );
-}
+});
 
 SelectComponent.defaultProps = {
   maxMenuHeight: 200,

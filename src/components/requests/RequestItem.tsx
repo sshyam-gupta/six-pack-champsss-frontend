@@ -15,7 +15,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useToast } from '@chakra-ui/toast';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import { minutesToHours } from '../../util/time-util';
-import { useProject } from '../../hooks/use-project';
+import { useAllProjects } from '../../hooks/use-all-projects';
 import ProjectService from '../../services/project/project';
 import {
   AlertDialog,
@@ -38,7 +38,7 @@ function RequestItem(props: RequestItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
   const isLoadingDisclosure = useDisclosure();
   const toast = useToast();
-  const { getProjectNameById } = useProject();
+  const { getProjectNameById } = useAllProjects();
   const pointsGrantDisclosure = useDisclosure();
   const cancelRef = useRef();
   const [pointsToGrant, setPointsToGrant] = useState<number>(props.points_requested);

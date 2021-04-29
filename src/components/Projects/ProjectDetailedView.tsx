@@ -21,7 +21,7 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import useSWR from 'swr';
 
 import * as AppData from '../../constants/app.json';
-import { useProject } from '../../hooks/use-project';
+import { useUserProjects } from '../../hooks/use-user-projects';
 import { useUser } from '../../hooks/use-user';
 import ApiService from '../../services/api';
 import { REMOVE_USERS_FROM_PROJECT, USERS } from '../../services/api/endpoints';
@@ -43,7 +43,7 @@ const ProjectDetailedView = () => {
   } = router;
 
   const { isAdmin } = useUser();
-  const { getProjectNameById, getProjectById, updateProject, error } = useProject();
+  const { getProjectNameById, getProjectById, updateProject, isError } = useUserProjects();
 
   const [isAddingMembers, setIsAddingMembers] = useState(false);
   const [addedMembers, setAddedMembers] = useState([]);
@@ -78,24 +78,14 @@ const ProjectDetailedView = () => {
       isClosable: true,
       position: 'top',
     });
-    const users = project.users.concat(
-      addedMembers.map((member: User) => ({ ...member, name: member.name, email: member.email })),
-    );
+
     setAddedMembers([]);
-    updateProject({
-      ...project,
-      users: users,
-    });
+    updateProject();
     setIsAddingMembers(false);
   };
 
-  const removeUser = async (member: User) => {
-    const users = project.users.filter(user => user.id !== member.id);
-
-    updateProject({
-      ...project,
-      users: users,
-    });
+  const removeUser = async (_member: User) => {
+    updateProject();
   };
 
   const filteredUsers = project?.users?.filter((user: User) => {
@@ -104,7 +94,7 @@ const ProjectDetailedView = () => {
   });
 
   const getView = () => {
-    if (error) {
+    if (isError) {
       return <EmptyPlaceholder description="Something went wrong!" />;
     }
     if (!project) {

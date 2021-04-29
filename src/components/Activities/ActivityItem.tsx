@@ -12,7 +12,7 @@ import { Activity, getStatusColor } from '../../util/activity-util';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import { minutesToHours } from '../../util/time-util';
 import dayjs from 'dayjs';
-import { useProject } from '../../hooks/use-project';
+import { useAllProjects } from '../../hooks/use-all-projects';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -35,7 +35,7 @@ interface ActivityItemProps extends Activity {
 
 function ActivityItem(activity: ActivityItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
-  const { getProjectNameById } = useProject();
+  const { getProjectNameById } = useAllProjects();
   const toast = useToast();
   const deleteDisclosure = useDisclosure();
   const editDisclosure = useDisclosure();

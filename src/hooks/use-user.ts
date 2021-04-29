@@ -30,6 +30,6 @@ export function useUser() {
   return {
     isLoading,
     ...data,
-    isAdmin: data?.user.role !== UserRole.Associate,
+    isAdmin: data?.user?.role !== UserRole.Associate,
   };
 }
