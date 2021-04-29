@@ -16,12 +16,12 @@ function usePendingRequests() {
   return {
     data,
     isLoading: !error && !data,
-    isError: error,
+    hasError: error,
   };
 }
 
 function PendingRequest() {
-  const { data, isError, isLoading } = usePendingRequests();
+  const { data, hasError, isLoading } = usePendingRequests();
   const [requests, setRequests] = useState(data ?? []);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function PendingRequest() {
     mutate(`${ADMIN_ACTIVITIES}?status=pending`);
   }, []);
 
-  if (isError) {
+  if (hasError) {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
 

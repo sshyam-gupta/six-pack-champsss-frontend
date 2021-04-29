@@ -83,7 +83,7 @@ const Dashboard = (props: HomeProps) => {
     setIsRedeeming(false);
     if (error) {
       toast({
-        description: error,
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',

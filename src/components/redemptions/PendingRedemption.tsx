@@ -16,12 +16,12 @@ function usePendingRedemptions() {
   return {
     data,
     isLoading: !error && !data,
-    isError: error,
+    hasError: error,
   };
 }
 
 function PendingRedemption() {
-  const { data, isError, isLoading } = usePendingRedemptions();
+  const { data, hasError, isLoading } = usePendingRedemptions();
   const [requests, setRequests] = useState(data ?? []);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function PendingRedemption() {
     mutate(`${REDEEM_REQUESTS}?status=pending`);
   }, []);
 
-  if (isError) {
+  if (hasError) {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
 

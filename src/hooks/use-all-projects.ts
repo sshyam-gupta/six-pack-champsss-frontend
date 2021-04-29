@@ -1,9 +1,17 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
+import useSWR, { mutate } from 'swr';
 import { Project } from '../components/Projects/ProjectItem';
-import { useProjectContext } from '../contexts/project';
 
-export function useProject() {
-  const { projects, setProjects } = useProjectContext();
+import { ALL_PROJECTS } from '../services/api/endpoints';
+import { useUser } from './use-user';
+
+export function useAllProjects() {
+  const { isAdmin } = useUser();
+  const { data, error } = useSWR(isAdmin ? ALL_PROJECTS : null);
+
+  const projects = useMemo(() => {
+    return data?.projects ?? [];
+  }, [data]);
 
   const getProjectNameById = useCallback(
     (id: number) => {
@@ -32,22 +40,14 @@ export function useProject() {
     [projects],
   );
 
-  const updateProject = useCallback(
-    (project: Project) => {
-      const updatedProjects = projects?.map?.(p => {
-        if (p.id === project.id) {
-          return project;
-        }
-        return p;
-      });
-      setProjects(updatedProjects);
-    },
-    [projects, setProjects],
-  );
+  const updateProject = useCallback((_project?: Project) => {
+    mutate(ALL_PROJECTS);
+  }, []);
 
   return {
-    projects,
-    error: !projects,
+    projects: data?.projects ?? [],
+    isLoading: !error && !data,
+    hasError: error,
     getProjectNameById,
     getProjectById,
     updateProject,

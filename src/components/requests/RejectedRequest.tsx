@@ -12,14 +12,14 @@ function useRejectedRequest() {
   return {
     data,
     isLoading: !error && !data,
-    isError: error,
+    hasError: error,
   };
 }
 
 function RejectedRequest() {
-  const { data, isError, isLoading } = useRejectedRequest();
+  const { data, hasError, isLoading } = useRejectedRequest();
 
-  if (isError) {
+  if (hasError) {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
 

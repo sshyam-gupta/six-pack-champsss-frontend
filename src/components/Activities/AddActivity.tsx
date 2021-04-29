@@ -22,13 +22,13 @@ import { useColorMode } from '@chakra-ui/color-mode';
 import { useTheme } from '@chakra-ui/system';
 import { Controller, useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
-import useSWR from 'swr';
-import { PROJECTS } from '../../services/api/endpoints';
+
 import { Input } from '@chakra-ui/input';
+import { useUserProjects } from '../../hooks/use-user-projects';
 
 const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: string) => void }) => {
   const [isAddingActivity, setIsAddingActivity] = useState(false);
-  const { data } = useSWR(PROJECTS);
+  const { projects } = useUserProjects();
   const toast = useToast();
   const { colorMode } = useColorMode();
   const {
@@ -61,7 +61,7 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
     setIsAddingActivity(false);
     if (error) {
       toast({
-        description: error,
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -140,7 +140,7 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
                           background: colorMode === 'dark' ? gray[700] : 'white',
                         }),
                       }}
-                      options={data.projects.map(project => ({ ...project, label: project.name, value: project.id }))}
+                      options={projects.map(project => ({ ...project, label: project.name, value: project.id }))}
                       {...field}
                     />
                   )}
@@ -152,7 +152,7 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
                 )}
               </FormControl>
 
-              <FormControl id="desc">
+              <FormControl id="points">
                 <FormLabel textTransform="capitalize">{AppData.points}</FormLabel>
                 <Input
                   isDisabled

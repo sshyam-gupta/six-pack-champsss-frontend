@@ -13,14 +13,14 @@ function useApprovedRequests() {
   return {
     data,
     isLoading: !error && !data,
-    isError: error,
+    hasError: error,
   };
 }
 
 function ApprovedRequest() {
-  const { data, isError, isLoading } = useApprovedRequests();
+  const { data, hasError, isLoading } = useApprovedRequests();
 
-  if (isError) {
+  if (hasError) {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
 

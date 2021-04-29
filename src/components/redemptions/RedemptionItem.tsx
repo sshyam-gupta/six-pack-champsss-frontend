@@ -91,7 +91,7 @@ function RedemptionItem(props: RedemptionItemProps) {
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
           <Text minW="50px" textAlign="center">
-            {props.user_name}
+            {props.user_name ?? '---'}
           </Text>
         </HStack>
         <Text textAlign="right">{dayjs(props.created_at).format('ll LT')}</Text>

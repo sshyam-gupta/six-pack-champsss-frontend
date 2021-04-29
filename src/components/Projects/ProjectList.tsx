@@ -1,5 +1,3 @@
-import { Spinner } from '@chakra-ui/spinner';
-import { useToast } from '@chakra-ui/toast';
 import { Flex } from '@chakra-ui/layout';
 import { useMemo, useState } from 'react';
 import { Button } from '@chakra-ui/button';
@@ -13,17 +11,14 @@ import StaggeredGrid from '../motion/StaggeredGrid';
 import AddProject from './AddProject';
 
 import { useUser } from '../../hooks/use-user';
-import { useProject } from '../../hooks/use-project';
-
-import { mutate } from 'swr';
-import { PROJECTS } from '../../services/api/endpoints';
+import { useUserProjects } from '../../hooks/use-user-projects';
 
 function ProjectList() {
   const { isOpen, onOpen: openAddProjectModal, onClose: closeAddProjectModal } = useDisclosure();
   const { isAdmin } = useUser();
   const [searchText, setSearchText] = useState('');
 
-  const { projects: records, error } = useProject();
+  const { projects: records, hasError, updateProject } = useUserProjects();
 
   const projects = useMemo(() => {
     return records?.filter((rec: Project) => {
@@ -32,14 +27,14 @@ function ProjectList() {
     });
   }, [records, searchText]);
 
-  if (error) {
+  if (hasError) {
     return <EmptyPlaceholder description="Something went wrong!" />;
   }
 
   const initiateClose = async (name?: string) => {
     closeAddProjectModal();
     if (name) {
-      mutate(PROJECTS);
+      updateProject();
     }
   };
 
