@@ -30,7 +30,7 @@ import { Input } from '@chakra-ui/input';
 
 interface RequestItemProps extends Activity {
   disableCrud?: boolean;
-  onUpdate?: (status: ActivityStatus) => void;
+  onUpdate?: (status: 'approve' | ActivityStatus) => void;
 }
 
 function RequestItem(props: RequestItemProps) {
@@ -40,10 +40,10 @@ function RequestItem(props: RequestItemProps) {
   const { getProjectNameById } = useProject();
   const pointsGrantDisclosure = useDisclosure();
   const cancelRef = useRef();
-  const [pointsToGrant, setPointsToGrant] = useState<number>();
+  const [pointsToGrant, setPointsToGrant] = useState<number>(props.points_requested);
 
   const updateStatus = useCallback(
-    async (status: ActivityStatus) => {
+    async (status: 'approve' | ActivityStatus) => {
       isLoadingDisclosure.onOpen();
       const { error } = await ProjectService.updateActivityStatus(`/admin/activities/${props.id}/${status}`, {
         id: props.id,
@@ -151,7 +151,7 @@ function RequestItem(props: RequestItemProps) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Grant {AppData.points}
+              Approve {AppData.points}
               <AlertDialogCloseButton />
             </AlertDialogHeader>
 
@@ -162,7 +162,8 @@ function RequestItem(props: RequestItemProps) {
                   <Text fontWeight={500}>{props.points_requested}</Text>
                 </HStack>
                 <Input
-                  placeholder={`Enter ${AppData.points} to grant`}
+                  defaultValue={props.points_requested}
+                  placeholder={`Enter ${AppData.points} to approve`}
                   type="number"
                   value={pointsToGrant}
                   onChange={({ target: { value } }: any) => setPointsToGrant(parseInt(value))}
@@ -186,7 +187,7 @@ function RequestItem(props: RequestItemProps) {
                 onClick={() => updateStatus('approve')}
                 ml={3}
               >
-                Grant {AppData.points}
+                Approve
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

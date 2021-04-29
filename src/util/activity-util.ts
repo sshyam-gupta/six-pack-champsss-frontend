@@ -1,4 +1,4 @@
-export type ActivityStatus = 'pending' | 'rejected' | 'approve';
+export type ActivityStatus = 'pending' | 'rejected' | 'approved';
 
 export function getStatusColor(status: ActivityStatus) {
   switch (status) {
@@ -6,7 +6,7 @@ export function getStatusColor(status: ActivityStatus) {
       return 'orange';
     case 'rejected':
       return 'red';
-    case 'approve':
+    case 'approved':
       return 'green';
     default:
       return 'orange';

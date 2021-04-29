@@ -56,11 +56,10 @@ const Dashboard = (props: HomeProps) => {
 
   // @ts-ignore
   const points = session?.points;
-
   const initiateRedeem = useCallback(() => {
     if (pointsToRedeem > points?.available_points || pointsToRedeem <= AppData['min-points-to-redeem'] - 1) {
       toast({
-        description: `${AppData.points} should  be in range ${AppData['min-points-to-redeem']} - ${points?.available_points}`,
+        description: `You can redeem ${AppData.points} between ${AppData['min-points-to-redeem']} - ${points?.available_points}`,
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -89,14 +88,19 @@ const Dashboard = (props: HomeProps) => {
       });
       return;
     }
+    setSession({
+      ...session,
+      //@ts-ignore
+      points: { ...session.points, available_points: points.available_points - pointsToRedeem },
+    });
     toast({
-      description: 'Redeeming in process',
+      description: `Redeemed ${pointsToRedeem} ${AppData.points} successfully, you will receive reward in 3-4 working days.`,
       variant: 'top-accent',
       isClosable: true,
       position: 'top',
     });
     klapsConfirmationDialogDisclosure.onClose();
-  }, [toast, klapsConfirmationDialogDisclosure, pointsToRedeem]);
+  }, [toast, klapsConfirmationDialogDisclosure, session, points, pointsToRedeem]);
 
   return (
     <LoginRequired>
@@ -119,7 +123,9 @@ const Dashboard = (props: HomeProps) => {
                   value={points?.available_points ?? 0}
                   title={`Available ${AppData.points}`}
                   icon={<AvailableIcon px="3rem" py="2rem" />}
-                  onRedeem={klapsCountDialogDisclosure.onOpen}
+                  onRedeem={
+                    points?.available_points >= AppData['min-points-to-redeem'] && klapsCountDialogDisclosure.onOpen
+                  }
                 />
                 <DashboardBox
                   bg={useColorModeValue('green.50', 'green.900')}
