@@ -79,9 +79,9 @@ const Dashboard = (props: HomeProps) => {
         points: pointsToRedeem,
       },
     };
-    const { error } = await RedeemService.redeemKlaps(payload);
+    const { status } = await RedeemService.redeemKlaps(payload);
     setIsRedeeming(false);
-    if (error) {
+    if (status !== 200) {
       toast({
         description: 'Something went wrong!',
         status: 'error',

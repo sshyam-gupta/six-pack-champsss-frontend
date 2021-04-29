@@ -47,15 +47,18 @@ function RequestItem(props: RequestItemProps) {
   const updateStatus = useCallback(
     async (status: 'approve' | ActivityStatus) => {
       isLoadingDisclosure.onOpen();
-      const { error } = await ProjectService.updateActivityStatus(`/admin/activities/${props.id}/${status}`, {
-        id: props.id,
-        activity: {
-          points_granted: status === 'approve' ? pointsToGrant : props.points_requested,
+      const { status: resStatus } = await ProjectService.updateActivityStatus(
+        `/admin/activities/${props.id}/${status}`,
+        {
+          id: props.id,
+          activity: {
+            points_granted: status === 'approve' ? pointsToGrant : props.points_requested,
+          },
         },
-      });
+      );
       isLoadingDisclosure.onClose();
       pointsGrantDisclosure.onClose();
-      if (error) {
+      if (resStatus !== 200) {
         toast({
           description: `Something went wrong!`,
           status: 'error',

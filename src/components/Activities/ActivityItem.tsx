@@ -44,9 +44,9 @@ function ActivityItem(activity: ActivityItemProps) {
 
   const onDelete = useCallback(async () => {
     isDeletingDisclosure.onOpen();
-    const { error } = await ProjectService.deleteActivity(activity.id);
+    const { status } = await ProjectService.deleteActivity(activity.id);
     isDeletingDisclosure.onClose();
-    if (error) {
+    if (status !== 200) {
       toast({
         description: 'Something went wrong!',
         status: 'error',

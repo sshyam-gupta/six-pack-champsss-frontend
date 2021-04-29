@@ -44,10 +44,10 @@ function ProjectItem({ ...props }: Project & { updateProject: (name?: string) =>
 
   const onDelete = useCallback(async () => {
     isDeletingDisclosure.onOpen();
-    const { error } = await ProjectService.deleteProject(props.id);
+    const { status } = await ProjectService.deleteProject(props.id);
 
     isDeletingDisclosure.onClose();
-    if (error) {
+    if (status !== 200) {
       toast({
         description: 'Something went wrong!',
         status: 'error',

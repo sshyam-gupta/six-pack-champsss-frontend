@@ -21,8 +21,9 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import useSWR from 'swr';
 
 import * as AppData from '../../constants/app.json';
-import { useUserProjects } from '../../hooks/use-user-projects';
+import { useAllProjects } from '../../hooks/use-all-projects';
 import { useUser } from '../../hooks/use-user';
+
 import ApiService from '../../services/api';
 import { REMOVE_USERS_FROM_PROJECT, USERS } from '../../services/api/endpoints';
 import ProjectService from '../../services/project/project';
@@ -43,7 +44,10 @@ const ProjectDetailedView = () => {
   } = router;
 
   const { isAdmin } = useUser();
-  const { getProjectNameById, getProjectById, updateProject, hasError } = useUserProjects();
+
+  const allProjects = useAllProjects();
+
+  const { getProjectNameById, getProjectById, updateProject, hasError } = allProjects;
 
   const [isAddingMembers, setIsAddingMembers] = useState(false);
   const [addedMembers, setAddedMembers] = useState([]);
@@ -54,7 +58,7 @@ const ProjectDetailedView = () => {
     acc[user.id] = user;
     return acc;
   }, {});
-  const { data: users } = useSWR(USERS);
+  const { data: users } = useSWR(isAdmin ? USERS : null);
 
   const addMembers = async () => {
     setIsAddingMembers(true);
@@ -62,8 +66,8 @@ const ProjectDetailedView = () => {
       project_id: parseInt(id as string),
       user_ids: addedMembers.map(m => m.value),
     };
-    const { error } = await ProjectService.addMembers(payload);
-    if (error) {
+    const { status } = await ProjectService.addMembers(payload);
+    if (status !== 200) {
       toast({
         description: 'Something went wrong!',
         status: 'error',

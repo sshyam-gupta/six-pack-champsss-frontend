@@ -38,12 +38,12 @@ function MyProfile() {
       return;
     }
     isLoadingDisclosure.onOpen();
-    const { error } = await ApiService.put(`${USERS}/${user.id}`, {
+    const { status } = await ApiService.put(`${USERS}/${user.id}`, {
       id: user.id,
       name,
     });
 
-    if (error) {
+    if (status !== 200) {
       toast({
         description: 'Something went wrong',
         status: 'error',

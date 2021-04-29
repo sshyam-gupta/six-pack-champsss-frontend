@@ -11,14 +11,17 @@ import StaggeredGrid from '../motion/StaggeredGrid';
 import AddProject from './AddProject';
 
 import { useUser } from '../../hooks/use-user';
-import { useUserProjects } from '../../hooks/use-user-projects';
+
+import { useAllProjects } from '../../hooks/use-all-projects';
 
 function ProjectList() {
   const { isOpen, onOpen: openAddProjectModal, onClose: closeAddProjectModal } = useDisclosure();
   const { isAdmin } = useUser();
   const [searchText, setSearchText] = useState('');
 
-  const { projects: records, hasError, updateProject } = useUserProjects();
+  const allProjects = useAllProjects();
+
+  const { projects: records, hasError, updateProject } = allProjects;
 
   const projects = useMemo(() => {
     return records?.filter((rec: Project) => {

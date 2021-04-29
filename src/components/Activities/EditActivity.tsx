@@ -76,9 +76,9 @@ const EditActivity = ({ isOpen, onClose, ...activity }: EditActivityProps) => {
       points_requested: (data.project_id.points_per_hour * data.duration.value) / 60,
       performed_on: dayjs().format(),
     };
-    const { error, data: activities } = await ProjectService.editActivity(activity.id, reqData);
+    const { status, data: activities } = await ProjectService.editActivity(activity.id, reqData);
     setIsEditingActivity(false);
-    if (error) {
+    if (status !== 200) {
       toast({
         description: 'Something went wrong!',
         status: 'error',

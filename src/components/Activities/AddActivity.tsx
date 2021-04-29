@@ -57,9 +57,9 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
       points_requested: (data.project_id.points_per_hour * data.duration.value) / 60,
       performed_on: dayjs().format(),
     };
-    const { error, data: activities } = await ProjectService.addActivity(reqData);
+    const { status, data: activities } = await ProjectService.addActivity(reqData);
     setIsAddingActivity(false);
-    if (error) {
+    if (status !== 200) {
       toast({
         description: 'Something went wrong!',
         status: 'error',

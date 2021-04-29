@@ -30,14 +30,14 @@ function RedemptionItem(props: RedemptionItemProps) {
   const updateStatus = useCallback(
     async (status: RedemptionStatus) => {
       isLoadingDisclosure.onOpen();
-      const { error } = await ProjectService.updateRedemptionStatus(
+      const { status: resStatus } = await ProjectService.updateRedemptionStatus(
         `/admin/redeem_requests/${props.id}/mark_complete`,
         {
           id: props.id,
         },
       );
       isLoadingDisclosure.onClose();
-      if (error) {
+      if (resStatus !== 200) {
         toast({
           description: `Something went wrong!`,
           status: 'error',

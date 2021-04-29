@@ -2,12 +2,12 @@ import { useCallback, useMemo } from 'react';
 import useSWR, { mutate } from 'swr';
 import { Project } from '../components/Projects/ProjectItem';
 
-import { ALL_PROJECTS } from '../services/api/endpoints';
+import { ALL_PROJECTS, USER_PROJECTS } from '../services/api/endpoints';
 import { useUser } from './use-user';
 
 export function useAllProjects() {
   const { isAdmin } = useUser();
-  const { data, error } = useSWR(isAdmin ? ALL_PROJECTS : null);
+  const { data, error } = useSWR(isAdmin ? ALL_PROJECTS : USER_PROJECTS);
 
   const projects = useMemo(() => {
     return data?.projects ?? [];
@@ -40,9 +40,12 @@ export function useAllProjects() {
     [projects],
   );
 
-  const updateProject = useCallback((_project?: Project) => {
-    mutate(ALL_PROJECTS);
-  }, []);
+  const updateProject = useCallback(
+    (_project?: Project) => {
+      mutate(isAdmin ? ALL_PROJECTS : USER_PROJECTS);
+    },
+    [isAdmin],
+  );
 
   return {
     projects: data?.projects ?? [],
