@@ -40,7 +40,7 @@ export function FormatOptionLabel(props: any) {
       cursor="pointer"
     >
       <Stack isInline spacing={4} alignItems="center">
-        <Avatar name={props.name} size="sm" src={props.image} />
+        <Avatar name={props.name} size="sm" src={props.image_url} />
         <Stack spacing={0}>
           <Text fontSize="md">{props.name}</Text>
           <Text fontSize="sm">{props.email}</Text>

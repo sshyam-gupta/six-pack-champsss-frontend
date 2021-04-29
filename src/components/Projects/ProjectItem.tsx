@@ -128,7 +128,7 @@ function ProjectItem({ ...props }: Project & { updateProject: (name?: string) =>
         </Flex>
         <AvatarGroup size="sm" max={2}>
           {props.users.map((user: User, index: number) => {
-            return <Avatar borderWidth="0" key={index} name={user.name} src={user.image} />;
+            return <Avatar borderWidth="0" key={index} name={user.name} src={user.image_url} />;
           })}
         </AvatarGroup>
         <Text fontSize="sm">Total: {`${props.total_points} ${AppData.points}`}</Text>

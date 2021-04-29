@@ -93,7 +93,12 @@ function HeaderContent(props: { title: string }) {
           <Menu isLazy placement="bottom-end">
             <MenuButton as={Button} variant="ghost" rightIcon={<ChevronDownIcon />} fontSize="xl">
               <Center>
-                <Avatar size="sm" name={session?.user.name || 'User'} src={session?.user.image} />
+                <Avatar
+                  size="sm"
+                  name={session?.user.name || 'User'}
+                  // @ts-ignore
+                  src={session?.user.image_url || session?.user.image}
+                />
               </Center>
             </MenuButton>
             <MenuList p={0} minW="10rem" color={color}>

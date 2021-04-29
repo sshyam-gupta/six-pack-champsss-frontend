@@ -68,7 +68,7 @@ function MyProfile() {
     <LoginRequired>
       <PageContainer maxW="48rem" pageTitle="Profile">
         <Stack spacing={6} alignItems="center" mt="1rem">
-          <Avatar size="2xl" name={user.name} src={user.image} />
+          <Avatar size="2xl" name={user.name} src={user.image_url || user.image} />
           <FormControl id="name">
             <FormLabel>Name</FormLabel>
             <InputGroup>
