@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Icon, Avatar, Text } from '@chakra-ui/react';
+import { Stack, Icon, Avatar, Text, forwardRef } from '@chakra-ui/react';
 import { components } from 'react-select';
 import BaseSelect from './BaseSelect';
 import { ChevronDownIcon, ChevronUpIcon, SearchIcon } from '@chakra-ui/icons';
@@ -40,22 +40,21 @@ export function FormatOptionLabel(props: any) {
       cursor="pointer"
     >
       <Stack isInline spacing={4} alignItems="center">
-        <Avatar name={props.name} size="sm" src={props.image} />
+        <Avatar name={props.name} size="sm" src={props.image_url} />
         <Stack spacing={0}>
           <Text fontSize="md">{props.name}</Text>
-          <Text fontSize="sm" color="gray.600">
-            {props.email}
-          </Text>
+          <Text fontSize="sm">{props.email}</Text>
         </Stack>
       </Stack>
     </Stack>
   );
 }
 
-function SelectComponent(restProps: any) {
+const SelectComponent = forwardRef((restProps: any, ref: any) => {
   return (
     <BaseSelect
       isClearable
+      ref={ref}
       {...restProps}
       components={{
         Placeholder: restProps.isSearchable ? PlaceholderWithSearch : components.Placeholder,
@@ -97,7 +96,7 @@ function SelectComponent(restProps: any) {
       }}
     />
   );
-}
+});
 
 SelectComponent.defaultProps = {
   maxMenuHeight: 200,

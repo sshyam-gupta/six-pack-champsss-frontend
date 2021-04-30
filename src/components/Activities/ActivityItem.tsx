@@ -12,7 +12,7 @@ import { Activity, getStatusColor } from '../../util/activity-util';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import { minutesToHours } from '../../util/time-util';
 import dayjs from 'dayjs';
-import { useProject } from '../../hooks/use-project';
+import { useAllProjects } from '../../hooks/use-all-projects';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -35,7 +35,7 @@ interface ActivityItemProps extends Activity {
 
 function ActivityItem(activity: ActivityItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
-  const { getProjectNameById } = useProject();
+  const { getProjectNameById } = useAllProjects();
   const toast = useToast();
   const deleteDisclosure = useDisclosure();
   const editDisclosure = useDisclosure();
@@ -44,11 +44,11 @@ function ActivityItem(activity: ActivityItemProps) {
 
   const onDelete = useCallback(async () => {
     isDeletingDisclosure.onOpen();
-    const { error } = await ProjectService.deleteActivity(activity.id);
+    const { status } = await ProjectService.deleteActivity(activity.id);
     isDeletingDisclosure.onClose();
-    if (error) {
+    if (status !== 200) {
       toast({
-        description: error,
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -102,7 +102,7 @@ function ActivityItem(activity: ActivityItemProps) {
       </HStack>
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
-          <Flex alignItems="center" minW="80px">
+          <Flex alignItems="center" minW="60px">
             <Text>{`${activity.status === 'approved' ? activity.points_granted : activity.points_requested} ${
               AppData.points
             }`}</Text>
@@ -111,13 +111,13 @@ function ActivityItem(activity: ActivityItemProps) {
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {getProjectNameById(activity.project_id)}
+            {getProjectNameById(activity.project_id) ?? '---'}
           </Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {minutesToHours(activity.duration)}
+            {minutesToHours(activity.duration) ?? '---'}
           </Text>
         </HStack>
         <Text textAlign="right">{dayjs(activity.performed_on).format('ll LT')}</Text>

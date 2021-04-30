@@ -1,12 +1,14 @@
 import { useColorMode } from '@chakra-ui/color-mode';
+import { forwardRef } from '@chakra-ui/system';
 import Select, { Props } from 'react-select';
 
-const BaseSelect = (props: Props) => {
+const BaseSelect = (props: Props, ref: any) => {
   const { colorMode } = useColorMode();
   const isLightMode = colorMode === 'light';
 
   return (
     <Select
+      ref={ref}
       menuPortalTarget={document.body}
       {...props}
       theme={theme => ({
@@ -31,4 +33,5 @@ const BaseSelect = (props: Props) => {
     />
   );
 };
-export default BaseSelect;
+
+export default forwardRef(BaseSelect);

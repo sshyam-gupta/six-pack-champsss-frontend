@@ -46,6 +46,7 @@ const Dashboard = (props: HomeProps) => {
   const klapsCountDialogDisclosure = useDisclosure();
   const klapsConfirmationDialogDisclosure = useDisclosure();
   const [isRedeeming, setIsRedeeming] = useState(false);
+  const bg = useColorModeValue('purple.50', 'purple.800');
 
   useEffect(() => {
     async function getUser() {
@@ -78,11 +79,11 @@ const Dashboard = (props: HomeProps) => {
         points: pointsToRedeem,
       },
     };
-    const { error } = await RedeemService.redeemKlaps(payload);
+    const { status } = await RedeemService.redeemKlaps(payload);
     setIsRedeeming(false);
-    if (error) {
+    if (status !== 200) {
       toast({
-        description: error,
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -96,7 +97,6 @@ const Dashboard = (props: HomeProps) => {
     });
     toast({
       description: `Redeemed ${pointsToRedeem} ${AppData.points} successfully, you will receive reward in 3-4 working days.`,
-      variant: 'top-accent',
       isClosable: true,
       position: 'top',
     });
@@ -140,7 +140,7 @@ const Dashboard = (props: HomeProps) => {
             {points?.projects?.length ? (
               <GridItem colSpan={[3, 2]}>
                 <DashboardChart
-                  bg={useColorModeValue('purple.50', 'purple.800')}
+                  bg={bg}
                   data={points?.projects.map(project => ({
                     id: project.name,
                     label: project.name,

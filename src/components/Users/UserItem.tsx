@@ -17,10 +17,9 @@ export type User = {
   id: string;
   createdAt: string;
   name: string;
-  image: string;
+  image_url: string;
   role: UserRole;
   email?: string;
-  image_url?: string;
 };
 
 function UserItem(props: User) {
@@ -42,7 +41,6 @@ function UserItem(props: User) {
     if (status !== 200) {
       toast({
         description: 'Something went wrong',
-        variant: 'top-accent',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -51,7 +49,6 @@ function UserItem(props: User) {
     }
     toast({
       description: `User ${props.name} is now an ${val.value}`,
-      variant: 'top-accent',
       status: 'success',
       isClosable: true,
       position: 'top',
@@ -62,7 +59,7 @@ function UserItem(props: User) {
     <StaggeredStackItem boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
       <Flex flexDirection={['column', 'column', 'row']} alignItems={['flex-start', 'flex-start', 'center']}>
         <HStack spacing={4}>
-          <Avatar size="sm" src={props.image} alt={props.name} />
+          <Avatar size="sm" src={props.image_url} alt={props.name} />
           <Stack spacing={0}>
             <Text>{props.name}</Text>
             <Text fontSize="sm">{props.email}</Text>

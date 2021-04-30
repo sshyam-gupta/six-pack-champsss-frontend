@@ -11,6 +11,7 @@ import { Stack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { useState } from 'react';
 import { useToast } from '@chakra-ui/toast';
+import * as AppData from '../../constants/app.json';
 
 import ProjectService from '../../services/project/project';
 import SelectComponent from '../Select';
@@ -21,12 +22,13 @@ import { useColorMode } from '@chakra-ui/color-mode';
 import { useTheme } from '@chakra-ui/system';
 import { Controller, useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
-import useSWR from 'swr';
-import { PROJECTS } from '../../services/api/endpoints';
+
+import { Input } from '@chakra-ui/input';
+import { useUserProjects } from '../../hooks/use-user-projects';
 
 const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: string) => void }) => {
   const [isAddingActivity, setIsAddingActivity] = useState(false);
-  const { data } = useSWR(PROJECTS);
+  const { projects } = useUserProjects();
   const toast = useToast();
   const { colorMode } = useColorMode();
   const {
@@ -37,10 +39,14 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
     handleSubmit,
     control,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     mode: 'onBlur',
   });
+
+  const watchProject = watch('project_id');
+  const watchDuration = watch('duration');
 
   const onSubmit = async data => {
     setIsAddingActivity(true);
@@ -48,14 +54,14 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
       description: data.description,
       duration: data.duration.value,
       project_id: data.project_id.value,
-      points_requested: (20 * data.duration.value) / 60,
+      points_requested: (data.project_id.points_per_hour * data.duration.value) / 60,
       performed_on: dayjs().format(),
     };
-    const { error, data: activities } = await ProjectService.addActivity(reqData);
+    const { status, data: activities } = await ProjectService.addActivity(reqData);
     setIsAddingActivity(false);
-    if (error) {
+    if (status !== 200) {
       toast({
-        description: error,
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -86,7 +92,7 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
                 <Textarea {...register('description', { required: true })} placeholder="Description" resize="none" />
                 {errors.description && (
                   <FormHelperText mt="0" fontSize="xs" color="red.500">
-                    Description is required!
+                    Description is required
                   </FormHelperText>
                 )}
               </FormControl>
@@ -114,7 +120,7 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
 
                 {errors.duration && (
                   <FormHelperText mt="0" fontSize="xs" color="red.500">
-                    Duration is required!
+                    Duration is required
                   </FormHelperText>
                 )}
               </FormControl>
@@ -134,16 +140,26 @@ const AddActivity = ({ isOpen, onClose }: { isOpen: boolean; onClose: (name?: st
                           background: colorMode === 'dark' ? gray[700] : 'white',
                         }),
                       }}
-                      options={data.projects.map(project => ({ label: project.name, value: project.id }))}
+                      options={projects.map(project => ({ ...project, label: project.name, value: project.id }))}
                       {...field}
                     />
                   )}
                 />
                 {errors.project_id && (
                   <FormHelperText mt="0" fontSize="xs" color="red.500">
-                    Project is required!
+                    Project is required
                   </FormHelperText>
                 )}
+              </FormControl>
+
+              <FormControl id="points">
+                <FormLabel textTransform="capitalize">{AppData.points}</FormLabel>
+                <Input
+                  isDisabled
+                  value={
+                    watchProject && watchDuration ? (watchProject.points_per_hour * watchDuration.value) / 60 : '0'
+                  }
+                />
               </FormControl>
             </Stack>
           </ModalBody>

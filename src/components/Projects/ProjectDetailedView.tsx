@@ -21,12 +21,12 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import useSWR from 'swr';
 
 import * as AppData from '../../constants/app.json';
-import { useProject } from '../../hooks/use-project';
+import { useAllProjects } from '../../hooks/use-all-projects';
 import { useUser } from '../../hooks/use-user';
+
 import ApiService from '../../services/api';
 import { REMOVE_USERS_FROM_PROJECT, USERS } from '../../services/api/endpoints';
 import ProjectService from '../../services/project/project';
-import sleep from '../../util/sleep';
 import EmptyPlaceholder from '../EmptyPlaceholder';
 import PageContainer from '../layout/PageContainer';
 
@@ -44,7 +44,10 @@ const ProjectDetailedView = () => {
   } = router;
 
   const { isAdmin } = useUser();
-  const { getProjectNameById, getProjectById, updateProject, error } = useProject();
+
+  const allProjects = useAllProjects();
+
+  const { getProjectNameById, getProjectById, updateProject, hasError } = allProjects;
 
   const [isAddingMembers, setIsAddingMembers] = useState(false);
   const [addedMembers, setAddedMembers] = useState([]);
@@ -55,7 +58,7 @@ const ProjectDetailedView = () => {
     acc[user.id] = user;
     return acc;
   }, {});
-  const { data: users } = useSWR(USERS);
+  const { data: users } = useSWR(isAdmin ? USERS : null);
 
   const addMembers = async () => {
     setIsAddingMembers(true);
@@ -63,11 +66,10 @@ const ProjectDetailedView = () => {
       project_id: parseInt(id as string),
       user_ids: addedMembers.map(m => m.value),
     };
-    const { error } = await ProjectService.addMembers(payload);
-    if (error) {
+    const { status } = await ProjectService.addMembers(payload);
+    if (status !== 200) {
       toast({
-        description: error,
-        variant: 'top-accent',
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -76,29 +78,18 @@ const ProjectDetailedView = () => {
     }
     toast({
       description: 'Member added successfully',
-      variant: 'top-accent',
       status: 'success',
       isClosable: true,
       position: 'top',
     });
-    const users = project.users.concat(
-      addedMembers.map((member: User) => ({ ...member, name: member.name, email: member.email })),
-    );
+
     setAddedMembers([]);
-    updateProject({
-      ...project,
-      users: users,
-    });
+    updateProject();
     setIsAddingMembers(false);
   };
 
-  const removeUser = async (member: User) => {
-    const users = project.users.filter(user => user.id !== member.id);
-
-    updateProject({
-      ...project,
-      users: users,
-    });
+  const removeUser = async (_member: User) => {
+    updateProject();
   };
 
   const filteredUsers = project?.users?.filter((user: User) => {
@@ -107,7 +98,7 @@ const ProjectDetailedView = () => {
   });
 
   const getView = () => {
-    if (error) {
+    if (hasError) {
       return <EmptyPlaceholder description="Something went wrong!" />;
     }
     if (!project) {
@@ -176,6 +167,7 @@ function ProjectMember(user: User & { projectId: string; onRemove: (user: User) 
   const deleteDisclosure = useDisclosure();
   const isDeletingDisclosure = useDisclosure();
   const cancelRef = useRef();
+  const { isAdmin } = useUser();
 
   const onDelete = useCallback(async () => {
     isDeletingDisclosure.onOpen();
@@ -200,16 +192,18 @@ function ProjectMember(user: User & { projectId: string; onRemove: (user: User) 
           </Stack>
         </HStack>
         <Spacer />
-        <HStack mt={['1rem', '1rem', 0]}>
-          <Tooltip label="Remove" placement="top">
-            <IconButton
-              onClick={deleteDisclosure.onOpen}
-              aria-label="Remove"
-              variant="ghost"
-              icon={<AiOutlineDelete />}
-            />
-          </Tooltip>
-        </HStack>
+        {isAdmin ? (
+          <HStack mt={['1rem', '1rem', 0]}>
+            <Tooltip label="Remove" placement="top">
+              <IconButton
+                onClick={deleteDisclosure.onOpen}
+                aria-label="Remove"
+                variant="ghost"
+                icon={<AiOutlineDelete />}
+              />
+            </Tooltip>
+          </HStack>
+        ) : null}
       </Flex>
       <AlertDialog isOpen={deleteDisclosure.isOpen} leastDestructiveRef={cancelRef} onClose={deleteDisclosure.onClose}>
         <AlertDialogOverlay>

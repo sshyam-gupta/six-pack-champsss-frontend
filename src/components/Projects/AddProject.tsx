@@ -34,7 +34,7 @@ const AddProject = ({
 
   const addProject = async () => {
     setIsAddingProject(true);
-    const { error } =
+    const { status } =
       type === 'Add'
         ? await ProjectService.addProject(projectName)
         : await ProjectService.editProject({
@@ -42,9 +42,9 @@ const AddProject = ({
             name: projectName,
           });
     setIsAddingProject(false);
-    if (error) {
+    if (status !== 200) {
       toast({
-        description: error,
+        description: 'Something went wrong!',
         status: 'error',
         isClosable: true,
         position: 'top',

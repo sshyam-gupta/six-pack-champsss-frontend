@@ -15,7 +15,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useToast } from '@chakra-ui/toast';
 import { StaggeredStackItem } from '../motion/StaggeredStack';
 import { minutesToHours } from '../../util/time-util';
-import { useProject } from '../../hooks/use-project';
+import { useAllProjects } from '../../hooks/use-all-projects';
 import ProjectService from '../../services/project/project';
 import {
   AlertDialog,
@@ -27,6 +27,7 @@ import {
   AlertDialogFooter,
 } from '@chakra-ui/modal';
 import { Input } from '@chakra-ui/input';
+import { useUser } from '../../hooks/use-user';
 
 interface RequestItemProps extends Activity {
   disableCrud?: boolean;
@@ -37,26 +38,29 @@ function RequestItem(props: RequestItemProps) {
   const bg = useColorModeValue('gray.50', 'gray.700');
   const isLoadingDisclosure = useDisclosure();
   const toast = useToast();
-  const { getProjectNameById } = useProject();
+  const { getProjectNameById } = useAllProjects();
   const pointsGrantDisclosure = useDisclosure();
   const cancelRef = useRef();
   const [pointsToGrant, setPointsToGrant] = useState<number>(props.points_requested);
+  const { isAdmin } = useUser();
 
   const updateStatus = useCallback(
     async (status: 'approve' | ActivityStatus) => {
       isLoadingDisclosure.onOpen();
-      const { error } = await ProjectService.updateActivityStatus(`/admin/activities/${props.id}/${status}`, {
-        id: props.id,
-        activity: {
-          points_granted: status === 'approved' ? pointsToGrant : props.points_requested,
+      const { status: resStatus } = await ProjectService.updateActivityStatus(
+        `/admin/activities/${props.id}/${status}`,
+        {
+          id: props.id,
+          activity: {
+            points_granted: status === 'approve' ? pointsToGrant : props.points_requested,
+          },
         },
-      });
+      );
       isLoadingDisclosure.onClose();
       pointsGrantDisclosure.onClose();
-      if (error) {
+      if (resStatus !== 200) {
         toast({
           description: `Something went wrong!`,
-          variant: 'top-accent',
           status: 'error',
           isClosable: true,
           position: 'top',
@@ -66,7 +70,6 @@ function RequestItem(props: RequestItemProps) {
       props.onUpdate?.(status);
       toast({
         description: `Activity ${status} successfully`,
-        variant: 'top-accent',
         status: 'success',
         isClosable: true,
         position: 'top',
@@ -95,7 +98,7 @@ function RequestItem(props: RequestItemProps) {
           <Text>{`${props.status === 'approved' ? props.points_granted : props.points_requested} ${
             AppData.points
           }`}</Text>
-          {!props.disableCrud ? (
+          {!props.disableCrud && isAdmin ? (
             <Tooltip placement="top" label="Approve">
               <IconButton
                 isLoading={isLoadingDisclosure.isOpen}
@@ -107,7 +110,7 @@ function RequestItem(props: RequestItemProps) {
               />
             </Tooltip>
           ) : null}
-          {!props.disableCrud ? (
+          {!props.disableCrud && isAdmin ? (
             <Tooltip placement="top" label="Reject">
               <IconButton
                 isLoading={isLoadingDisclosure.isOpen}
@@ -126,18 +129,18 @@ function RequestItem(props: RequestItemProps) {
       </HStack>
       <Flex fontSize="xs" justifyContent="space-between" flexWrap="wrap">
         <HStack spacing={4}>
-          <Text minW="80px">{props.user_name}</Text>
+          <Text minW="80px">{props.user_name ?? '---'}</Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {getProjectNameById(props.project_id)}
+            {getProjectNameById(props.project_id) ?? '---'}
           </Text>
           &nbsp;&nbsp;
           <Text color="gray.500">|</Text>
           &nbsp;&nbsp;
           <Text minW="50px" textAlign="center">
-            {minutesToHours(props.duration)}
+            {minutesToHours(props.duration) ?? '---'}
           </Text>
         </HStack>
         <Text textAlign="right">{dayjs(props.performed_on).format('ll LT')}</Text>
@@ -157,8 +160,10 @@ function RequestItem(props: RequestItemProps) {
 
             <AlertDialogBody>
               <Stack spacing={2}>
-                <HStack spacing={4}>
-                  <Text fontSize="md">{AppData.points} Requested:</Text>
+                <HStack spacing={2}>
+                  <Text fontSize="md" textTransform="capitalize">
+                    {AppData.points} requested:
+                  </Text>
                   <Text fontWeight={500}>{props.points_requested}</Text>
                 </HStack>
                 <Input
