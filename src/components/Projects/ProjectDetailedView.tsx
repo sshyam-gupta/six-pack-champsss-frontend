@@ -193,7 +193,7 @@ function ProjectMember(user: User & { projectId: string; onRemove: (user: User) 
     <StaggeredStackItem key={user.id} boxShadow="md" borderRadius="md" background={bg} p="1rem" position="relative">
       <Flex flexDirection={['column', 'column', 'row']} alignItems={['flex-start', 'flex-start', 'center']}>
         <HStack spacing={4}>
-          <Avatar size="sm" src={user.image} alt={user.name} />
+          <Avatar size="sm" src={user?.image_url} name={user?.name} alt={user.name} />
           <Stack spacing={0}>
             <Text>{user.name}</Text>
             <Text fontSize="sm">{user.email}</Text>

@@ -20,6 +20,7 @@ export type User = {
   image: string;
   role: UserRole;
   email?: string;
+  image_url?: string;
 };
 
 function UserItem(props: User) {
@@ -86,7 +87,9 @@ function UserItem(props: User) {
                 ]}
               />
             ) : (
-              <Text fontSize="sm" px="0.15rem">Owner</Text>
+              <Text fontSize="sm" px="0.15rem">
+                Owner
+              </Text>
             )}
           </Flex>
         </HStack>
